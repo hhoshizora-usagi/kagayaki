@@ -235,7 +235,7 @@ footer{padding:30px 0 10px;color:var(--muted);font-size:13px;text-align:center}
 
   var lv = 1, streakOk = 0, streakNg = 0, total = 0, ok = 0;
   var queue = [], reviewQ = [], current = null, isReview = false, sinceReview = 0, lastQ = null;
-  var answered = false;
+  var answered = false, correctPos = 0;
 
   var qEl = document.getElementById('qtext'), optsEl = document.getElementById('opts'),
       fbEl = document.getElementById('fb'), nextEl = document.getElementById('next'),
@@ -279,10 +279,14 @@ footer{padding:30px 0 10px;color:var(--muted);font-size:13px;text-align:center}
     revEl.className = isReview ? 'badge rev' : 'badge rev hidden';
     qEl.textContent = current.q;
     optsEl.innerHTML = '';
-    current.o.forEach(function(text, i){
+    // 選択肢をシャッフル（正解が一番上に固定されないように）
+    var order = current.o.map(function(_, idx){ return idx; });
+    shuffle(order);
+    correctPos = order.indexOf(current.a);
+    order.forEach(function(origIdx, disp){
       var b = document.createElement('button');
-      b.className = 'opt'; b.textContent = text;
-      b.addEventListener('click', function(){ answer(i, b); });
+      b.className = 'opt'; b.textContent = current.o[origIdx];
+      b.addEventListener('click', function(){ answer(disp, b); });
       optsEl.appendChild(b);
     });
     statsEl.textContent = '正解 ' + ok + ' / ' + total;
@@ -291,11 +295,11 @@ footer{padding:30px 0 10px;color:var(--muted);font-size:13px;text-align:center}
   function answer(i, btn){
     if(answered) return;
     answered = true; total++;
-    var correct = (i === current.a);
+    var correct = (i === correctPos);
     var btns = optsEl.querySelectorAll('.opt');
     btns.forEach(function(b, idx){
       b.disabled = true;
-      if(idx === current.a) b.classList.add('correct');
+      if(idx === correctPos) b.classList.add('correct');
     });
     if(correct){
       ok++; streakOk++; streakNg = 0;
