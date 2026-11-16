@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>化学式れんしゅう帳</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#FAF6EE; --paper-2:#F3EDE1; --ink:#26252B; --muted:#6B6870; --line:#E4DCCD;
+  --accent:#0F7B6C; --accent-ink:#0A5A4F; --accent-soft:#DCEFE9;
+  --bad:#C24E37; --bad-soft:#F8E2DA; --marker:#F6D873;
+  --radius:14px;
+  --jp:"Zen Maru Gothic","Hiragino Maru Gothic ProN","Hiragino Sans",sans-serif;
+  --chem:"Atkinson Hyperlegible","Zen Maru Gothic",sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--jp);font-size:17px;line-height:1.7;
+  -webkit-font-smoothing:antialiased;padding-bottom:calc(84px + env(safe-area-inset-bottom));
+  background-image:linear-gradient(var(--paper-2) 1px,transparent 1px);background-size:100% 34px}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:8px}
+.chem{font-family:var(--chem);font-weight:700;letter-spacing:.01em}
+.chem sub{font-size:.62em;vertical-align:-.28em;line-height:0}
+.wrap{max-width:760px;margin:0 auto;padding:0 18px}
+
+/* header */
+header.top{padding:34px 0 10px}
+.eyebrow{font-size:13px;letter-spacing:.18em;color:var(--accent);font-weight:700}
+h1{font-size:clamp(30px,7.4vw,44px);line-height:1.2;margin:6px 0 4px;font-weight:700}
+h1 .mk{background:linear-gradient(transparent 62%,var(--marker) 62%)}
+.lead{color:var(--muted);margin:0;font-size:15px}
+.hero-formula{font-family:var(--chem);font-weight:700;font-size:clamp(64px,20vw,120px);line-height:1;color:var(--accent);
+  margin:18px 0 0;opacity:.95;animation:rise .7s cubic-bezier(.2,.8,.2,1) both}
+.hero-formula sub{font-size:.55em;vertical-align:-.25em;line-height:0}
+.hero-cap{font-size:14px;color:var(--muted);margin:2px 0 0}
+
+/* section nav */
+nav.sub{position:sticky;top:0;z-index:5;background:rgba(250,246,238,.94);backdrop-filter:blur(6px);
+  border-bottom:1px solid var(--line);margin:18px -18px 0;padding:10px 18px;display:flex;gap:8px;overflow-x:auto;scrollbar-width:none}
+nav.sub::-webkit-scrollbar{display:none}
+nav.sub a{flex:none;text-decoration:none;color:var(--ink);font-size:14px;font-weight:500;padding:6px 14px;border:1.5px solid var(--line);border-radius:99px;background:#fff}
+nav.sub a:hover{border-color:var(--accent);color:var(--accent-ink)}
+
+section.block{padding:34px 0 8px;scroll-margin-top:60px}
+h2{font-size:24px;margin:0 0 4px;display:flex;align-items:baseline;gap:10px}
+h2 .no{font-family:var(--chem);color:var(--accent);font-size:18px}
+.sec-lead{color:var(--muted);font-size:15px;margin:0 0 18px}
+
+/* rules */
+.rules{list-style:none;margin:0;padding:0;border-top:1.5px solid var(--ink)}
+.rules li{display:grid;grid-template-columns:1fr auto;gap:6px 16px;padding:16px 0;border-bottom:1px solid var(--line);align-items:center}
+.rules b{display:block;font-size:17px}
+.rules span.d{color:var(--muted);font-size:14px}
+.rules .ex{font-size:30px;text-align:right;white-space:nowrap}
+.rules .ex small{display:block;font-family:var(--jp);font-weight:500;font-size:12px;color:var(--accent-ink);text-align:right}
+.steps{counter-reset:s;display:grid;gap:10px;margin:22px 0 0;padding:18px;background:#fff;border:1.5px solid var(--line);border-radius:var(--radius)}
+.steps p{margin:0}
+.steps .st{display:flex;gap:12px;align-items:flex-start}
+.steps .st::before{counter-increment:s;content:counter(s);flex:none;width:28px;height:28px;border-radius:50%;background:var(--accent);color:#fff;
+  font-family:var(--chem);font-weight:700;display:grid;place-items:center;font-size:15px;margin-top:2px}
+.steps .ttl{font-weight:700;margin-bottom:4px}
+
+/* toolbar */
+.toolbar{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 14px}
+.chip-btn{border:1.5px solid var(--line);background:#fff;border-radius:99px;padding:6px 14px;font-size:14px;cursor:pointer}
+.chip-btn[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+
+/* element tiles */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.tile{position:relative;text-align:left;background:#fff;border:1.5px solid var(--line);border-radius:var(--radius);padding:12px 12px 12px;cursor:pointer;
+  transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease;min-height:132px}
+.tile:hover{transform:translateY(-2px);border-color:var(--accent);box-shadow:0 6px 16px -10px rgba(15,123,108,.6)}
+.tile .z{font-family:var(--chem);font-size:12px;color:var(--muted)}
+.tile .star{position:absolute;top:10px;right:12px;font-size:11px;color:var(--accent-ink);background:var(--accent-soft);border-radius:99px;padding:1px 8px;font-weight:700}
+.tile .sym{font-family:var(--chem);font-weight:700;font-size:40px;line-height:1.1;margin:2px 0 2px}
+.tile .nm{font-weight:700;font-size:16px}
+.tile .us{font-size:12.5px;color:var(--muted);line-height:1.5;margin-top:2px}
+.hide-mode .tile:not(.open) .nm,.hide-mode .tile:not(.open) .us{filter:blur(7px);opacity:.5;user-select:none}
+.hide-mode .tile:not(.open)::after{content:"タップで答え";position:absolute;left:12px;bottom:12px;font-size:12px;color:var(--accent-ink);font-weight:700}
+.tile.open{animation:pop .25s ease}
+
+/* formula list */
+.flist{border-top:1.5px solid var(--ink)}
+.fgroup{font-size:13px;font-weight:700;color:var(--accent-ink);letter-spacing:.1em;padding:18px 0 6px}
+.frow{display:grid;grid-template-columns:minmax(118px,auto) 1fr;gap:4px 16px;padding:12px 0;border-bottom:1px solid var(--line);align-items:center}
+.frow .f{font-size:28px}
+.frow .n{font-weight:700}
+.frow .u{color:var(--muted);font-size:14px}
+.atoms{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.atom{font-family:var(--chem);font-size:13px;background:var(--accent-soft);color:var(--accent-ink);border-radius:6px;padding:1px 8px;font-weight:700}
+
+/* reactions */
+.rx{padding:14px 0;border-bottom:1px solid var(--line)}
+.rx .eq{font-size:clamp(20px,5.4vw,27px);line-height:1.5}
+.op{font-family:var(--chem);font-weight:400;color:var(--muted);margin:0 .25em}
+.term{white-space:nowrap;display:inline-block}
+.co{color:var(--bad)}
+.rx .eq .co{color:var(--bad)}
+.rx .cap{font-weight:700;font-size:15px}
+.rx .bal{font-size:13px;color:var(--muted)}
+
+/* views */
+.view{display:none}
+.view.on{display:block;animation:fade .3s ease}
+body.quiz-mode header.top{padding:18px 0 0}
+body.quiz-mode .lead{display:none}
+body.quiz-mode h1{font-size:24px}
+
+/* quiz */
+.qhead{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;padding:28px 0 12px;flex-wrap:wrap}
+.lvbar{display:flex;gap:5px;margin-top:6px}
+.lvbar i{width:30px;height:8px;border-radius:99px;background:var(--line);transition:background .3s}
+.lvbar i.on{background:var(--accent)}
+.lvname{font-size:14px;color:var(--muted)}
+.lvname b{color:var(--ink);font-size:16px}
+.stats{display:flex;gap:16px;text-align:right}
+.stats div{font-size:12px;color:var(--muted);line-height:1.3}
+.stats b{display:block;font-family:var(--chem);font-size:22px;color:var(--ink)}
+
+.qcard{background:#fff;border:1.5px solid var(--ink);border-radius:20px;padding:22px 20px 20px;box-shadow:6px 6px 0 var(--ink);animation:rise .4s cubic-bezier(.2,.8,.2,1) both}
+.badges{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap}
+.badge{font-size:12px;font-weight:700;border-radius:99px;padding:2px 10px;background:var(--paper-2);color:var(--muted)}
+.badge.rev{background:var(--marker);color:#5A4300}
+.qtext{font-size:18px;font-weight:700;margin:0}
+.qbig{font-size:clamp(46px,14vw,72px);line-height:1.15;margin:12px 0 4px;text-align:center}
+.qbig.eq{font-size:clamp(19px,5.6vw,32px);line-height:1.7}
+.qbig .op{font-family:var(--chem);font-weight:400;color:var(--muted);margin:0 .2em}
+.blank{display:inline-block;min-width:1.1em;border:2.5px dashed var(--bad);border-radius:6px;color:var(--bad);text-align:center;line-height:1.15;padding:0 .1em}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}
+.opt{position:relative;background:var(--paper);border:1.5px solid var(--line);border-radius:var(--radius);padding:14px 10px;min-height:64px;cursor:pointer;
+  font-size:16px;line-height:1.45;font-weight:700;transition:transform .12s ease,border-color .15s,background .15s}
+.opt .k{position:absolute;top:6px;left:9px;font-family:var(--chem);font-size:11px;color:var(--muted);font-weight:400}
+.opt.chemopt{font-size:26px}
+.opt.eqopt{font-size:17px;grid-column:1/-1;text-align:left;padding-left:30px}
+.opt:hover:not(:disabled){border-color:var(--accent);transform:translateY(-1px)}
+.opt:active:not(:disabled){transform:scale(.97)}
+.opt:disabled{cursor:default}
+.opt.ok{background:var(--accent-soft);border-color:var(--accent);color:var(--accent-ink)}
+.opt.ng{background:var(--bad-soft);border-color:var(--bad);color:var(--bad)}
+.opt.dim{opacity:.45}
+.fb{margin-top:16px;border-radius:var(--radius);padding:14px 16px;animation:rise .3s ease both}
+.fb.ok{background:var(--accent-soft)}
+.fb.ng{background:var(--bad-soft)}
+.fb .res{font-weight:700;font-size:20px;display:flex;align-items:center;gap:8px}
+.fb .mark{font-size:28px;line-height:1}
+.fb p{margin:6px 0 0;font-size:15px}
+.next{margin-top:14px;width:100%;background:var(--ink);color:#fff;border:0;border-radius:var(--radius);padding:15px;font-size:17px;font-weight:700;cursor:pointer}
+.next:hover{background:#000}
+.lvup{margin-top:10px;font-weight:700;color:#5A4300;background:var(--marker);border-radius:10px;padding:8px 12px;font-size:15px;animation:pop .35s ease}
+
+.weak{margin-top:34px}
+.weak h3{font-size:18px;margin:0 0 4px}
+.weak ul{list-style:none;padding:0;margin:8px 0 0;display:flex;flex-wrap:wrap;gap:8px}
+.weak li{background:#fff;border:1.5px solid var(--line);border-radius:10px;padding:6px 12px;font-size:14px}
+.weak li .chem{font-size:18px;margin-right:6px}
+.weak li em{font-style:normal;color:var(--bad);font-weight:700;margin-left:6px;font-size:12px}
+.quiet{color:var(--muted);font-size:14px}
+.reset{margin-top:22px;background:none;border:1.5px solid var(--line);border-radius:99px;padding:6px 16px;font-size:13px;color:var(--muted);cursor:pointer}
+.reset:hover{border-color:var(--bad);color:var(--bad)}
+.howto{margin:22px 0 0;font-size:14px;color:var(--muted);padding-left:1.2em}
+.howto li{margin:2px 0}
+
+/* bottom tabbar */
+.tabbar{position:fixed;left:0;right:0;bottom:0;z-index:10;background:rgba(255,255,255,.96);backdrop-filter:blur(8px);border-top:1.5px solid var(--ink);
+  display:flex;justify-content:center;gap:10px;padding:10px 14px calc(10px + env(safe-area-inset-bottom))}
+.tabbar button{flex:1;max-width:260px;border:1.5px solid var(--ink);background:#fff;border-radius:99px;padding:11px 10px;font-size:16px;font-weight:700;cursor:pointer;transition:background .2s,color .2s}
+.tabbar button[aria-selected="true"]{background:var(--ink);color:#fff}
+
+footer{padding:40px 0 10px;color:var(--muted);font-size:12px;text-align:center}
+
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes pop{0%{transform:scale(.96)}60%{transform:scale(1.03)}100%{transform:scale(1)}}
+@media (max-width:420px){
+  .grid{grid-template-columns:repeat(2,1fr)}
+  .rules .ex{font-size:24px}
+  .frow{grid-template-columns:1fr}
+  .opt.chemopt{font-size:23px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<main class="wrap">
+  <header class="top">
+    <div class="eyebrow">0時間目の理科のおともに</div>
+    <h1><span class="mk">化学式</span>れんしゅう帳</h1>
+    <p class="lead">おぼえる → クイズで確かめる。まちがえた問題は、少しあとでまた出てくるよ。</p>
+  </header>
+
+  <!-- ===== おぼえる ===== -->
+  <div id="view-learn" class="view on" role="tabpanel" aria-labelledby="tab-learn">
+    <div class="hero-formula" aria-hidden="true">H<sub>2</sub>O</div>
+    <p class="hero-cap">＝ 水素(H)が2個 ＋ 酸素(O)が1個</p>
+
+    <nav class="sub" aria-label="ページ内メニュー">
+      <a href="#rules">書き方のきほん</a>
+      <a href="#elements">元素記号</a>
+      <a href="#formulas">化学式</a>
+      <a href="#reactions">化学反応式</a>
+    </nav>
+
+    <section class="block" id="rules">
+      <h2><span class="no">01</span>書き方のきほん</h2>
+      <p class="sec-lead">この5つがわかれば、どんな化学式も読めるよ。</p>
+      <ul class="rules">
+        <li><div><b>数字は右下に小さく</b><span class="d">すぐ前の記号だけにかかる</span></div><div class="ex chem" data-f="CO2"><small>C 1個・O 2個</small></div></li>
+        <li><div><b>数字がないときは 1個</b><span class="d">「1」は書かないルール</span></div><div class="ex chem" data-f="NaCl"><small>Na 1個・Cl 1個</small></div></li>
+        <li><div><b>大文字から新しい元素</b><span class="d">2文字目はかならず小文字。Cl と CO はべつもの</span></div><div class="ex chem" data-f="Cl2"><small>塩素(Cl)が2個</small></div></li>
+        <li><div><b>( ) の後ろの数字は中ぜんぶ</b><span class="d">( ) の中をまとめて何セットか</span></div><div class="ex chem" data-f="Ca(OH)2"><small>Ca 1・O 2・H 2</small></div></li>
+        <li><div><b>前の大きい数字はセット数</b><span class="d">かたまりごと何個あるか</span></div><div class="ex chem" data-f="2H2O"><small>H 4個・O 2個</small></div></li>
+      </ul>
+      <div class="steps">
+        <div class="st"><div><p class="ttl">「何が何個？」を日本語で言う</p><p class="quiet">二酸化炭素 → 炭素が1個、酸素が2個</p></div></div>
+        <div class="st"><div><p class="ttl">元素記号を並べる</p><p class="quiet">炭素 = C、酸素 = O → C O</p></div></div>
+        <div class="st"><div><p class="ttl">右下に数字をつける（1は書かない）</p><p class="quiet">C O₂ → <span class="chem" data-f="CO2"></span>　書いたら個数を数えなおす</p></div></div>
+      </div>
+    </section>
+
+    <section class="block" id="elements">
+      <h2><span class="no">02</span>元素記号</h2>
+      <p class="sec-lead">中学〜高校の理科で使う32個。★はテストによく出るもの。</p>
+      <div class="toolbar">
+        <button class="chip-btn" id="btn-hide" aria-pressed="false">名前をかくして練習</button>
+        <button class="chip-btn" id="btn-star" aria-pressed="false">★だけ表示</button>
+      </div>
+      <div class="grid" id="el-grid"></div>
+    </section>
+
+    <section class="block" id="formulas">
+      <h2><span class="no">03</span>化学式</h2>
+      <p class="sec-lead">緑のラベルは「中に何が何個入っているか」。</p>
+      <div class="flist" id="f-list"></div>
+    </section>
+
+    <section class="block" id="reactions">
+      <h2><span class="no">04</span>化学反応式</h2>
+      <p class="sec-lead">赤い数字は係数（セット数）。左と右で原子の数がぴったり同じになるようにつける。</p>
+      <div id="rx-list"></div>
+    </section>
+  </div>
+
+  <!-- ===== クイズ ===== -->
+  <div id="view-quiz" class="view" role="tabpanel" aria-labelledby="tab-quiz">
+    <div class="qhead">
+      <div>
+        <div class="lvname">レベル <b id="lv-num">1</b>　<span id="lv-label"></span></div>
+        <div class="lvbar" id="lv-bar" aria-hidden="true"></div>
+      </div>
+      <div class="stats">
+        <div><b id="st-streak">0</b>れんぞく</div>
+        <div><b id="st-rate">–</b>正解率</div>
+        <div><b id="st-total">0</b>問</div>
+      </div>
+    </div>
+    <div id="q-area" aria-live="polite"></div>
+
+    <section class="weak">
+      <h3>にがてリスト</h3>
+      <p class="quiet">まちがえたものは、ここに残って少しあとでまた出てくるよ。</p>
+      <ul id="weak-list"></ul>
+    </section>
+    <ul class="howto">
+      <li>3問つづけて正解でレベルアップ、2問つづけてまちがえるとレベルが1つ下がる</li>
+      <li>キーボードなら 1〜4 で答え、Enter で次へ</li>
+      <li>記録はこの端末に自動で保存される</li>
+    </ul>
+    <button class="reset" id="btn-reset">記録をリセット</button>
+  </div>
+
+  <footer>化学式れんしゅう帳 · 2026</footer>
+</main>
+
+<div class="tabbar" role="tablist">
+  <button id="tab-learn" role="tab" aria-selected="true" aria-controls="view-learn">おぼえる</button>
+  <button id="tab-quiz" role="tab" aria-selected="false" aria-controls="view-quiz">クイズ</button>
+</div>
+
+<script>
+/* ================= データ ================= */
+const ELEMENTS = [
+ {s:'H', n:'水素', z:1, star:1, use:'燃料電池車・ロケットの燃料', hint:'いちばん軽い気体。燃やすと水だけができる'},
+ {s:'He',n:'ヘリウム', z:2, use:'浮かぶ風船・吸うと声が高くなる', hint:'浮かぶ風船に入っている気体'},
+ {s:'Li',n:'リチウム', z:3, use:'スマホの充電池', hint:'スマホの充電池（○○イオン電池）'},
+ {s:'Be',n:'ベリリウム', z:4, use:'軽くて丈夫な合金', hint:'軽くて丈夫な合金に使う、原子番号4の元素'},
+ {s:'B', n:'ホウ素', z:5, use:'熱に強いガラス（計量カップなど）', hint:'熱に強いガラス（計量カップ）'},
+ {s:'C', n:'炭素', z:6, star:1, use:'えんぴつの芯・ダイヤモンド・炭', hint:'えんぴつの芯やダイヤモンド'},
+ {s:'N', n:'窒素', z:7, star:1, use:'空気の約78%・お菓子の袋', hint:'空気の約78%をしめる気体'},
+ {s:'O', n:'酸素', z:8, star:1, use:'呼吸・ものを燃やす', hint:'呼吸に必要で、ものを燃やすはたらきがある気体'},
+ {s:'F', n:'フッ素', z:9, use:'歯みがき粉・フライパンのコーティング', hint:'虫歯予防で歯みがき粉に入っている'},
+ {s:'Ne',n:'ネオン', z:10, use:'赤く光る看板（ネオンサイン）', hint:'赤く光る看板「○○サイン」'},
+ {s:'Na',n:'ナトリウム', z:11, star:1, use:'食塩・重曹', hint:'食塩（塩化○○）の金属のほう'},
+ {s:'Mg',n:'マグネシウム', z:12, star:1, use:'燃やすと強い白い光・にがり', hint:'燃やすとまぶしい白い光を出す金属'},
+ {s:'Al',n:'アルミニウム', z:13, star:1, use:'1円玉・アルミ缶・アルミホイル', hint:'1円玉やアルミ缶'},
+ {s:'Si',n:'ケイ素', z:14, use:'砂・ガラス・半導体', hint:'砂やガラス、パソコンの半導体'},
+ {s:'P', n:'リン', z:15, use:'マッチ・肥料', hint:'マッチの先や肥料'},
+ {s:'S', n:'硫黄', z:16, star:1, use:'温泉・火山のにおい', hint:'温泉や火山のにおいの黄色い固体'},
+ {s:'Cl',n:'塩素', z:17, star:1, use:'プールの消毒・食塩', hint:'プールの消毒のにおい'},
+ {s:'Ar',n:'アルゴン', z:18, use:'電球の中・空気に約1%', hint:'電球の中に入れる、空気に約1%ある気体'},
+ {s:'K', n:'カリウム', z:19, star:1, use:'肥料・バナナに多い', hint:'肥料やバナナに多い'},
+ {s:'Ca',n:'カルシウム', z:20, star:1, use:'骨・卵の殻・貝殻', hint:'骨や卵の殻'},
+ {s:'Mn',n:'マンガン', z:25, use:'乾電池', hint:'乾電池（○○乾電池）'},
+ {s:'Fe',n:'鉄', z:26, star:1, use:'くぎ・鉄骨・磁石につく', hint:'くぎ。磁石にくっつく'},
+ {s:'Ni',n:'ニッケル', z:28, use:'50円玉・100円玉', hint:'50円玉・100円玉'},
+ {s:'Cu',n:'銅', z:29, star:1, use:'10円玉・電線', hint:'10円玉や電線'},
+ {s:'Zn',n:'亜鉛', z:30, star:1, use:'トタン・乾電池', hint:'トタン屋根のめっき'},
+ {s:'Ag',n:'銀', z:47, star:1, use:'銀のアクセサリー・銀メダル', hint:'銀メダル・電気をいちばん通しやすい金属'},
+ {s:'Sn',n:'スズ', z:50, use:'はんだ・ブリキ', hint:'はんだ付けのはんだ'},
+ {s:'I', n:'ヨウ素', z:53, use:'うがい薬・ヨウ素液', hint:'うがい薬。デンプンを青紫にする'},
+ {s:'Ba',n:'バリウム', z:56, use:'胃のレントゲン検査', hint:'胃のレントゲン検査で飲むもの'},
+ {s:'Au',n:'金', z:79, use:'金メダル・さびない', hint:'金メダル。さびない'},
+ {s:'Hg',n:'水銀', z:80, use:'昔の温度計・体温計', hint:'ふつうの温度で液体の金属'},
+ {s:'Pb',n:'鉛', z:82, use:'釣りのおもり・車のバッテリー', hint:'とても重い金属。釣りのおもり'},
+];
+const COMPOUNDS = [
+ {f:'H2', n:'水素', use:'いちばん軽い気体。燃えると水になる', lv:3},
+ {f:'O2', n:'酸素', use:'呼吸・ものを燃やす', lv:3},
+ {f:'N2', n:'窒素', use:'空気の約78%', lv:3},
+ {f:'Cl2',n:'塩素', use:'プールの消毒', lv:3},
+ {f:'H2O',n:'水', use:'飲み水・海・川', lv:3},
+ {f:'CO2',n:'二酸化炭素', use:'炭酸の泡・ドライアイス', lv:3},
+ {f:'NaCl',n:'塩化ナトリウム', use:'食塩', lv:3},
+ {f:'CO', n:'一酸化炭素', use:'不完全燃焼で出る有毒な気体', lv:4},
+ {f:'HCl',n:'塩化水素', use:'水にとかすと塩酸', lv:4},
+ {f:'NH3',n:'アンモニア', use:'鼻をつくにおい・肥料の原料', lv:4},
+ {f:'CH4',n:'メタン', use:'都市ガスの主成分', lv:4},
+ {f:'MgO',n:'酸化マグネシウム', use:'マグネシウムが燃えたあとの白い粉', lv:4},
+ {f:'CuO',n:'酸化銅', use:'銅を加熱するとできる黒い物質', lv:4},
+ {f:'FeS',n:'硫化鉄', use:'鉄と硫黄を加熱するとできる', lv:4},
+ {f:'Ag2O',n:'酸化銀', use:'加熱すると銀と酸素に分かれる黒い粉', lv:4},
+ {f:'CuCl2',n:'塩化銅', use:'水溶液は青色。電気分解すると銅と塩素', lv:4},
+ {f:'NaOH',n:'水酸化ナトリウム', use:'アルカリ性。石けんづくり', lv:5},
+ {f:'H2SO4',n:'硫酸', use:'強い酸。車のバッテリー', lv:5},
+ {f:'H2O2',n:'過酸化水素', use:'消毒液のオキシドール', lv:5},
+ {f:'CaCO3',n:'炭酸カルシウム', use:'卵の殻・貝殻・大理石', lv:5},
+ {f:'NaHCO3',n:'炭酸水素ナトリウム', use:'重曹・ベーキングパウダー', lv:5},
+ {f:'Na2CO3',n:'炭酸ナトリウム', use:'重曹を加熱するとできる白い粉', lv:5},
+ {f:'Ca(OH)2',n:'水酸化カルシウム', use:'石灰水（二酸化炭素で白くにごる）', lv:5},
+ {f:'Fe2O3',n:'酸化鉄', use:'赤さび', lv:5},
+ {f:'SiO2',n:'二酸化ケイ素', use:'砂・ガラス・水晶', lv:5},
+ {f:'C2H5OH',n:'エタノール', use:'消毒用アルコール', lv:5},
+ {f:'C6H12O6',n:'ブドウ糖', use:'体と脳のエネルギー', lv:5},
+];
+const REACTIONS = [
+ {eq:'2H2 + O2 -> 2H2O', n:'水素が燃えて水ができる'},
+ {eq:'C + O2 -> CO2', n:'炭素が燃えて二酸化炭素ができる'},
+ {eq:'2Mg + O2 -> 2MgO', n:'マグネシウムが燃える'},
+ {eq:'2Cu + O2 -> 2CuO', n:'銅を加熱すると黒くなる'},
+ {eq:'Fe + S -> FeS', n:'鉄と硫黄を加熱する'},
+ {eq:'2H2O -> 2H2 + O2', n:'水の電気分解'},
+ {eq:'2Ag2O -> 4Ag + O2', n:'酸化銀を加熱して分解'},
+ {eq:'2NaHCO3 -> Na2CO3 + H2O + CO2', n:'重曹（炭酸水素ナトリウム）を加熱して分解'},
+ {eq:'CuCl2 -> Cu + Cl2', n:'塩化銅水溶液の電気分解'},
+ {eq:'2CuO + C -> 2Cu + CO2', n:'酸化銅を炭素で還元する'},
+ {eq:'HCl + NaOH -> NaCl + H2O', n:'塩酸と水酸化ナトリウムの中和'},
+ {eq:'CH4 + 2O2 -> CO2 + 2H2O', n:'メタン（都市ガス）が燃える'},
+];
+const LEVELS = ['', '記号 → 名前', '名前 → 記号', '化学式を読む', '化学式を書く', '原子を数える', '化学反応式'];
+const EL = Object.fromEntries(ELEMENTS.map(e=>[e.s,e]));
+const CP = Object.fromEntries(COMPOUNDS.map(c=>[c.f,c]));
+const RX = Object.fromEntries(REACTIONS.map((r,i)=>[String(i),r]));
+
+/* ================= 化学式ユーティリティ ================= */
+function fmt(f){ // "2H2O" -> 2H<sub>2</sub>O
+  const m = f.match(/^(\d+)(.*)$/);
+  let co='', body=f;
+  if(m){co=m[1]; body=m[2];}
+  const html = body.replace(/([A-Za-z)])(\d+)/g,'$1<sub>$2</sub>');
+  return (co?`<span class="co">${co}</span>`:'') + html;
+}
+function parse(f){ // returns {El:count}
+  let i=0;
+  function group(){
+    const out={};
+    while(i<f.length && f[i]!==')'){
+      let part;
+      if(f[i]==='('){ i++; part=group(); i++; }
+      else { const m=f.slice(i).match(/^[A-Z][a-z]?/); part={[m[0]]:1}; i+=m[0].length; }
+      const d=f.slice(i).match(/^\d+/); const k=d?+d[0]:1; if(d) i+=d[0].length;
+      for(const e in part) out[e]=(out[e]||0)+part[e]*k;
+    }
+    return out;
+  }
+  return group();
+}
+function splitCoef(t){ const m=t.match(/^(\d*)(.+)$/); return {c:m[1]?+m[1]:1, f:m[2]}; }
+function sideAtoms(terms){ const out={}; terms.forEach(t=>{const p=parse(t.f); for(const e in p) out[e]=(out[e]||0)+p[e]*t.c;}); return out; }
+function parseEq(eq){ const [l,r]=eq.split('->').map(s=>s.trim().split(' + ').map(splitCoef)); return {l,r}; }
+function balanced(l,r){ const a=sideAtoms(l), b=sideAtoms(r); const ks=new Set([...Object.keys(a),...Object.keys(b)]); for(const k of ks) if(a[k]!==b[k]) return false; return true; }
+function atomStr(a){ return Object.entries(a).map(([e,n])=>`${e}×${n}`).join("　"); }
+function eqHTML(l,r,blankIdx=-1){
+  const all=[...l,...r]; let idx=0;
+  const term=t=>{ const i=idx++; const co = i===blankIdx ? '<span class="blank">?</span>' : (t.c>1?`<span class="co">${t.c}</span>`:''); return `<span class="chem term">${co}${fmt(t.f)}</span>`; };
+  return l.map(term).join('<span class="op">+</span>') + '<span class="op">→</span>' + r.map(term).join('<span class="op">+</span>');
+}
+function eqText(l,r){ const t=x=>(x.c>1?x.c:'')+x.f; return l.map(t).join(' + ')+' -> '+r.map(t).join(' + '); }
+// top-level units for mutation: [{u:'Ca',n:1},{u:'(OH)',n:2}]
+function units(f){ const out=[]; const re=/(\([^)]+\)|[A-Z][a-z]?)(\d*)/g; let m; while((m=re.exec(f))) out.push({u:m[1],n:m[2]?+m[2]:1}); return out; }
+function ser(us){ return us.map(x=>x.u+(x.n>1?x.n:'')).join(''); }
+
+/* ================= 共通 ================= */
+const rnd=a=>a[Math.floor(Math.random()*a.length)];
+const shuffle=a=>{a=a.slice(); for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a;};
+const chem=f=>`<span class="chem">${fmt(f)}</span>`;
+const atomsChips=f=>{const p=parse(f); return Object.entries(p).map(([e,n])=>`<span class="atom">${e} × ${n}</span>`).join('');};
+
+/* ================= おぼえる画面 ================= */
+document.querySelectorAll('[data-f]').forEach(el=>{ el.insertAdjacentHTML('afterbegin', fmt(el.dataset.f)); });
+
+const grid=document.getElementById('el-grid');
+grid.innerHTML = ELEMENTS.map(e=>`<button class="tile" data-star="${e.star?1:0}" aria-label="${e.s}">
+  <div class="z">${e.z}</div>${e.star?'<span class="star">★</span>':''}
+  <div class="sym">${e.s}</div><div class="nm">${e.n}</div><div class="us">${e.use}</div></button>`).join('');
+grid.addEventListener('click',ev=>{ const t=ev.target.closest('.tile'); if(t && grid.classList.contains('hide-mode')) t.classList.toggle('open'); });
+const btnHide=document.getElementById('btn-hide'), btnStar=document.getElementById('btn-star');
+btnHide.onclick=()=>{ const on=btnHide.getAttribute('aria-pressed')!=='true'; btnHide.setAttribute('aria-pressed',on); grid.classList.toggle('hide-mode',on); grid.querySelectorAll('.tile').forEach(t=>t.classList.remove('open')); };
+btnStar.onclick=()=>{ const on=btnStar.getAttribute('aria-pressed')!=='true'; btnStar.setAttribute('aria-pressed',on); grid.querySelectorAll('.tile').forEach(t=>t.hidden = on && t.dataset.star!=='1'); };
+
+const groups=[[3,'きほん'],[4,'よく出る'],[5,'ちょっと発展']];
+document.getElementById('f-list').innerHTML = groups.map(([lv,label])=>`<div class="fgroup">${label}</div>`+
+  COMPOUNDS.filter(c=>c.lv===lv).map(c=>`<div class="frow"><div class="f">${chem(c.f)}</div><div><div class="n">${c.n}</div><div class="u">${c.use}</div><div class="atoms">${atomsChips(c.f)}</div></div></div>`).join('')).join('');
+
+document.getElementById('rx-list').innerHTML = REACTIONS.map(r=>{ const p=parseEq(r.eq); const a=sideAtoms(p.l);
+  return `<div class="rx"><div class="cap">${r.n}</div><div class="eq">${eqHTML(p.l,p.r)}</div><div class="bal">左も右も ${atomStr(a)}</div></div>`; }).join('');
+
+/* ================= クイズ：状態 ================= */
+const KEY='kagaku-quiz-v1';
+let S = load();
+function fresh(){ return {qn:0, level:1, streak:0, miss:0, total:0, correct:0, items:{}, recent:[]}; }
+function load(){ try{ return Object.assign(fresh(), JSON.parse(localStorage.getItem(KEY))||{}); }catch(e){ return fresh(); } }
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
+const GAPS=[3,6,12,25,50];
+
+/* ================= 問題ジェネレーター ================= */
+function pickDistinct(pool, n, avoid){ return shuffle(pool.filter(x=>!avoid.includes(x))).slice(0,n); }
+function numOpts(ans){ const c=new Set(); [ans+1,ans-1,ans+2,ans*2,ans-2,ans+3].forEach(x=>{ if(x>0 && x!==ans) c.add(x); }); return shuffle([ans,...shuffle([...c]).slice(0,3)]); }
+function confusables(s){ const same=ELEMENTS.filter(e=>e.s!==s && e.s[0]===s[0]).map(e=>e.s); const rest=shuffle(ELEMENTS.filter(e=>e.s!==s && !same.includes(e.s)).map(e=>e.s)); return shuffle(same).concat(rest).slice(0,3); }
+function mutateFormula(f){
+  const us=units(f), out=new Set();
+  const tries=[];
+  us.forEach((u,i)=>{ tries.push(()=>{const c=us.map(x=>({...x})); c[i].n=u.n+1; return ser(c);}); if(u.n>1) tries.push(()=>{const c=us.map(x=>({...x})); c[i].n=u.n-1; return ser(c);}); });
+  if(us.length>1){ tries.push(()=>{const c=us.map(x=>({...x})); const ns=c.map(x=>x.n).reverse(); c.forEach((x,i)=>x.n=ns[i]); return ser(c);});
+                   tries.push(()=>ser(us.slice().reverse())); }
+  if(f.includes('(')) tries.push(()=>f.replace(/[()]/g,''));
+  shuffle(tries).forEach(t=>{ const v=t(); if(v!==f) out.add(v); });
+  return [...out];
+}
+const lv=(min,max)=>COMPOUNDS.filter(c=>c.lv>=min&&c.lv<=max);
+
+const GEN = {
+  // L1
+  sym2name(id){ const e=EL[id]||rnd(ELEMENTS.filter(x=>x.star)); const ds=confusables(e.s).map(s=>EL[s].n);
+    return {type:'sym2name', id:e.s, prompt:'この元素記号の名前は？', big:`<span class="chem">${e.s}</span>`,
+      opts:shuffle([e.n,...ds]), ans:e.n, explain:`<b class="chem">${e.s}</b> ＝ ${e.n}。${e.use}`}; },
+  tf(id){ const e=EL[id]||rnd(ELEMENTS.filter(x=>x.star)); const truth=Math.random()<.5; const shown=truth?e.n:EL[confusables(e.s)[0]].n;
+    return {type:'tf', id:e.s, prompt:`<span class="chem">${e.s}</span> は「${shown}」？`, big:'', opts:['○ あってる','× ちがう'], ans:truth?'○ あってる':'× ちがう', fixed:true,
+      explain:`<b class="chem">${e.s}</b> ＝ ${e.n}。${e.use}`}; },
+  // L2
+  name2sym(id){ const e=EL[id]||rnd(ELEMENTS); return {type:'name2sym', id:e.s, prompt:`「${e.n}」の元素記号は？`, big:'', chemOpts:true,
+      opts:shuffle([e.s,...confusables(e.s)]), ans:e.s, explain:`${e.n} ＝ <b class="chem">${e.s}</b>。1文字目は大文字、2文字目は小文字だよ。`}; },
+  use2sym(id){ const e=EL[id]||rnd(ELEMENTS.filter(x=>x.star)); return {type:'use2sym', id:e.s, prompt:`ヒント：${e.hint}。この元素の記号は？`, big:'', chemOpts:true,
+      opts:shuffle([e.s,...confusables(e.s)]), ans:e.s, explain:`<b class="chem">${e.s}</b>（${e.n}）。${e.use}`}; },
+  // L3
+  f2name(id, lvMax=4){ const c=CP[id]||rnd(lv(3,lvMax)); const ds=pickDistinct(COMPOUNDS.map(x=>x.n),3,[c.n]);
+    return {type:'f2name', id:c.f, prompt:'この化学式の物質は？', big:chem(c.f), opts:shuffle([c.n,...ds]), ans:c.n,
+      explain:`${chem(c.f)} ＝ ${c.n}（${c.use}）<div class="atoms">${atomsChips(c.f)}</div>`}; },
+  count(id, adv=false){ const c=CP[id]||rnd(adv?lv(4,5):lv(3,4)); const p=parse(c.f); const e=rnd(Object.keys(p));
+    const coef = adv && Math.random()<.6 ? rnd([2,3]) : 1; const per=p[e], ans=per*coef; const shown=(coef>1?coef:'')+c.f;
+    let how = coef>1 ? `${chem(c.f)} 1つに ${e} が ${per}個 → ${coef}セットで ${coef}×${per}＝<b>${ans}個</b>` : `${chem(c.f)} の中の ${e} は <b>${ans}個</b>`;
+    if(c.f.includes('(')) how += '。( ) の後ろの数字は、( ) の中ぜんぶにかかるよ';
+    else if(per===1) how += '。数字が書いてないときは 1個';
+    return {type:adv?'countAdv':'count', id:c.f, prompt:`この中に <span class="chem">${e}</span> は何個ある？`, big:chem(shown), opts:numOpts(ans).map(String), ans:String(ans), explain:how}; },
+  // L4
+  name2f(id, lvMax=4){ const c=CP[id]||rnd(lv(3,lvMax)); let ds=mutateFormula(c.f).slice(0,3);
+    if(ds.length<3) ds=ds.concat(pickDistinct(COMPOUNDS.map(x=>x.f),3-ds.length,[c.f,...ds]));
+    return {type:lvMax>4?'name2fAdv':'name2f', id:c.f, prompt:`「${c.n}」（${c.use}）の化学式は？`, big:'', chemOpts:true, opts:shuffle([c.f,...ds]), ans:c.f, fmtOpts:true,
+      explain:`${c.n} ＝ ${chem(c.f)}<div class="atoms">${atomsChips(c.f)}</div>`}; },
+  // L5
+  total(id){ const c=CP[id]||rnd(lv(3,5)); const p=parse(c.f); const ans=Object.values(p).reduce((a,b)=>a+b,0);
+    return {type:'total', id:c.f, prompt:'この化学式は、原子が全部で何個？', big:chem(c.f), opts:numOpts(ans).map(String), ans:String(ans),
+      explain:`${Object.entries(p).map(([e,n])=>`${e} ${n}個`).join(' ＋ ')} ＝ <b>${ans}個</b>`}; },
+  // L6
+  rxcoef(id){ const key=id??String(Math.floor(Math.random()*REACTIONS.length)); const r=RX[key]; const {l,r:rr}=parseEq(r.eq); const all=[...l,...rr];
+    let cand=all.map((t,i)=>i); const big=cand.filter(i=>all[i].c>1); const bi = (big.length && Math.random()<.7)? rnd(big) : rnd(cand);
+    const ans=all[bi].c;
+    return {type:'rxcoef', id:key, prompt:`${r.n}。<span class="blank">?</span> に入る係数は？`, big:eqHTML(l,rr,bi), bigEq:true, opts:['1','2','3','4'], ans:String(ans), fixed:true,
+      explain:`${eqHTML(l,rr)}<br>左も右も ${atomStr(sideAtoms(l))}。係数が 1 のときは書かないよ。`}; },
+  rxpick(id){ const key=id??String(Math.floor(Math.random()*REACTIONS.length)); const r=RX[key]; const {l,r:rr}=parseEq(r.eq); const all=[...l,...rr];
+    const wrong=new Set(); let guard=0;
+    while(wrong.size<3 && guard++<200){ const c=all.map(t=>({...t})); const i=Math.floor(Math.random()*c.length); const v=rnd([1,2,3,4].filter(x=>x!==c[i].c)); c[i].c=v;
+      if(Math.random()<.3){ const j=Math.floor(Math.random()*c.length); c[j].c=rnd([1,2,3,4]); }
+      const L=c.slice(0,l.length), R=c.slice(l.length); if(!balanced(L,R)) wrong.add(eqText(L,R)); }
+    const ansT=eqText(l,rr);
+    return {type:'rxpick', id:key, prompt:`「${r.n}」の正しい化学反応式は？`, big:'', eqOpts:true, opts:shuffle([ansT,...wrong]), ans:ansT,
+      explain:`左：${atomStr(sideAtoms(l))}／右：${atomStr(sideAtoms(rr))} で、左右の原子の数がそろっているのが正解。`}; },
+};
+const BY_LEVEL = {
+  1:[()=>GEN.sym2name(), ()=>GEN.sym2name(), ()=>GEN.tf()],
+  2:[()=>GEN.name2sym(), ()=>GEN.use2sym()],
+  3:[()=>GEN.f2name(null,4), ()=>GEN.count(null,false)],
+  4:[()=>GEN.name2f(null,4), ()=>GEN.name2f(null,4), ()=>GEN.f2name(null,5)],
+  5:[()=>GEN.count(null,true), ()=>GEN.total(), ()=>GEN.name2f(null,5)],
+  6:[()=>GEN.rxcoef(), ()=>GEN.rxpick()],
+};
+const REGEN = { sym2name:id=>GEN.sym2name(id), tf:id=>GEN.tf(id), name2sym:id=>GEN.name2sym(id), use2sym:id=>GEN.use2sym(id),
+  f2name:id=>GEN.f2name(id), count:id=>GEN.count(id,false), countAdv:id=>GEN.count(id,true), name2f:id=>GEN.name2f(id,4), name2fAdv:id=>GEN.name2f(id,5),
+  total:id=>GEN.total(id), rxcoef:id=>GEN.rxcoef(id), rxpick:id=>GEN.rxpick(id) };
+const LV_OF = {sym2name:1,tf:1,name2sym:2,use2sym:2,f2name:3,count:3,name2f:4,name2fAdv:5,countAdv:5,total:5,rxcoef:6,rxpick:6};
+
+function nextQuestion(){
+  const due = Object.entries(S.items).filter(([k,v])=>v.due<=S.qn && !S.recent.slice(-2).includes(k));
+  const wrongDue = due.filter(([k,v])=>v.box===0);
+  let q=null, review=false;
+  if(due.length && (wrongDue.length || Math.random()<.35)){
+    const [k]= rnd(wrongDue.length?wrongDue:due); const [type,id]=[k.slice(0,k.indexOf(':')), k.slice(k.indexOf(':')+1)];
+    if(REGEN[type]){ q=REGEN[type](id); review=true; }
+  }
+  if(!q){
+    let L=S.level; if(L>1 && Math.random()<.2) L=1+Math.floor(Math.random()*(S.level-1));
+    for(let t=0;t<8;t++){ q=rnd(BY_LEVEL[L])(); if(!S.recent.includes(q.type+':'+q.id)) break; }
+  }
+  q.review=review; q.key=q.type+':'+q.id; return q;
+}
+
+/* ================= クイズ：描画 ================= */
+const area=document.getElementById('q-area');
+let cur=null, answered=false;
+function renderHead(){
+  document.getElementById('lv-num').textContent=S.level;
+  document.getElementById('lv-label').textContent=LEVELS[S.level];
+  document.getElementById('lv-bar').innerHTML=[1,2,3,4,5,6].map(i=>`<i class="${i<=S.level?'on':''}"></i>`).join('');
+  document.getElementById('st-streak').textContent=S.streak;
+  document.getElementById('st-total').textContent=S.total;
+  document.getElementById('st-rate').textContent=S.total?Math.round(S.correct/S.total*100)+'%':'–';
+  const weak=Object.entries(S.items).filter(([k,v])=>v.wrong>0 && v.box<2).sort((a,b)=>b[1].wrong-a[1].wrong).slice(0,16);
+  const wl=document.getElementById('weak-list');
+  wl.innerHTML = weak.length ? weak.map(([k,v])=>{ const id=k.slice(k.indexOf(':')+1); const type=k.slice(0,k.indexOf(':'));
+    let label; if(type.startsWith('rx')) label=RX[id].n; else if(EL[id]) label=`<span class="chem">${id}</span>${EL[id].n}`; else label=`<span class="chem">${fmt(id)}</span>${CP[id]?CP[id].n:''}`;
+    return `<li>${label}<em>×${v.wrong}</em></li>`; }).join('') : '<li class="quiet" style="border:0;background:none;padding:0">まだないよ。</li>';
+}
+function show(){
+  cur=nextQuestion(); answered=false;
+  const optCls = cur.eqOpts?'opt eqopt':(cur.chemOpts?'opt chemopt':'opt');
+  const optHTML = cur.opts.map((o,i)=>{ let label=o;
+      if(cur.eqOpts){ const p=parseEq(o); label=eqHTML(p.l,p.r); }
+      else if(cur.fmtOpts||cur.chemOpts) label=`<span class="chem">${fmt(o)}</span>`;
+      return `<button class="${optCls}" data-v="${o}"><span class="k">${i+1}</span>${label}</button>`; }).join('');
+  area.innerHTML = `<article class="qcard">
+    <div class="badges"><span class="badge">Lv.${LV_OF[cur.type]} ${LEVELS[LV_OF[cur.type]]}</span>${cur.review?'<span class="badge rev">ふくしゅう</span>':''}</div>
+    <p class="qtext">${cur.prompt}</p>
+    ${cur.big?`<div class="qbig ${cur.bigEq?'eq':''}">${cur.bigEq?cur.big:cur.big}</div>`:''}
+    <div class="opts">${optHTML}</div><div id="fb-slot"></div></article>`;
+  area.querySelectorAll('.opt').forEach(b=>b.onclick=()=>answer(b.dataset.v));
+  renderHead();
+}
+function answer(v){
+  if(answered) return; answered=true;
+  const ok = v===cur.ans;
+  area.querySelectorAll('.opt').forEach(b=>{ b.disabled=true; if(b.dataset.v===cur.ans) b.classList.add('ok'); else if(b.dataset.v===v) b.classList.add('ng'); else b.classList.add('dim'); });
+  // 記録
+  S.qn++; S.total++; if(ok) S.correct++;
+  const it=S.items[cur.key]||{box:0,due:0,right:0,wrong:0};
+  if(ok){ it.right++; it.box=Math.min(it.box+1,GAPS.length-1); it.due=S.qn+GAPS[it.box]; }
+  else { it.wrong++; it.box=0; it.due=S.qn+2+Math.floor(Math.random()*2); }
+  S.items[cur.key]=it; S.recent=[...S.recent,cur.key].slice(-5);
+  // レベル調整（ふくしゅう問題はレベルを下げない）
+  let msg='';
+  if(ok){ S.streak++; S.miss=0; if(S.streak%3===0 && S.level<6){ S.level++; msg=`レベル${S.level}「${LEVELS[S.level]}」にアップ！`; } }
+  else { S.streak=0; S.miss++; if(S.miss>=2 && S.level>1 && !cur.review){ S.level--; S.miss=0; msg=`いったんレベル${S.level}で練習しよう`; } }
+  save();
+  const praise = rnd(['せいかい！','その調子！','ばっちり！','いいね！']);
+  document.getElementById('fb-slot').innerHTML = `<div class="fb ${ok?'ok':'ng'}"><div class="res"><span class="mark">${ok?'○':'×'}</span>${ok?praise:'おしい！ 答えは '+ (cur.eqOpts? '緑の式' : (cur.chemOpts||cur.fmtOpts?chem(cur.ans):cur.ans))}</div>
+    <p>${cur.explain}</p>${!ok?'<p class="quiet">この問題は少しあとでまた出るよ。</p>':''}</div>
+    ${msg?`<div class="lvup">${msg}</div>`:''}<button class="next" id="btn-next">つぎの問題へ</button>`;
+  document.getElementById('btn-next').onclick=show;
+  document.getElementById('btn-next').focus({preventScroll:true});
+  renderHead();
+}
+document.addEventListener('keydown',e=>{
+  if(!document.getElementById('view-quiz').classList.contains('on')) return;
+  if(!answered && /^[1-4]$/.test(e.key)){ const b=area.querySelectorAll('.opt')[+e.key-1]; if(b) b.click(); }
+  else if(answered && e.key==='Enter' && document.activeElement?.id!=='btn-next'){ show(); }
+});
+document.getElementById('btn-reset').onclick=()=>{ if(confirm('クイズの記録をリセットする？')){ S=fresh(); save(); show(); } };
+
+/* ================= タブ ================= */
+const tabs={learn:document.getElementById('tab-learn'), quiz:document.getElementById('tab-quiz')};
+function go(name){
+  for(const k in tabs){ const on=k===name; tabs[k].setAttribute('aria-selected',on); document.getElementById('view-'+k).classList.toggle('on',on); }
+  document.body.classList.toggle('quiz-mode',name==='quiz');
+  if(name==='quiz' && !cur) show();
+  window.scrollTo({top:0});
+  history.replaceState(null,'', name==='quiz'?'#quiz':'#');
+}
+tabs.learn.onclick=()=>go('learn'); tabs.quiz.onclick=()=>go('quiz');
+if(location.hash==='#quiz') go('quiz');
+renderHead();
+</script>
+</body>
+</html>
