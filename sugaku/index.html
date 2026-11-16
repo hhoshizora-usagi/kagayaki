@@ -62,6 +62,8 @@ h2 .no{font-family:var(--num);color:var(--accent);font-size:18px}
 #quiz .box{background:#fff;border:1.5px solid var(--line);border-radius:var(--radius);padding:18px}
 .meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
 .badge{font-family:var(--num);font-size:13px;font-weight:700;border-radius:99px;padding:2px 12px;background:var(--accent-soft);color:var(--accent-ink)}
+.badge.rev{background:var(--marker);color:#7A5B00;font-family:var(--jp)}
+.badge.hidden{display:none}
 .q{font-size:19px;font-weight:700;margin:0 0 14px;line-height:1.6}
 .opts{display:grid;gap:10px}
 .opt{text-align:left;border:1.5px solid var(--line);background:var(--paper);border-radius:12px;padding:12px 16px;font-size:16px;transition:.15s}
@@ -185,6 +187,7 @@ footer{padding:30px 0 10px;color:var(--muted);font-size:13px;text-align:center}
     <div class="meta">
       <span class="badge" id="lv">レベル 1</span>
       <span class="badge" id="qno">問題 1</span>
+      <span class="badge rev hidden" id="rev">ふくしゅう</span>
     </div>
     <p class="q" id="qtext">よみこみ中…</p>
     <div class="opts" id="opts"></div>
@@ -230,20 +233,41 @@ footer{padding:30px 0 10px;color:var(--muted);font-size:13px;text-align:center}
     ]
   };
 
-  var lv = 1, qn = 0, streakOk = 0, streakNg = 0, total = 0, ok = 0, pool = [], wrongPool = [];
+  var lv = 1, streakOk = 0, streakNg = 0, total = 0, ok = 0;
+  var queue = [], reviewQ = [], current = null, isReview = false, sinceReview = 0, lastQ = null;
+  var answered = false;
+
   var qEl = document.getElementById('qtext'), optsEl = document.getElementById('opts'),
       fbEl = document.getElementById('fb'), nextEl = document.getElementById('next'),
-      lvEl = document.getElementById('lv'), qnoEl = document.getElementById('qno'), statsEl = document.getElementById('stats');
-  var answered = false, current = null;
+      lvEl = document.getElementById('lv'), qnoEl = document.getElementById('qno'),
+      statsEl = document.getElementById('stats'), revEl = document.getElementById('rev');
 
   function shuffle(a){ for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;} return a; }
-  function nextLevel(){ return Math.max(1, Math.min(5, lv + (streakOk>=2 ? 1 : 0) - (streakNg>=2 ? 1 : 0))); }
 
-  function pickQuestion(){
-    var bank = LEVELS[lv].slice();
-    // たまに復習（まちがえた問題から1〜2問ごとに1回）
-    var review = (total>0 && total%3===0 && wrongPool.length>0) ? wrongPool[Math.floor(Math.random()*wrongPool.length)] : null;
-    current = review || bank[Math.floor(Math.random()*bank.length)];
+  function refill(){
+    queue = LEVELS[lv].slice();
+    shuffle(queue);
+    if(queue.length > 1 && queue[0] === lastQ){ var t = queue[0]; queue[0] = queue[1]; queue[1] = t; }
+  }
+
+  function nextLevel(){
+    var d = 0;
+    if(streakOk >= 3) d = 1;
+    else if(streakNg >= 2) d = -1;
+    return Math.max(1, Math.min(5, lv + d));
+  }
+
+  function pick(){
+    sinceReview++;
+    if(reviewQ.length > 0 && sinceReview >= 2){
+      current = reviewQ.shift();
+      isReview = true;
+      sinceReview = 0;
+    } else {
+      if(queue.length === 0) refill();
+      current = queue.shift();
+      isReview = false;
+    }
   }
 
   function render(){
@@ -251,7 +275,8 @@ footer{padding:30px 0 10px;color:var(--muted);font-size:13px;text-align:center}
     fbEl.className = 'fb'; fbEl.innerHTML = '';
     nextEl.className = 'nextbtn';
     lvEl.textContent = 'レベル ' + lv;
-    qnoEl.textContent = '問題 ' + (qn+1);
+    qnoEl.textContent = '問題 ' + (total + 1);
+    revEl.className = isReview ? 'badge rev' : 'badge rev hidden';
     qEl.textContent = current.q;
     optsEl.innerHTML = '';
     current.o.forEach(function(text, i){
@@ -260,7 +285,7 @@ footer{padding:30px 0 10px;color:var(--muted);font-size:13px;text-align:center}
       b.addEventListener('click', function(){ answer(i, b); });
       optsEl.appendChild(b);
     });
-    statsEl.textContent = '正解 ' + ok + ' / ' + total + '　（ながれるとまた出るよ）';
+    statsEl.textContent = '正解 ' + ok + ' / ' + total;
   }
 
   function answer(i, btn){
@@ -279,22 +304,24 @@ footer{padding:30px 0 10px;color:var(--muted);font-size:13px;text-align:center}
     } else {
       btn.classList.add('wrong');
       streakNg++; streakOk = 0;
-      wrongPool.push(current);
+      reviewQ.push(current);
       fbEl.className = 'fb show ng';
       fbEl.innerHTML = '<b>× ざんねん</b><br>せいかいは「' + current.o[current.a] + '」だよ。<br>' + current.e;
     }
-    statsEl.textContent = '正解 ' + ok + ' / ' + total + '　（ながれるとまた出るよ）';
+    statsEl.textContent = '正解 ' + ok + ' / ' + total;
     nextEl.className = 'nextbtn show';
   }
 
   nextEl.addEventListener('click', function(){
-    qn++;
-    lv = nextLevel();
-    pickQuestion();
+    lastQ = current;
+    var nl = nextLevel();
+    if(nl !== lv){ lv = nl; queue = []; }
+    pick();
     render();
   });
 
-  pickQuestion();
+  refill();
+  pick();
   render();
 })();
 </script>
