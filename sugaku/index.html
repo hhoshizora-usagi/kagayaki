@@ -252,9 +252,23 @@ footer{padding:30px 0 10px;color:var(--muted);font-size:13px;text-align:center}
 
   function shuffle(a){ for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;} return a; }
 
+  /* 1〜4をすべて混ぜた出し方
+     ・1 交互→ランダム
+     ・2 同じ問題が続かない＋まちがえた問題は後で復習
+     ・3 公式のパターンを追加
+     ・4 レベルがあがるほど公式（むずかしいパターン）が多め */
   function refill(){
-    queue = LEVELS[lv].slice();
-    shuffle(queue);
+    var base = LEVELS[lv];
+    var list = [];
+    base.forEach(function(q){
+      var isFormula = q.q.indexOf('【公式】') === 0;
+      var w = 3;
+      if(isFormula) w = (lv >= 3) ? 5 : 1;
+      for(var k=0;k<w;k++) list.push(q);
+    });
+    shuffle(list);
+    queue = [];
+    list.forEach(function(q){ if(queue.indexOf(q) < 0) queue.push(q); });
     if(queue.length > 1 && queue[0] === lastQ){ var t = queue[0]; queue[0] = queue[1]; queue[1] = t; }
   }
 
