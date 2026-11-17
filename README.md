@@ -8,7 +8,8 @@
 | sugaku（数学） | 図形れんしゅう帳：角度の計算（三角形・平行線・多角形）と合同の条件の「おぼえる」/「レベル別クイズ」 | [sugaku/index.html](sugaku/index.html) |
 | chiri（社会地理） | 地理れんしゅう帳（東日本編・西日本編）：北海道〜九州・沖縄の地形・気候・産業・県庁所在地などの「おぼえる」/「レベル別クイズ」（にがて復習つき） | [chiri/index.html](chiri/index.html) |
 | rekishi（社会歴史） | 歴史れんしゅう帳（古代から近代まで）：古代文明・縄文弥生〜古墳飛鳥・奈良・平安・鎌倉・室町戦国・安土桃山・江戸・開国・明治・日清日露・大正〜二つの世界大戦の「おぼえる」/「レベル別クイズ」（にがて復習つき） | [rekishi/index.html](rekishi/index.html) |
+| eigo（英語） | 英語れんしゅう帳（中2 単語・文法・熟語）：動詞・名詞・形容詞・不規則動詞・過去進行形・未来・助動詞・接続詞・不定詞・動名詞・There is・比較・受け身・文の形・熟語・会話の「おぼえる」/「レベル別クイズ」（にがて復習つき・🔊発音の読み上げ対応） | [eigo/index.html](eigo/index.html) |
 
 ## 使い方
-- `rika/index.html`、`sugaku/index.html`、`chiri/index.html`、`rekishi/index.html` をブラウザで開くだけで使えます（インターネット接続があればフォントがきれいに表示されます）。
+- `rika/index.html`、`sugaku/index.html`、`chiri/index.html`、`rekishi/index.html`、`eigo/index.html` をブラウザで開くだけで使えます（インターネット接続があればフォントがきれいに表示されます）。
 - クイズの記録は、開いた端末のブラウザに保存されます。

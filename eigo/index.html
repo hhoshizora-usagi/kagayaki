@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>英語れんしゅう帳 〜中2 単語・文法・熟語〜</title>
+<style>
+:root{
+  --bg:#fff8f3; --card:#ffffff; --ink:#4a3b3b; --sub:#8a7676;
+  --east:#5b8def; --east-l:#e6eeff; --west:#ef7b5b; --west-l:#ffece6;
+  --ok:#3fae7a; --ok-l:#e3f6ec; --ng:#e0566b; --ng-l:#fde8ec;
+  --line:#f0e2da; --star:#f5b301;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:"Hiragino Maru Gothic ProN","Hiragino Sans","Yu Gothic","Meiryo","Noto Sans JP",sans-serif;}
+body{min-height:100vh}
+.wrap{max-width:560px;margin:0 auto;padding:16px 16px 48px}
+header.top{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+header.top h1{font-size:19px;margin:0;flex:1;line-height:1.3}
+.back{border:none;background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:8px 12px;font-size:14px;color:var(--ink)}
+.hero{text-align:center;padding:18px 8px 8px}
+.hero .ttl{font-size:24px;font-weight:800;letter-spacing:.02em}
+.hero .sub{color:var(--sub);font-size:14px;margin-top:6px}
+.ed-btn{display:block;width:100%;text-align:left;border:none;border-radius:20px;padding:18px;margin:14px 0;color:#fff;font-size:15px;box-shadow:0 4px 12px rgba(0,0,0,.08)}
+.ed-btn b{display:block;font-size:22px;margin-bottom:4px}
+.ed-btn .bar{height:8px;background:rgba(255,255,255,.35);border-radius:8px;margin-top:10px;overflow:hidden}
+.ed-btn .bar i{display:block;height:100%;background:#fff;border-radius:8px}
+.ed-btn small{opacity:.95}
+.panel{background:var(--card);border-radius:18px;padding:16px;margin:12px 0;border:1.5px solid var(--line)}
+.panel h3{margin:0 0 10px;font-size:15px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:8px 14px;font-size:14px;color:var(--ink)}
+.chip.on{color:#fff;border-color:transparent}
+.modes{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.mode{border:none;border-radius:16px;padding:16px 10px;font-size:15px;font-weight:700;background:#fff;border:1.5px solid var(--line);color:var(--ink)}
+.mode span{display:block;font-size:26px;margin-bottom:4px}
+.mode.wide{grid-column:1/3}
+.mode.weak{background:#fff5d9;border-color:#f3dc9a}
+.note{font-size:13px;color:var(--sub);line-height:1.6}
+/* flash card */
+.fc-meta{display:flex;justify-content:space-between;font-size:13px;color:var(--sub);margin:4px 2px 8px}
+.flip{perspective:1200px;height:300px;margin-bottom:12px}
+.flip-in{position:relative;width:100%;height:100%;transition:transform .45s;transform-style:preserve-3d}
+.flip.on .flip-in{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:22px;padding:22px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;box-shadow:0 6px 18px rgba(0,0,0,.07);background:#fff;border:2px solid var(--line);overflow:auto}
+.face.back{transform:rotateY(180deg)}
+.face .q{font-size:18px;line-height:1.6;font-weight:700}
+.face .a{font-size:26px;font-weight:800;margin-bottom:12px}
+.face .tip{font-size:14px;line-height:1.7;color:#5d4c4c;text-align:left}
+.face .hint{position:absolute;bottom:10px;font-size:12px;color:var(--sub)}
+.tag{display:inline-block;font-size:12px;padding:3px 10px;border-radius:999px;background:#f6ece6;color:#7a6262;margin-bottom:10px}
+.row{display:flex;gap:10px}
+.btn{flex:1;border:none;border-radius:14px;padding:14px 8px;font-size:15px;font-weight:700;background:#fff;border:1.5px solid var(--line);color:var(--ink)}
+.btn.pri{color:#fff;border-color:transparent}
+.btn.ok{background:var(--ok);color:#fff;border-color:transparent}
+.btn.later{background:#fff5d9;border-color:#f3dc9a}
+.btn:disabled{opacity:.4}
+/* quiz */
+.qhead{display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--sub);margin-bottom:8px}
+.stars{color:var(--star);letter-spacing:2px;font-size:15px}
+.prog{height:8px;background:#f1e5de;border-radius:8px;overflow:hidden;margin-bottom:14px}
+.prog i{display:block;height:100%;transition:width .3s}
+.qbox{background:#fff;border-radius:20px;border:2px solid var(--line);padding:18px;margin-bottom:12px}
+.qbox .q{font-size:18px;font-weight:700;line-height:1.6}
+.review-badge{display:inline-block;font-size:12px;background:#fff5d9;color:#9a7300;border-radius:999px;padding:3px 10px;margin-bottom:8px}
+.choices{display:flex;flex-direction:column;gap:10px}
+.choice{text-align:left;border:2px solid var(--line);background:#fff;border-radius:14px;padding:14px 14px;font-size:16px;color:var(--ink);line-height:1.5}
+.choice .no{display:inline-block;width:24px;height:24px;line-height:24px;text-align:center;border-radius:50%;background:#f6ece6;font-size:13px;margin-right:8px;font-weight:700}
+.choice.right{border-color:var(--ok);background:var(--ok-l)}
+.choice.wrong{border-color:var(--ng);background:var(--ng-l)}
+.feedback{border-radius:16px;padding:14px 16px;margin:12px 0;font-size:14px;line-height:1.7}
+.feedback.ok{background:var(--ok-l);border:1.5px solid #b9e6cf}
+.feedback.ng{background:var(--ng-l);border:1.5px solid #f6c3cc}
+.feedback b.big{font-size:17px;display:block;margin-bottom:4px}
+.lvmsg{text-align:center;font-size:13px;font-weight:700;color:#9a7300;background:#fff5d9;border-radius:12px;padding:6px;margin-bottom:10px}
+.result{text-align:center;padding:10px 0}
+.result .score{font-size:44px;font-weight:800}
+.result .msg{font-size:15px;margin:6px 0 14px}
+.misslist{text-align:left;font-size:14px;line-height:1.6}
+.misslist li{margin-bottom:8px}
+/* list */
+.lst{list-style:none;padding:0;margin:0}
+.lst li{background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:10px;font-size:14px;line-height:1.6}
+.lst li .ans{font-weight:800;font-size:15px}
+.lst li .t{color:#6d5a5a;font-size:13px;margin-top:4px}
+.lst h4{margin:18px 0 8px;font-size:15px}
+.mark{font-size:12px;margin-left:6px}
+.foot{text-align:center;color:var(--sub);font-size:12px;margin-top:24px}
+.reset{border:none;background:none;color:var(--sub);text-decoration:underline;font-size:12px}
+.hide{display:none!important}
+
+.ed-tango{--m:#2f9e9a;--m2:#5ec7c0;--l:#e2f5f3}
+.ed-bunpo1{--m:#8a63cf;--m2:#b294ec;--l:#f0eafc}
+.ed-bunpo2{--m:#4a84c8;--m2:#7fb0ea;--l:#e6effb}
+.ed-jukugo{--m:#e0708a;--m2:#f5a0b4;--l:#fdeaf0}
+.face .a.long{font-size:20px;line-height:1.4}
+.face .q,.qbox .q,.choice,.face .a{overflow-wrap:anywhere}
+.say{border:none;background:#fff;border:1.5px solid var(--line);border-radius:999px;padding:6px 14px;font-size:14px;color:var(--ink);margin:0 0 10px}
+.ed-btn{background:linear-gradient(135deg,var(--m),var(--m2))}
+.chip.on{background:var(--m)}
+.face.back{background:var(--l,#fff)}
+.btn.pri{background:var(--m)}
+.prog i{background:var(--m)}
+.lst li .ans{color:var(--m)}
+.sec{font-size:12px;color:var(--sub);margin:18px 2px 0}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+
+<script>
+/* ===== 問題データ（中2 英語・単語／文法／熟語・会話） =====
+   [レベル(1基本/2標準/3発展), 問題, 正解, [まちがいの選択肢×3], 解説, (読み上げ文：省略可／""で読み上げなし)] */
+const REGIONS = {
+  verb:{name:"動詞", ed:"tango"},
+  noun:{name:"名詞", ed:"tango"},
+  adj:{name:"形容詞・副詞", ed:"tango"},
+  irr:{name:"不規則動詞・-ing形", ed:"tango"},
+  kako:{name:"過去形・過去進行形", ed:"bunpo1"},
+  mirai:{name:"未来（will / be going to）", ed:"bunpo1"},
+  jodo:{name:"助動詞", ed:"bunpo1"},
+  setsu:{name:"接続詞", ed:"bunpo1"},
+  futei:{name:"不定詞", ed:"bunpo2"},
+  dougo:{name:"動名詞", ed:"bunpo2"},
+  there:{name:"There is / are", ed:"bunpo2"},
+  hikaku:{name:"比較", ed:"bunpo2"},
+  ukemi:{name:"受け身", ed:"bunpo2"},
+  bunkei:{name:"文の形（look / give / call）", ed:"bunpo2"},
+  idiom:{name:"熟語", ed:"jukugo"},
+  kaiwa:{name:"会話表現", ed:"jukugo"}
+};
+const EDITIONS = {
+  tango:{name:"単語編", icon:"🔤", sub:"動詞・名詞・形容詞・不規則動詞", regions:["verb","noun","adj","irr"]},
+  bunpo1:{name:"文法編①", icon:"✍️", sub:"過去進行形・未来・助動詞・接続詞", regions:["kako","mirai","jodo","setsu"]},
+  bunpo2:{name:"文法編②", icon:"📐", sub:"不定詞・動名詞・There is・比較・受け身・文の形", regions:["futei","dougo","there","hikaku","ukemi","bunkei"]},
+  jukugo:{name:"熟語・会話編", icon:"💬", sub:"よく出る熟語と、会話の決まり文句", regions:["idiom","kaiwa"]}
+};
+const RAW = {
+verb:[
+ [1,"「〜を忘れる」を英語で？","forget",["remember","forgive","finish"],"反対は remember（覚えている・思い出す）。過去形は forgot。"],
+ [1,"「〜を覚えている・思い出す」を英語で？","remember",["forget","return","decide"],"反対は forget（忘れる）。セットで覚えよう。"],
+ [1,"「〜を決める」を英語で？","decide",["arrive","believe","explain"],"decide to 〜 ＝ 〜することに決める。不定詞といっしょによく出るよ。"],
+ [1,"「着く・到着する」を英語で？","arrive",["leave","return","travel"],"arrive at（駅など せまい場所）／ arrive in（都市・国など 広い場所）。get to 〜 も同じ意味。"],
+ [2,"「〜を説明する」を英語で？","explain",["express","invite","improve"],"explain 〜 to 人 ＝ 人に〜を説明する。"],
+ [2,"「〜を招待する」を英語で？","invite",["introduce","visit","welcome"],"invite 人 to 〜 ＝ 人を〜に招待する。"],
+ [2,"「〜を紹介する」を英語で？","introduce",["invite","produce","include"],"Let me introduce myself. ＝ 自己紹介させてください。"],
+ [1,"「〜を信じる」を英語で？","believe",["receive","agree","promise"],"つづりは ie の順番に注意（belive ✕）。"],
+ [2,"「〜を守る・保護する」を英語で？","protect",["produce","prepare","practice"],"protect the environment ＝ 環境を守る。"],
+ [2,"「〜を準備する」を英語で？","prepare",["protect","repair","present"],"prepare for 〜 ＝ 〜の準備をする。"],
+ [1,"「〜を送る」を英語で？","send",["sell","spend","lend"],"過去形は sent。send 人 物 ＝ 人に物を送る。"],
+ [2,"「（時間・お金）を使う・過ごす」を英語で？","spend",["send","save","spell"],"過去形は spent。spend time with 〜 ＝ 〜と時間を過ごす。"],
+ [1,"「〜を貸す」を英語で？","lend",["borrow","bring","sell"],"lend＝貸す、borrow＝借りる。セットで覚えよう！"],
+ [1,"「〜を借りる」を英語で？","borrow",["lend","buy","keep"],"Can I borrow your pen? ＝ ペンを借りてもいい？"],
+ [2,"英単語「agree」の意味は？","賛成する・同意する",["反対する","約束する","議論する"],"agree with 人 ＝ 人に賛成する。反対は disagree。"],
+ [2,"英単語「grow」の意味は？","育つ・成長する",["集める","探す","広がる"],"grow - grew - grown。grow up ＝ 大人になる。"],
+ [2,"英単語「hurry」の意味は？","急ぐ",["怒る","心配する","おどろく"],"Hurry up! ＝ 急いで！"],
+ [3,"英単語「solve」の意味は？","解決する・解く",["保存する","選ぶ","比べる"],"solve a problem ＝ 問題を解決する。"],
+ [3,"英単語「share」の意味は？","共有する・分け合う",["比べる","交換する","届ける"],"share 〜 with 人 ＝ 人と〜を分け合う。"]
+],
+nnoun:[{}],
+adj:[],
+irr:[]
+};
+// placeholder - full data below in RAW2
+const RAW2 = {
+noun:[
+ [1,"「経験」を英語で？","experience",["experiment","expression","explanation"],"「実験」は experiment。つづりが似ているので注意！"],
+ [1,"「環境」を英語で？","environment",["government","entrance","equipment"],"environmental problems ＝ 環境問題。"],
+ [1,"「未来・将来」を英語で？","future",["past","feature","nature"],"in the future ＝ 将来。past は「過去」。"],
+ [1,"「文化」を英語で？","culture",["nature","picture","future"],"Japanese culture ＝ 日本の文化。"],
+ [2,"「伝統」を英語で？","tradition",["translation","station","condition"],"traditional ＝ 伝統的な（形容詞）。"],
+ [1,"「（短い）旅行」を英語で？","trip",["map","plan","ticket"],"go on a trip ＝ 旅行に行く。school trip ＝ 修学旅行。"],
+ [2,"「情報」を英語で？","information",["invitation","imagination","instruction"],"information は数えられない名詞。an information や informations とは言わないよ。"],
+ [2,"「意見」を英語で？","opinion",["option","onion","order"],"in my opinion ＝ 私の意見では。"],
+ [2,"「理由」を英語で？","reason",["season","result","rule"],"for this reason ＝ この理由で。"],
+ [1,"「病院」を英語で？","hospital",["hotel","post office","library"],"be in the hospital ＝ 入院している。"],
+ [1,"「図書館」を英語で？","library",["bookstore","museum","laboratory"],"「本屋」は bookstore。"],
+ [2,"「宿題」を英語で？","homework",["housework","hometown","homestay"],"homework は数えられない名詞。housework は「家事」。"],
+ [2,"英単語「language」の意味は？","言語・ことば",["荷物","国籍","文法"],"foreign language ＝ 外国語。"],
+ [2,"英単語「volunteer」の意味は？","ボランティア・進んで参加する人",["選手","乗客","観光客"],"volunteer work ＝ ボランティア活動。"],
+ [3,"英単語「accident」の意味は？","事故",["病気","災害","けんか"],"traffic accident ＝ 交通事故。"],
+ [3,"英単語「disaster」の意味は？","災害",["事故","天気予報","避難所"],"natural disaster ＝ 自然災害。earthquake（地震）、flood（洪水）も覚えよう。"],
+ [3,"英単語「earthquake」の意味は？","地震",["台風","洪水","火山"],"earth（地球・大地）＋ quake（ゆれる）。"]
+],
+adj:[
+ [1,"「重要な・大切な」を英語で？","important",["interesting","impossible","different"],"It is important to 〜 ＝ 〜することは大切だ。"],
+ [1,"「難しい」を英語で？","difficult",["different","delicious","dangerous"],"反対は easy。hard にも「難しい」の意味があるよ。"],
+ [1,"「危険な」を英語で？","dangerous",["delicious","famous","popular"],"反対は safe（安全な）。"],
+ [1,"「違った・異なる」を英語で？","different",["difficult","same","similar"],"be different from 〜 ＝ 〜と違う。反対は same。"],
+ [2,"「人気のある」を英語で？","popular",["famous","special","useful"],"famous は「有名な」。be popular among 〜 ＝ 〜の間で人気がある。"],
+ [2,"「有名な」を英語で？","famous",["popular","favorite","foreign"],"be famous for 〜 ＝ 〜で有名だ。"],
+ [2,"「外国の」を英語で？","foreign",["famous","friendly","favorite"],"g は読まないよ。foreign country ＝ 外国。"],
+ [2,"「役に立つ」を英語で？","useful",["careful","wonderful","beautiful"],"use（使う）＋ ful。careful は「注意深い」。"],
+ [2,"英単語「afraid」の意味は？","こわがって",["おこって","おどろいて","つかれて"],"be afraid of 〜 ＝ 〜をこわがる。"],
+ [2,"英単語「excited」の意味は？","わくわくした",["わくわくさせる","つかれた","がっかりした"],"人の気持ち「わくわくした」は excited、物事が「わくわくさせる」は exciting。"],
+ [3,"The game was (　　).「その試合はわくわくするものだった」","exciting",["excited","excite","excitement"],"物事が主語 → exciting、人が主語で気持ち → excited。"],
+ [1,"「いつも」を英語で？","always",["usually","sometimes","never"],"always（いつも）＞ usually（たいてい）＞ often（よく）＞ sometimes（ときどき）＞ never（決して〜ない）。"],
+ [2,"英単語「sometimes」の意味は？","ときどき",["いつも","たいてい","一度も〜ない"],"一般動詞の前、be動詞のあとに置くのが基本。"],
+ [2,"英単語「abroad」の意味は？","外国へ・外国で",["国内で","ふるさとで","空港で"],"go abroad ＝ 外国へ行く。to はつけない！（go to abroad ✕）"],
+ [3,"英単語「finally」の意味は？","ついに・最後に",["最初に","ふたたび","すぐに"],"First（最初に）→ Then（それから）→ Finally（最後に）の順で話をつなげるよ。"],
+ [3,"英単語「enough」の意味は？","十分な・十分に",["たくさんの","少しの","ほとんどない"],"big enough ＝ 十分大きい。形容詞のあとに置くのがポイント。"],
+ [3,"英単語「quickly」の意味は？","すばやく",["静かに","ゆっくりと","注意深く"],"quick（形容詞）＋ ly → 副詞。slowly（ゆっくり）、carefully（注意深く）も同じ形。"]
+],
+irr:[
+ [1,"go の過去形は？","went",["goed","gone","going"],"go - went - gone。"],
+ [1,"see の過去形は？","saw",["seed","seen","sawed"],"see - saw - seen。"],
+ [1,"buy の過去形は？","bought",["buyed","brought","boughted"],"buy - bought。brought（bring の過去形）とまちがえやすい！"],
+ [1,"eat の過去形は？","ate",["eated","eaten","eats"],"eat - ate - eaten。"],
+ [2,"think の過去形は？","thought",["thinked","taught","thank"],"think - thought。taught（teach の過去形）と形が似ているよ。"],
+ [2,"teach の過去形は？","taught",["teached","thought","teachd"],"teach - taught。"],
+ [2,"bring の過去形は？","brought",["bringed","bought","brang"],"bring - brought。bought は buy の過去形。"],
+ [2,"catch の過去形は？","caught",["catched","cought","caughted"],"catch - caught。"],
+ [2,"write の過去形は？","wrote",["writed","written","wrate"],"write - wrote - written。"],
+ [2,"leave の過去形は？","left",["leaved","lefted","lived"],"leave - left。「左」の left と同じつづり。"],
+ [2,"feel の過去形は？","felt",["feeled","fell","fall"],"feel - felt。fell は fall（落ちる）の過去形。"],
+ [2,"begin の過去形は？","began",["begun","beginned","begin"],"begin - began - begun。"],
+ [2,"read の過去形は？","read",["readed","red","rode"],"つづりは同じ read だけど、発音が「レッド」に変わるよ。",""],
+ [2,"swim の -ing 形は？","swimming",["swiming","swimeing","swimmming"],"swim → swimming（m を重ねる）。run → running、sit → sitting も同じ。"],
+ [2,"make の -ing 形は？","making",["makeing","makking","maked"],"e で終わる動詞は e をとって -ing。write → writing、use → using。"],
+ [3,"understand の過去形は？","understood",["understanded","understanding","understud"],"under ＋ stand → stood なので understood。"],
+ [3,"become の過去形は？","became",["become","becomed","becamed"],"become - became - become（過去分詞は原形と同じ形！）。"],
+ [3,"swim の過去形は？","swam",["swimmed","swum","swimed"],"swim - swam - swum。"],
+ [3,"speak の過去分詞は？","spoken",["spoke","speaked","speaking"],"speak - spoke - spoken。受け身でよく使うよ。"],
+ [3,"take の過去分詞は？","taken",["took","taked","tooken"],"take - took - taken。"]
+],
+kako:[
+ [1,"I (　　) tennis yesterday.","played",["play","plays","playing"],"yesterday（きのう）があるから過去形。"],
+ [1,"(　　) you watch TV last night? — Yes, I did.","Did",["Do","Were","Are"],"一般動詞の過去の疑問文は Did ＋ 主語 ＋ 動詞の原形 〜？"],
+ [1,"I (　　) busy yesterday.","was",["am","were","did"],"be動詞の過去：am / is → was、are → were。"],
+ [2,"I didn't (　　) to school yesterday.","go",["went","going","goes"],"didn't のあとは動詞の原形！"],
+ [1,"I (　　) TV at eight last night.「テレビを見ているところだった」","was watching",["am watching","were watching","was watch"],"過去進行形 ＝ was / were ＋ 〜ing（〜しているところだった）。主語が I なので was。"],
+ [2,"They (　　) soccer when it started to rain.","were playing",["was playing","are playing","were play"],"主語が They（複数）なので were ＋ 〜ing。"],
+ [2,"What (　　) you doing then? — I was reading a book.","were",["did","was","are"],"then（そのとき）なので過去進行形。主語が you なので were。"],
+ [2,"I (　　) sleeping then.「そのとき寝ていませんでした」","wasn't",["didn't","weren't","don't"],"過去進行形の否定文は was / were のあとに not。"],
+ [3,"She was (　　) in the pool at that time.","swimming",["swiming","swim","swam"],"swim の -ing 形は m を重ねて swimming。"],
+ [3,"Where (　　) you last Sunday? — I was at home.","were",["did","was","are"],"be動詞の過去の疑問文。主語が you なので were。"]
+],
+mirai:[
+ [1,"I (　　) visit Kyoto next week.","will",["am","did","was"],"will ＋ 動詞の原形 ＝ 〜するつもりだ・〜するだろう。"],
+ [1,"I'm (　　) to study tonight.","going",["go","will","went"],"be going to ＋ 動詞の原形 ＝ 〜するつもりだ（予定）。"],
+ [2,"It will (　　) sunny tomorrow.","be",["is","was","being"],"will のあとは原形。is / am / are の原形は be！"],
+ [2,"He is going to (　　) his uncle tomorrow.","visit",["visits","visited","visiting"],"be going to のあとも原形。"],
+ [2,"(　　) you going to play tennis this afternoon?","Are",["Do","Will","Did"],"be going to の疑問文は be動詞を前に出す。"],
+ [2,"I (　　) go to school tomorrow.「明日は学校に行かないでしょう」","won't",["don't","didn't","wasn't"],"won't ＝ will not の短縮形。"],
+ [2,"Ken is going to (　　) a doctor in the future.","be",["is","are","being"],"「〜になる」は be（または become）。will / be going to のあとは原形。"],
+ [3,"Will you open the window?（お願いの文）の意味は？","窓を開けてくれませんか。",["窓を開けるつもりですか。","窓を開けてもいいですか。","窓を開けましょうか。"],"Will you 〜? は「〜してくれませんか」というお願いにもなるよ。","Will you open the window?"],
+ [3,"「来週の月曜日に」を英語で？","next Monday",["on next Monday","in next Monday","last Monday"],"next や last がつくと on はつけない！"]
+],
+jodo:[
+ [1,"You (　　) study hard.「一生けんめい勉強しなければならない」","must",["can","may","will"],"must ＝ 〜しなければならない。"],
+ [1,"(　　) I use your pen? — Sure.","May",["Must","Shall","Will"],"May I 〜? ＝ 〜してもいいですか（ていねい）。Can I 〜? もOK。"],
+ [2,"He (　　) to get up early tomorrow.","has",["have","must","is"],"have to ＝ must とほぼ同じ意味。主語が3人称単数なので has to。"],
+ [2,"You (　　) have to hurry.「急ぐ必要はありません」","don't",["must","aren't","can't"],"don't have to ＝ 〜する必要はない。must not（〜してはいけない）と意味がちがうので注意！"],
+ [2,"You (　　) swim here.「ここで泳いではいけません」","must not",["don't have to","have to","may"],"must not ＝ 〜してはいけない（禁止）。"],
+ [2,"You (　　) see a doctor.「医者にみてもらうべきだ」","should",["may","will","can"],"should ＝ 〜すべきだ・〜したほうがいい。"],
+ [2,"(　　) I open the window? — Yes, please.","Shall",["Must","Will","Do"],"Shall I 〜? ＝ （私が）〜しましょうか。"],
+ [2,"(　　) we go shopping? — Yes, let's.","Shall",["Will","Must","May"],"Shall we 〜? ＝ （いっしょに）〜しましょうか。Let's 〜. とほぼ同じ。"],
+ [2,"It (　　) rain tomorrow.「明日は雨がふるかもしれない」","may",["must","should","shall"],"may には「〜かもしれない」という意味もあるよ。"],
+ [3,"(　　) you help me? — Sure.（ていねいなお願い）","Could",["Shall","Must","May"],"Could you 〜? ＝ 〜していただけませんか。Can you 〜? よりていねい。"],
+ [3,"I (　　) to clean my room yesterday.「そうじしなければならなかった」","had",["must","have","has"],"must には過去形がないので、had to を使う。"],
+ [3,"Must I go now? — No, you (　　).","don't have to",["must not","mustn't","can't"],"「行かなければなりませんか」に No で答えるときは「その必要はない」＝ don't have to。"]
+],
+setsu:[
+ [1,"(　　) I was a child, I lived in Osaka.「子どものころ」","When",["If","Because","That"],"when ＝ 〜するとき。"],
+ [1,"I stayed home (　　) I was sick.","because",["if","when","but"],"because ＝ 〜なので（理由）。Why 〜? の答えにも使う。"],
+ [1,"I like dogs, (　　) my sister doesn't.","but",["so","and","or"],"but ＝ しかし。"],
+ [2,"(　　) it is sunny tomorrow, let's go to the beach.","If",["Because","That","Or"],"if ＝ もし〜ならば。"],
+ [2,"I think (　　) he is kind.","that",["when","if","because"],"I think (that) 〜 ＝ 私は〜だと思う。that は省略してもOK。"],
+ [2,"I was tired, (　　) I went to bed early.","so",["but","because","or"],"so ＝ だから（結果）。because は理由の前、so は結果の前に置く。"],
+ [2,"Hurry up, (　　) you will be late.「急ぎなさい、さもないと遅れるよ」","or",["and","but","so"],"命令文, or 〜 ＝ さもないと〜。"],
+ [3,"Get up early, (　　) you'll catch the train.「早く起きなさい、そうすれば電車に間に合うよ」","and",["or","but","because"],"命令文, and 〜 ＝ そうすれば〜。or（さもないと）とセットで覚えよう。"],
+ [3,"If it (　　) tomorrow, I will stay home.","rains",["will rain","rained","rain"],"if や when の文の中では、未来のことでも現在形を使う！ テストでよくねらわれるポイント。"],
+ [3,"(　　) you get home, please call me.「家に着いたら電話してね」","When",["Because","That","But"],"when の文の中も、未来のことだけど現在形（get）。"]
+],
+futei:[
+ [1,"I want (　　) a doctor.","to be",["be","being","am"],"want to ＋ 原形 ＝ 〜したい（〜になりたい）。「〜すること」の用法。"],
+ [1,"I went to the library (　　) books.「本を読むために」","to read",["reading","read","for read"],"to ＋ 原形 ＝ 〜するために（目的）。"],
+ [2,"I have a lot of homework (　　) today.「今日すべき宿題」","to do",["doing","do","did"],"名詞のあとの to ＋ 原形 ＝ 〜すべき・〜するための。"],
+ [2,"I'm glad (　　) you.「あなたに会えてうれしい」","to see",["seeing","see","saw"],"気持ち ＋ to 〜 ＝ 〜して（気持ちの原因）。I'm happy to 〜 / sad to 〜 も同じ。"],
+ [2,"Why did you go to the park? — (　　) play tennis.","To",["For","Because","So"],"Why 〜? には To 〜（〜するために）や Because 〜 で答えられるよ。"],
+ [2,"I want something (　　) drink.","to",["for","of","in"],"something to drink ＝ 何か飲むもの。"],
+ [2,"Do you know (　　) to use this computer?「使い方」","how",["what","which","who"],"how to ＋ 原形 ＝ 〜のしかた。"],
+ [3,"It is important (　　) English every day.","to study",["study","studies","for study"],"It is 〜 to … ＝ …することは〜だ。It は to 以下を指すよ。"],
+ [3,"I don't know (　　) to do.「何をすればよいか」","what",["how","where","when"],"what to 〜 ＝ 何を〜すればよいか。how to 〜 ＝ 〜のしかた。"],
+ [3,"My dream is (　　) a teacher.","to become",["become","becomes","became"],"「私の夢は先生になることです」。to 〜 が「〜すること」の意味になる。"]
+],
+dougo:[
+ [1,"I like (　　) pictures.「絵をかくこと」","drawing",["draw","drew","draws"],"動詞の -ing 形 ＝ 〜すること（動名詞）。like to draw でもOK。"],
+ [2,"I enjoyed (　　) with my friends.","talking",["to talk","talk","talked"],"enjoy のあとは必ず -ing！ enjoy to 〜 ✕。"],
+ [2,"It stopped (　　).「雨がやんだ」","raining",["to rain","rain","rained"],"stop 〜ing ＝ 〜するのをやめる。"],
+ [2,"I finished (　　) the book.","reading",["to read","reads","for reading"],"finish のあとも -ing！ finish to 〜 ✕。"],
+ [2,"(　　) English is fun.「英語を話すことは楽しい」","Speaking",["Speak","Spoke","Speaks"],"動名詞は主語にもなれる。動名詞の主語は単数あつかい（is）。"],
+ [3,"Thank you for (　　) me.","helping",["help","to help","helped"],"前置詞（for, of, at など）のあとの動詞は -ing 形。"],
+ [3,"He is good at (　　) soccer.","playing",["play","to play","plays"],"be good at 〜ing ＝ 〜するのが得意だ。at は前置詞なので -ing。"],
+ [3,"I hope (　　) you again.","to see",["seeing","see","saw"],"hope / want / decide のあとは to 〜。enjoy / finish / stop のあとは -ing。"],
+ [3,"How about (　　) to the movies?「映画に行くのはどう？」","going",["go","to go","went"],"How about 〜ing? ＝ 〜するのはどうですか。"]
+],
+there:[
+ [1,"(　　) is a cat under the table.","There",["It","This","Here"],"There is ＋ 単数 ＝ 〜がある・いる。"],
+ [1,"There (　　) three books on the desk.","are",["is","be","am"],"There are ＋ 複数。後ろの名詞で is / are を決める。"],
+ [2,"There (　　) many people in the park yesterday.","were",["was","are","is"],"yesterday なので過去。複数なので were。"],
+ [2,"(　　) there a park near here? — Yes, there is.","Is",["Are","Does","Do"],"疑問文は is / are を前に出す。"],
+ [2,"How many students (　　) there in your class?","are",["is","do","have"],"How many ＋ 複数名詞 ＋ are there 〜? ＝ 〜はいくつ（何人）ありますか。"],
+ [3,"There isn't (　　) milk in the bottle.「少しもない」","any",["some","many","a"],"否定文・疑問文では some ではなく any。milk は数えられないので many ✕。"]
+],
+hikaku:[
+ [1,"Ken is (　　) than Tom.","taller",["tall","tallest","more tall"],"比較級 ＝ -er ＋ than（〜よりも）。"],
+ [1,"Mt. Fuji is the (　　) mountain in Japan.","highest",["higher","high","most high"],"最上級 ＝ the ＋ -est ＋ in / of（〜の中でいちばん）。"],
+ [2,"This book is (　　) interesting than that one.","more",["most","very","as"],"長い単語は more ＋ 原級（interestinger ✕）。"],
+ [2,"This is the (　　) beautiful flower of all.","most",["more","very","much"],"長い単語の最上級は the most ＋ 原級。"],
+ [2,"I am as tall (　　) my brother.","as",["than","so","of"],"as 〜 as … ＝ …と同じくらい〜。"],
+ [2,"good / well の比較級は？","better",["gooder","more good","best"],"good / well - better - best。不規則に変化するよ。"],
+ [2,"big の比較級は？","bigger",["biger","more big","biggest"],"big → bigger（g を重ねる）。hot → hotter も同じ。"],
+ [2,"easy の比較級は？","easier",["easyer","more easy","easiest"],"y を i にかえて -er。happy → happier、busy → busier も同じ。"],
+ [3,"many / much の最上級は？","most",["more","mostest","manyest"],"many / much - more - most。"],
+ [3,"Tom runs the fastest (　　) the five.","of",["in","than","with"],"of ＋ 複数（the five, all）、in ＋ 場所・集団（Japan, my class）。"],
+ [3,"Which do you like (　　), dogs or cats?","better",["best","more","good"],"2つをくらべて「どちらが好き？」は like 〜 better。3つ以上なら like 〜 (the) best。"],
+ [3,"This bag is not as (　　) as that one.「あのかばんほど大きくない」","big",["bigger","biggest","more big"],"as 〜 as の間は原級（そのままの形）。not as 〜 as … ＝ …ほど〜ない。"],
+ [3,"Tokyo is larger than (　　) other city in Japan.","any",["all","every","some"],"比較級 ＋ than any other ＋ 単数 ＝ ほかのどの〜よりも…（最上級と同じ意味）。"]
+],
+ukemi:[
+ [2,"受け身の文の形は？","be動詞 ＋ 過去分詞",["be動詞 ＋ 〜ing","have ＋ 過去分詞","助動詞 ＋ 原形"],"受け身 ＝「〜される」。be動詞 ＋ 〜ing は進行形なので、まぜないように！",""],
+ [2,"This room is (　　) every day.「毎日そうじされる」","cleaned",["clean","cleaning","cleans"],"受け身 ＝ be動詞 ＋ 過去分詞（〜される）。"],
+ [2,"English is (　　) in many countries.","spoken",["speak","spoke","speaking"],"speak - spoke - spoken。受け身は過去分詞を使う。"],
+ [2,"This book was written (　　) Soseki.","by",["of","from","with"],"by 〜 ＝ 〜によって。"],
+ [2,"These pictures (　　) taken by my father last year.","were",["was","are","did"],"last year で過去、主語が複数なので were。"],
+ [3,"(　　) this car made in Japan? — Yes, it is.","Is",["Does","Do","Are"],"受け身の疑問文は be動詞を前に出す。答えも be動詞で。"],
+ [3,"This song is (　　) to everyone.「みんなに知られている」","known",["know","knew","knowing"],"be known to 〜 ＝ 〜に知られている。by ではなく to を使うよ。"],
+ [3,"The window was (　　) by Tom.「トムによってこわされた」","broken",["broke","break","breaking"],"break - broke - broken。"]
+],
+bunkei:[
+ [1,"You look (　　).「うれしそうに見える」","happy",["happily","happiness","to happy"],"look ＋ 形容詞 ＝ 〜に見える。"],
+ [2,"My father gave (　　) a watch.「私に時計をくれた」","me",["I","my","mine"],"give ＋ 人 ＋ 物 ＝ 人に物をあたえる。人の部分は me / him / her など。"],
+ [2,"I'll show my picture (　　) you.","to",["for","of","at"],"show ＋ 物 ＋ to 人 ＝ show ＋ 人 ＋ 物。give, tell, send も to。"],
+ [2,"We call him (　　).「彼をケンと呼ぶ」","Ken",["to Ken","for Ken","Ken's"],"call A B ＝ A を B と呼ぶ。"],
+ [2,"That (　　) interesting.「（話を聞いて）おもしろそうだね」","sounds",["listens","hears","sees"],"sound ＋ 形容詞 ＝ 〜に聞こえる・〜そうだ。会話でよく使うよ。"],
+ [3,"My mother made a cake (　　) me.","for",["to","of","at"],"make / buy / cook ＋ 物 ＋ for 人。give / show / tell / send は to。"],
+ [3,"The news made (　　) sad.「その知らせは彼女を悲しませました」","her",["she","hers","to her"],"make A B ＝ A をB（の状態）にする。"],
+ [3,"She became (　　).「有名になった」","famous",["famously","fame","to famous"],"become ＋ 形容詞・名詞 ＝ 〜になる。"],
+ [3,"Please tell (　　) the way to the station.","me",["to me","for me","I"],"tell ＋ 人 ＋ 物 ＝ 人に物を教える（伝える）。"]
+],
+idiom:[
+ [1,"「〜を探す」を英語で？","look for 〜",["look at 〜","look after 〜","look like 〜"],"look at ＝ 〜を見る、look like ＝ 〜に似ている、look after ＝ 〜の世話をする。"],
+ [1,"「起きる」を英語で？","get up",["go to bed","get on","stand up"],"wake up は「目が覚める」、get up は「起き上がる・起床する」。"],
+ [1,"「〜が得意だ」を英語で？","be good at 〜",["be good for 〜","be interested in 〜","be famous for 〜"],"at のあとに動詞を置くときは -ing 形。"],
+ [1,"「〜に興味がある」を英語で？","be interested in 〜",["be interesting in 〜","be good at 〜","be afraid of 〜"],"人が主語なら interested。interesting は「おもしろい」。"],
+ [2,"「〜の世話をする」を英語で？","take care of 〜",["take part in 〜","take a picture of 〜","take off 〜"],"look after 〜 も同じ意味。Take care. ＝ 気をつけてね。"],
+ [2,"「〜に参加する」を英語で？","take part in 〜",["take care of 〜","take place","get up"],"join とほぼ同じ意味。"],
+ [2,"「〜で有名だ」を英語で？","be famous for 〜",["be famous to 〜","be proud of 〜","be full of 〜"],"Kyoto is famous for its temples. ＝ 京都はお寺で有名だ。"],
+ [2,"「〜でいっぱいだ」を英語で？","be full of 〜",["be fond of 〜","be proud of 〜","be afraid of 〜"],"The box is full of toys. ＝ 箱はおもちゃでいっぱいだ。"],
+ [2,"「〜を楽しみに待つ」を英語で？","look forward to 〜",["look for 〜","wait for 〜","look up 〜"],"to のあとは名詞か -ing 形！ I'm looking forward to seeing you."],
+ [2,"「〜に着く」を get を使って言うと？","get to 〜",["get up","get on 〜","get off 〜"],"get on ＝ 乗る、get off ＝ 降りる、get up ＝ 起きる。"],
+ [2,"「たくさんの〜」を英語で？","a lot of 〜",["a few","a little","a piece of"],"a lot of ＝ many / much。数えられる名詞にも数えられない名詞にも使えるよ。"],
+ [2,"「たとえば」を英語で？","for example",["for the first time","at first","of course"],"for the first time ＝ はじめて、at first ＝ 最初は、of course ＝ もちろん。"],
+ [2,"「〜と同じ」を英語で？","the same as 〜",["different from 〜","as well as 〜","such as 〜"],"反対は different from 〜（〜と違う）。"],
+ [3,"「少しの〜」（数えられる名詞に使う）は？","a few",["a little","a lot of","few"],"a few ＋ 数えられる名詞、a little ＋ 数えられない名詞。a のない few / little は「ほとんどない」。"],
+ [3,"「はじめて」を英語で？","for the first time",["at first","first of all","at last"],"at first ＝ 最初は（あとで変わる）、at last ＝ ついに。"],
+ [3,"「〜のおかげで」を英語で？","thanks to 〜",["thank you for 〜","because of 〜","instead of 〜"],"Thanks to you, I passed the test. ＝ あなたのおかげでテストに受かった。"],
+ [3,"「〜の前で」を英語で？","in front of 〜",["next to 〜","in the middle of 〜","across from 〜"],"next to ＝ 〜のとなり、across from ＝ 〜の向かい。"],
+ [3,"「〜のような（たとえば）」を英語で？","such as 〜",["as well as 〜","the same as 〜","as soon as 〜"],"sports such as tennis and soccer ＝ テニスやサッカーのようなスポーツ。"],
+ [3,"「〜するとすぐに」を英語で？","as soon as 〜",["as well as 〜","such as 〜","as long as 〜"],"as soon as のあとも、未来のことは現在形で表すよ。"]
+],
+kaiwa:[
+ [1,"「どうしたの？」を英語で？","What's wrong?",["What time is it?","What's this?","Who are you?"],"What's the matter? も同じ意味。具合が悪そうな人に使うよ。"],
+ [1,"「〜はどうですか（提案）」を英語で？","How about 〜?",["How many 〜?","How much 〜?","How long 〜?"],"How about going shopping? ＝ 買い物に行くのはどう？","How about going shopping?"],
+ [1,"「駅への道を教えてくれませんか」は？","Could you tell me the way to the station?",["Where are you going?","How do you go to school?","What station is this?"],"道案内の答え：Go straight.（まっすぐ行く）Turn right / left.（右・左に曲がる）"],
+ [2,"「〜してくれませんか」とお願いする表現は？","Can you 〜?",["Shall I 〜?","May I 〜?","Must I 〜?"],"Can you 〜? / Will you 〜? ＝ 〜してくれませんか。Could you 〜? はさらにていねい。","Can you help me?"],
+ [2,"電話で「ケンをお願いします」は？","May I speak to Ken?",["Who is Ken?","This is Ken.","Are you Ken?"],"電話を受けた人は Hold on, please.（少々お待ちください）と言うよ。"],
+ [2,"電話で「こちらはユミです」は？","This is Yumi.",["I am Yumi.","Here is Yumi.","It's Yumi's."],"電話では I am 〜 ではなく This is 〜 (speaking). と言うのが決まり。"],
+ [2,"店員さんの「何かおさがしですか・いらっしゃいませ」は？","May I help you?",["Can you help me?","Shall we help?","Will you help me?"],"答えは I'm looking for 〜.（〜をさがしています）や I'm just looking.（見ているだけです）。"],
+ [2,"「試着してもいいですか」は？","Can I try it on?",["How much is it?","Can I take it off?","Do you have it?"],"try on ＝ 試着する。it は try と on の間に入れるよ。"],
+ [2,"道案内で「2つ目の角を左に曲がってください」は？","Turn left at the second corner.",["Turn right at the second corner.","Go straight two blocks.","Turn left at the first corner."],"turn left / right ＝ 左・右に曲がる。at the second corner ＝ 2つ目の角で。"],
+ [2,"「いいですよ・もちろん」と引き受ける返事は？","Sure.",["No, thank you.","I'm sorry, I can't.","Excuse me."],"Sure. / OK. / All right. / Of course. など。断るときは I'm sorry, but 〜."],
+ [2,"「なるほど・わかりました」とあいづちを打つときは？","I see.",["I look.","I watch.","See you."],"I see. ＝ なるほど。See you. は「またね」。"],
+ [3,"物をわたすときの「はい、どうぞ」は？","Here you are.",["You're welcome.","Excuse me.","I'm sorry."],"Here it is. も同じように使える。お礼を言われたら You're welcome.（どういたしまして）。"],
+ [3,"(　　) was your trip? — It was great!「旅行はどうだった？」","How",["What","Which","Who"],"How was 〜? ＝ 〜はどうでしたか（感想をたずねる）。"],
+ [3,"「あなたに賛成です」は？","I agree with you.",["I agree to you.","I don't think so.","I disagree with you."],"agree with 人 ＝ 人に賛成する。反対なら I don't agree. / I don't think so."],
+ [3,"「（私が）お手伝いしましょうか」は？","Shall I help you?",["Will you help me?","Can you help me?","Must I help you?"],"Shall I 〜? ＝ （私が）〜しましょうか。答えは Yes, please. / No, thank you."]
+]};
+
+// データ整形
+const ITEMS = [];
+for(const r in RAW){ if(r==='nnoun')continue; RAW[r].forEach((d,i)=>ITEMS.push({id:r+"-"+i, r, lv:d[0], q:d[1], a:d[2], w:d[3], tip:d[4], say:d[5]})); }
+for(const r in RAW2){ RAW2[r].forEach((d,i)=>ITEMS.push({id:r+"-"+i, r, lv:d[0], q:d[1], a:d[2], w:d[3], tip:d[4], say:d[5]})); }
+const byId = Object.fromEntries(ITEMS.map(x=>[x.id,x]));
+
+// ===== 保存（にがて・覚えた） =====
+const KEY="eigo_renshucho_v1";
+let S = load();
+function load(){ try{ return Object.assign({weak:{},known:{},best:{}}, JSON.parse(localStorage.getItem(KEY)||"{}")); }catch(e){ return {weak:{},known:{},best:{}}; } }
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
+function addWeak(id){ S.weak[id]=Math.min((S.weak[id]||0)+2,4); delete S.known[id]; save(); }
+function hitWeak(id){ if(S.weak[id]){ S.weak[id]--; if(S.weak[id]<=0) delete S.weak[id]; } S.known[id]=true; save(); }
+
+// ===== 便利関数 =====
+const $ = s=>document.querySelector(s);
+const app = $("#app");
+const shuffle = a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
+const esc = s=>String(s).replace(/[&<>\"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const stars = n=>"★".repeat(n)+"☆".repeat(3-n);
+const lvName = ["","きほん","ひょうじゅん","はってん"];
+// ===== 🔊 英語の読み上げ =====
+const hasEn = s=>/[A-Za-z]/.test(s);
+const enOnly = s=>s.replace(/「[^」]*」/g," ").replace(/（[^）]*）/g," ").replace(/[〜—]/g," ").replace(/[^\x20-\x7E]/g," ").replace(/\s+/g," ").replace(/\s+([?.!,])/g,"$1").trim();
+function sayText(x){
+  if(x.say!==undefined) return x.say;
+  const w=x.q.match(/^([A-Za-z]+(?: \/ [A-Za-z]+)?) の/); if(w) return w[1].replace(" / ",", ")+", "+x.a;
+  if(x.q.includes("(　　)")) return enOnly(x.q.replace("(　　)", x.a));
+  if(hasEn(x.a)) return enOnly(x.a);
+  const m=x.q.match(/「([^」]*[A-Za-z][^」]*)」/); if(m) return enOnly(m[1]);
+  return enOnly(x.q);
+}
+function speak(t, ev){
+  if(ev) ev.stopPropagation();
+  if(!t || !window.speechSynthesis){ return; }
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(t); u.lang="en-US"; u.rate=0.9;
+  const v=speechSynthesis.getVoices().find(v=>/^en(-|_)US/i.test(v.lang)) || speechSynthesis.getVoices().find(v=>/^en/i.test(v.lang));
+  if(v) u.voice=v;
+  speechSynthesis.speak(u);
+}
+const sayBtn = x=>{ const t=sayText(x); return (t && window.speechSynthesis)?`<button class="say" onclick="speak('${esc(t).replace(/'/g,"\\'")}',event)">🔊 発音を聞く</button>`:""; };
+
+let cur = {ed:null, region:"all"};
+function itemsOf(ed, region){
+  return ITEMS.filter(x=> REGIONS[x.r].ed===ed && (region==="all"||x.r===region));
+}
+
+// ===== ホーム =====
+function home(){
+  cur={ed:null,region:"all"};
+  const card = ed=>{
+    const all=itemsOf(ed,"all"), k=all.filter(x=>S.known[x.id]).length, p=Math.round(k/all.length*100);
+    const wk=all.filter(x=>S.weak[x.id]).length;
+    return `<button class="ed-btn ed-${ed}" onclick="edition('${ed}')">
+      <b>${EDITIONS[ed].icon} ${EDITIONS[ed].name}</b>
+      <small>${EDITIONS[ed].sub}　全${all.length}問</small>
+      <div class="bar"><i style="width:${p}%"></i></div>
+      <small>覚えた ${k} / ${all.length}${wk?`　｜　にがて ${wk}`:""}</small>
+    </button>`;
+  };
+  app.className="wrap";
+  app.innerHTML=`
+    <div class="hero"><div class="ttl">🍡 英語れんしゅう帳</div>
+    <div class="sub">中2の単語・文法・熟語　覚える → クイズでたしかめよう</div></div>
+    ${Object.keys(EDITIONS).map(card).join("")}
+    <div class="panel"><h3>🌸 つかいかた</h3>
+      <div class="note">① <b>覚えるカード</b>：タップでうらがえして答えと解説をチェック<br>
+      ② <b>クイズ</b>：4択で10問。出る順はランダム、正解が続くと<b>だんだん難しく</b>なるよ<br>
+      ③ まちがえた問題は<b>少しあとでもう一回</b>出るよ。<b>にがて</b>にも記録されて、次のクイズでも<b>たまに復習</b>で出てくるよ<br>
+      ④ カードのうらやクイズの答えのあとで <b>🔊 発音を聞く</b> を押すと、英語を読み上げてくれるよ</div>
+    </div>
+    <div class="foot">記録はこの端末のブラウザに保存されます<br><button class="reset" onclick="resetAll()">記録をリセット</button></div>`;
+  scrollTo(0,0);
+}
+function resetAll(){ if(confirm("覚えた・にがての記録をぜんぶ消してもいい？")){ S={weak:{},known:{},best:{}}; save(); home(); } }
+
+// ===== 編のメニュー =====
+function edition(ed, region){
+  cur.ed=ed; if(region!==undefined) cur.region=region;
+  const E=EDITIONS[ed];
+  const list=itemsOf(ed,cur.region);
+  const weakN=list.filter(x=>S.weak[x.id]).length;
+  const knownN=list.filter(x=>S.known[x.id]).length;
+  app.className="wrap ed-"+ed;
+  app.innerHTML=`
+    <header class="top"><button class="back" onclick="home()">← もどる</button><h1>${E.icon} ${E.name}</h1></header>
+    <div class="panel"><h3>どれをやる？</h3><div class="chips">
+      <button class="chip ${cur.region==="all"?"on":""}" onclick="edition('${ed}','all')">ぜんぶ</button>
+      ${E.regions.map(r=>`<button class="chip ${cur.region===r?"on":""}" onclick="edition('${ed}','${r}')">${REGIONS[r].name}</button>`).join("")}
+    </div>
+    <div class="note" style="margin-top:10px">${list.length}問　｜　覚えた ${knownN}　｜　にがて ${weakN}</div></div>
+    <div class="modes">
+      <button class="mode" onclick="cards()"><span>📖</span>覚えるカード</button>
+      <button class="mode" onclick="startQuiz(false)"><span>✏️</span>クイズ（10問）</button>
+      <button class="mode" onclick="summary()"><span>📋</span>まとめ一覧</button>
+      <button class="mode weak" onclick="startQuiz(true)" ${weakN?"":"disabled style='opacity:.45'"}><span>🔁</span>にがてだけ</button>
+    </div>
+    <p class="note" style="margin-top:14px">💡 さいしょは「覚えるカード」でひと通り見てから、クイズにチャレンジするのがおすすめ！</p>`;
+  scrollTo(0,0);
+}
+
+// ===== 覚えるカード =====
+let fc={list:[],i:0};
+function cards(){
+  const list=itemsOf(cur.ed,cur.region);
+  // まだ覚えていないもの → 覚えたもの の順（それぞれシャッフル）
+  fc.list=shuffle(list.filter(x=>!S.known[x.id])).concat(shuffle(list.filter(x=>S.known[x.id])));
+  fc.i=0; drawCard();
+}
+function drawCard(){
+  const x=fc.list[fc.i];
+  if(!x){ return edition(cur.ed); }
+  app.innerHTML=`
+    <header class="top"><button class="back" onclick="edition('${cur.ed}')">← もどる</button><h1>📖 覚えるカード</h1></header>
+    <div class="fc-meta"><span>${REGIONS[x.r].name}　${stars(x.lv)}</span><span>${fc.i+1} / ${fc.list.length}${S.known[x.id]?"　✅覚えた":""}${S.weak[x.id]?"　⚠️にがて":""}</span></div>
+    <div class="flip" id="flip" onclick="this.classList.toggle('on')"><div class="flip-in">
+      <div class="face front"><span class="tag">${REGIONS[x.r].name}</span><div class="q">${esc(x.q)}</div><div class="hint">タップでこたえ 👆</div></div>
+      <div class="face back"><div class="a ${x.a.length>16?"long":""}">${esc(x.a)}</div>${sayBtn(x)}<div class="tip">💡 ${esc(x.tip)}</div><div class="hint">タップでもどる</div></div>
+    </div></div>
+    <div class="row" style="margin-bottom:10px">
+      <button class="btn later" onclick="cardMark(false)">🤔 まだあやしい</button>
+      <button class="btn ok" onclick="cardMark(true)">😊 覚えた！</button>
+    </div>
+    <div class="row">
+      <button class="btn" onclick="cardMove(-1)" ${fc.i===0?"disabled":""}>◀ まえ</button>
+      <button class="btn" onclick="cardMove(1)">つぎ ▶</button>
+    </div>`;
+}
+function cardMark(ok){
+  const x=fc.list[fc.i];
+  if(ok){ S.known[x.id]=true; save(); }
+  else { delete S.known[x.id]; S.weak[x.id]=Math.max(S.weak[x.id]||0,1); save();
+         // あやしいカードは少しあとにもう一度
+         const pos=Math.min(fc.i+4, fc.list.length); fc.list.splice(pos,0,x); }
+  cardMove(1);
+}
+function cardMove(d){
+  fc.i+=d;
+  if(fc.i>=fc.list.length){
+    app.innerHTML=`<header class="top"><button class="back" onclick="edition('${cur.ed}')">← もどる</button><h1>📖 覚えるカード</h1></header>
+      <div class="panel result"><div class="score">🎉</div><div class="msg">ひと通り見おわったよ！<br>つぎはクイズでたしかめてみよう</div>
+      <div class="row"><button class="btn" onclick="cards()">もう一回</button><button class="btn pri" onclick="startQuiz(false)">クイズへ ✏️</button></div></div>`;
+    return;
+  }
+  if(fc.i<0) fc.i=0;
+  drawCard();
+}
+
+// ===== クイズ（ランダム・だんだん難しく・たまに復習） =====
+const ROUND=10;
+let Q=null;
+function startQuiz(weakOnly){
+  const pool=itemsOf(cur.ed,cur.region);
+  const usable = weakOnly ? pool.filter(x=>S.weak[x.id]) : pool;
+  if(!usable.length){ alert("にがての問題はないよ！すごい🎉"); return; }
+  Q={weakOnly, pool:usable, asked:new Set(), queue:[], n:0, total:Math.min(ROUND, usable.length),
+     lv: weakOnly?2:1, streak:0, miss:0, right:0, missed:[], lvmsg:"", current:null, answered:false};
+  nextQ();
+}
+function pickNext(){
+  // ① 同じクイズ内でまちがえた問題（3問後に再出題）
+  const due=Q.queue.findIndex(e=>e.at<=Q.n);
+  if(due>=0){ const e=Q.queue.splice(due,1)[0]; return {item:e.item, review:"さっきまちがえた問題だよ"}; }
+  // ② たまに「にがて」から復習（約25%）
+  if(!Q.weakOnly && Math.random()<0.25){
+    const w=shuffle(Q.pool.filter(x=>S.weak[x.id] && !Q.asked.has(x.id)));
+    if(w.length) return {item:w[0], review:"にがて復習"};
+  }
+  // ③ いまのレベルに近い問題をランダムに
+  const rest=Q.pool.filter(x=>!Q.asked.has(x.id));
+  const src = rest.length?rest:Q.pool;
+  for(const d of [0,-1,1,-2,2]){
+    const c=src.filter(x=>x.lv===Q.lv+d);
+    if(c.length) return {item:shuffle(c)[0], review:""};
+  }
+  return {item:shuffle(src)[0], review:""};
+}
+function nextQ(){
+  if(Q.n>=Q.total) return quizEnd();
+  const p=pickNext();
+  Q.current=p; Q.asked.add(p.item.id); Q.answered=false;
+  Q.choices=shuffle([p.item.a, ...p.item.w]);
+  drawQ();
+}
+function drawQ(){
+  const x=Q.current.item;
+  app.innerHTML=`
+    <header class="top"><button class="back" onclick="if(confirm('クイズをやめる？'))edition('${cur.ed}')">← やめる</button><h1>✏️ クイズ${Q.weakOnly?"（にがて）":""}</h1></header>
+    <div class="qhead"><span>${Q.n+1} / ${Q.total}問　｜　正解 ${Q.right}</span><span>レベル <span class="stars">${stars(Q.lv)}</span></span></div>
+    <div class="prog"><i style="width:${Q.n/Q.total*100}%"></i></div>
+    ${Q.lvmsg?`<div class="lvmsg">${Q.lvmsg}</div>`:""}
+    <div class="qbox">
+      ${Q.current.review?`<span class="review-badge">🔁 ${Q.current.review}</span><br>`:""}
+      <span class="tag">${REGIONS[x.r].name}・${lvName[x.lv]}</span>
+      <div class="q">${esc(x.q)}</div>
+    </div>
+    <div class="choices">${Q.choices.map((c,i)=>`<button class="choice" data-c="${esc(c)}" onclick="answer(${i})"><span class="no">${i+1}</span>${esc(c)}</button>`).join("")}</div>
+    <div id="fb"></div>`;
+  Q.lvmsg="";
+  scrollTo(0,0);
+}
+function answer(i){
+  if(Q.answered) return; Q.answered=true;
+  const x=Q.current.item, pick=Q.choices[i], ok=pick===x.a;
+  document.querySelectorAll(".choice").forEach((b,j)=>{
+    if(Q.choices[j]===x.a) b.classList.add("right");
+    else if(j===i) b.classList.add("wrong");
+  });
+  if(ok){
+    Q.right++; Q.streak = Q.streak>0?Q.streak+1:1; hitWeak(x.id);
+    if(Q.streak>=2 && Q.lv<3){ Q.lv++; Q.streak=0; Q.lvmsg="⬆️ レベルアップ！ちょっと難しくなるよ"; }
+  }else{
+    Q.miss++; Q.streak = Q.streak<0?Q.streak-1:-1; addWeak(x.id);
+    if(!Q.missed.includes(x)) Q.missed.push(x);
+    // 同じクイズの中で、3問あとにもう一回（1回まで）
+    if(!Q.current.review.startsWith("さっき")) { Q.queue.push({item:x, at:Q.n+3}); if(Q.total<ROUND+3) Q.total++; }
+    if(Q.streak<=-1 && Q.lv>1){ Q.lv--; Q.streak=0; Q.lvmsg="⬇️ 少しやさしい問題で、もう一回かためよう"; }
+  }
+  const praise=["せいかい！🎉","すごい！🌟","ばっちり！🍡","さすが！✨"];
+  $("#fb").innerHTML=`
+    <div class="feedback ${ok?"ok":"ng"}">
+      <b class="big">${ok?praise[Math.floor(Math.random()*praise.length)]:"おしい！こたえは「"+esc(x.a)+"」"}</b>
+      ${sayBtn(x)}<br>💡 ${esc(x.tip)}
+      ${ok?"":`<div style="margin-top:6px;font-size:13px">→ 少しあとで、もう一回出すね</div>`}
+    </div>
+    <button class="btn pri" style="width:100%" onclick="Q.n++;nextQ()">${Q.n+1>=Q.total?"けっかをみる 🏁":"つぎの問題 ▶"}</button>`;
+  $("#fb").scrollIntoView({behavior:"smooth",block:"nearest"});
+}
+function quizEnd(){
+  const asked=Q.right+Q.miss, rate=asked?Math.round(Q.right/asked*100):0;
+  const msg = rate>=90?"すばらしい！ほぼかんぺき🌟":rate>=70?"よくできたね！あと少し🍡":rate>=50?"いい調子！にがてを復習しよう🌙":"だいじょうぶ、カードでもう一回見てみよう🍙";
+  const key=cur.ed+"-"+cur.region; if(!S.best[key]||rate>S.best[key]){ S.best[key]=rate; save(); }
+  app.innerHTML=`
+    <header class="top"><button class="back" onclick="edition('${cur.ed}')">← もどる</button><h1>🏁 けっか</h1></header>
+    <div class="panel result">
+      <div class="score">${Q.right} / ${asked}</div>
+      <div class="msg">正解率 ${rate}%　さいごのレベル ${stars(Q.lv)}<br>${msg}</div>
+      ${Q.missed.length?`<div class="misslist"><b>🔁 まちがえた問題（にがてに記録したよ）</b><ul>${Q.missed.map(x=>`<li>${esc(x.q)}<br>→ <b>${esc(x.a)}</b></li>`).join("")}</ul></div>`:"<div class='msg'>まちがいゼロ！🎉</div>"}
+      <div class="row" style="margin-top:10px">
+        <button class="btn" onclick="startQuiz(false)">もう一回</button>
+        ${Q.missed.length?`<button class="btn later" onclick="startQuiz(true)">にがてだけ 🔁</button>`:""}
+      </div>
+      <div class="row" style="margin-top:10px"><button class="btn pri" onclick="edition('${cur.ed}')">メニューへ</button></div>
+    </div>`;
+  scrollTo(0,0);
+}
+
+// ===== まとめ一覧 =====
+function summary(){
+  const E=EDITIONS[cur.ed];
+  const regs = cur.region==="all"?E.regions:[cur.region];
+  app.innerHTML=`
+    <header class="top"><button class="back" onclick="edition('${cur.ed}')">← もどる</button><h1>📋 まとめ一覧</h1></header>
+    <p class="note">テスト前の見直し用。✅覚えた　⚠️にがて</p>
+    ${regs.map(r=>`<h4 style="margin:18px 0 8px">📝 ${REGIONS[r].name}</h4><ul class="lst">${
+      ITEMS.filter(x=>x.r===r).sort((a,b)=>a.lv-b.lv).map(x=>`<li>${esc(x.q)}<span class="mark">${S.known[x.id]?"✅":""}${S.weak[x.id]?"⚠️":""}</span>
+        <div class="ans">→ ${esc(x.a)}</div><div class="t">${esc(x.tip)}</div></li>`).join("")}</ul>`).join("")}`;
+  scrollTo(0,0);
+}
+
+home();
+</script>
+</body>
+</html>
