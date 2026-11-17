@@ -51,6 +51,7 @@ h2 .no{font-family:var(--num);color:var(--accent);font-size:18px}
 .card p{margin:6px 0;font-size:15px;color:var(--ink)}
 .card .ex{font-size:14px;color:var(--muted);background:var(--paper-2);border-radius:8px;padding:8px 12px;margin-top:8px}
 .hl{background:linear-gradient(transparent 60%,var(--marker) 60%)}
+.card .dmark{font-size:12px;color:#8A5A00;background:#FFE9A8;border-radius:99px;padding:1px 8px;font-weight:700}
 
 .cond{list-style:none;margin:0;padding:0;border-top:1.5px solid var(--ink)}
 .cond li{display:grid;grid-template-columns:auto 1fr;gap:10px 14px;padding:14px 0;border-bottom:1px solid var(--line);align-items:center}
@@ -63,6 +64,7 @@ h2 .no{font-family:var(--num);color:var(--accent);font-size:18px}
 .meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
 .badge{font-family:var(--num);font-size:13px;font-weight:700;border-radius:99px;padding:2px 12px;background:var(--accent-soft);color:var(--accent-ink)}
 .badge.rev{background:var(--marker);color:#7A5B00;font-family:var(--jp)}
+.badge.dai{background:#FFE9A8;color:#8A5A00;font-family:var(--jp)}
 .badge.hidden{display:none}
 .q{font-size:19px;font-weight:700;margin:0 0 14px;line-height:1.6}
 .opts{display:grid;gap:10px}
@@ -112,18 +114,18 @@ footer{padding:30px 0 10px;color:var(--muted);font-size:13px;text-align:center}
   <h2><span class="no">01</span>角度のきほん</h2>
   <p class="sec-lead">まずは三角形の角度。計算問題の土台だよ。</p>
   <div class="card">
-    <h3>一直線の角</h3>
+    <h3>一直線の角 <span class="dmark">★だいじ</span></h3>
     <div class="formula">まっすぐ = 180°</div>
     <p>1本の直線のつくる角は <span class="hl">180°</span>。ちょうど半分に折ると 90° だよ。</p>
   </div>
   <div class="card">
-    <h3>三角形の内角の和</h3>
+    <h3>三角形の内角の和 <span class="dmark">★だいじ</span></h3>
     <div class="formula">∠A + ∠B + ∠C = 180°</div>
     <p>三角形の3つの内角をたすと、いつも <span class="hl">180°</span> になるよ。</p>
     <div class="ex">例：∠A=50°, ∠B=60° なら ∠C=180−50−60=<b>70°</b></div>
   </div>
   <div class="card">
-    <h3>三角形の外角</h3>
+    <h3>三角形の外角 <span class="dmark">★だいじ</span></h3>
     <div class="formula">外角 = となりにない2つの内角の和</div>
     <p>1つの辺をのばしてできる角（外角）は、<span class="hl">となりにない2つの内角</span>をたしたものに等しいよ。</p>
     <div class="ex">例：∠A=40°, ∠B=65° のとき、Cの外角 = 40+65 = <b>105°</b></div>
@@ -134,13 +136,13 @@ footer{padding:30px 0 10px;color:var(--muted);font-size:13px;text-align:center}
   <h2><span class="no">02</span>平行線と角</h2>
   <p class="sec-lead">平行な2本の直線に1本の直線が交わると、特別な関係がうまれるよ。</p>
   <div class="card">
-    <h3>同位角どういかく・錯角さっかく</h3>
+    <h3>同位角どういかく・錯角さっかく <span class="dmark">★だいじ</span></h3>
     <p><span class="hl">同位角</span> … 形が同じ位置にある角。等しい。</p>
     <p><span class="hl">錯角</span> … ななめ向かいにあう角。等しい。</p>
     <div class="ex">平行線の同位角・錯角はどちらも <b>等しい</b>。これを計算問題でつかうよ。</div>
   </div>
   <div class="card">
-    <h3>対頂角たいちょうかく</h3>
+    <h3>対頂角たいちょうかく <span class="dmark">★だいじ</span></h3>
     <p>2本の直線が交わってできる向かい合う角は、いつも <span class="hl">等しい</span>（平行じゃなくてもOK）。</p>
   </div>
 </section>
@@ -149,12 +151,12 @@ footer{padding:30px 0 10px;color:var(--muted);font-size:13px;text-align:center}
   <h2><span class="no">03</span>多角形の内角</h2>
   <p class="sec-lead">三角形だけじゃなく、四角形・五角形も求められるよ。</p>
   <div class="card">
-    <h3>n角形の内角の和</h3>
+    <h3>n角形の内角の和 <span class="dmark">★だいじ</span></h3>
     <div class="formula">(n − 2) × 180°</div>
     <div class="ex">四角形 360° ／ 五角形 540° ／ 六角形 720°</div>
   </div>
   <div class="card">
-    <h3>外角の和・正多角形</h3>
+    <h3>外角の和・正多角形 <span class="dmark">★だいじ</span></h3>
     <div class="formula">外角の和 = 360°</div>
     <p>正n角形の1つの外角 = 360°÷n。1つの内角 = 180° − (360°÷n)</p>
     <div class="ex">正三角形の1つの内角 = 180−120 = <b>60°</b></div>
@@ -170,7 +172,7 @@ footer{padding:30px 0 10px;color:var(--muted);font-size:13px;text-align:center}
     <li><span class="tag">3</span><div><b>1組の辺と、その両端の角がそれぞれ等しい</b><span class="d">1辺と、その両はしの2つの角</span></div></li>
   </ul>
   <div class="card" style="margin-top:12px">
-    <h3>直角三角形の合同条件（おまけ）</h3>
+    <h3>直角三角形の合同条件（おまけ） <span class="dmark">★だいじ</span></h3>
     <p>① 斜辺と1つの鋭角がそれぞれ等しい</p>
     <p>② 斜辺と他の1辺がそれぞれ等しい</p>
   </div>
@@ -182,11 +184,12 @@ footer{padding:30px 0 10px;color:var(--muted);font-size:13px;text-align:center}
 
 <section class="block" id="quiz">
   <h2><span class="no">05</span>クイズ</h2>
-  <p class="sec-lead">ランダムに出るよ。だんだん難しくなって、まちがえたものはまた出てくるよ。</p>
+  <p class="sec-lead">ページに書いてある公式を「★だいじ」として多めに出すよ。ランダムで、だんだん難しくなるよ。</p>
   <div class="box">
     <div class="meta">
       <span class="badge" id="lv">レベル 1</span>
       <span class="badge" id="qno">問題 1</span>
+      <span class="badge dai hidden" id="dai">★ だいじ</span>
       <span class="badge rev hidden" id="rev">ふくしゅう</span>
     </div>
     <p class="q" id="qtext">よみこみ中…</p>
@@ -207,37 +210,37 @@ footer{padding:30px 0 10px;color:var(--muted);font-size:13px;text-align:center}
 (function(){
   var LEVELS = {
     1: [
-      {q:'三角形の3つの内角の和は？', o:['180°','360°','90°','270°'], a:0, e:'三角形の内角の和はいつも180°だよ。'},
-      {q:'1本の直線のつくる角（一直線）は？', o:['90°','180°','360°','120°'], a:1, e:'まっすぐな直線は180°。'},
-      {q:'三角形の外角は、何の和に等しい？', o:['となりのない2つの内角','となりあう2つの内角','3つの内角すべて','内角と直角'], a:0, e:'外角＝となりのない2つの内角の和。'},
-      {q:'【公式】「三角形の内角の和」を式で表すと？', o:['∠A＋∠B＋∠C＝180°','∠A＋∠B＋∠C＝360°','∠A×∠B×∠C＝180°','∠A＋∠B＝180°'], a:0, e:'三角形の内角の和は∠A＋∠B＋∠C＝180°。'},
-      {q:'【公式】「三角形の外角」を式で表すと？', o:['外角＝∠A＋∠B','外角＝180°−∠A','外角＝∠A−∠B','外角＝∠A×∠B'], a:0, e:'外角＝となりのない2つの内角の和（∠A＋∠B）。'}
+      {q:'三角形の3つの内角の和は？', o:['180°','360°','90°','270°'], a:0, imp:true, e:'三角形の内角の和はいつも180°だよ。'},
+      {q:'1本の直線のつくる角（一直線）は？', o:['90°','180°','360°','120°'], a:1, imp:true, e:'まっすぐな直線は180°。'},
+      {q:'三角形の外角は、何の和に等しい？', o:['となりのない2つの内角','となりあう2つの内角','3つの内角すべて','内角と直角'], a:0, imp:true, e:'外角＝となりのない2つの内角の和。'},
+      {q:'【公式】「三角形の内角の和」を式で表すと？', o:['∠A＋∠B＋∠C＝180°','∠A＋∠B＋∠C＝360°','∠A×∠B×∠C＝180°','∠A＋∠B＝180°'], a:0, imp:true, e:'三角形の内角の和は∠A＋∠B＋∠C＝180°。'},
+      {q:'【公式】「三角形の外角」を式で表すと？', o:['外角＝∠A＋∠B','外角＝180°−∠A','外角＝∠A−∠B','外角＝∠A×∠B'], a:0, imp:true, e:'外角＝となりのない2つの内角の和（∠A＋∠B）。'}
     ],
     2: [
       {q:'∠A=50°,∠B=60° の三角形で、∠Cは？', o:['70°','80°','90°','110°'], a:0, e:'180−50−60＝70°。'},
       {q:'∠A=40°,∠B=65° の三角形で、Cの外角は？', o:['75°','105°','115°','140°'], a:1, e:'40＋65＝105°。'},
-      {q:'対頂角（向かい合う角）の関係は？', o:['いつも等しい','平行のときだけ等しい','足すと180°','足すと90°'], a:0, e:'対頂角はいつも等しいよ。'},
-      {q:'【公式】「三角形の内角の和」の式から、∠Cを求める式は？', o:['∠C＝180°−∠A−∠B','∠C＝180°＋∠A＋∠B','∠C＝∠A＋∠B','∠C＝360°−∠A−∠B'], a:0, e:'∠C＝180°−∠A−∠B で求められるよ。'},
-      {q:'【公式】平行線の同位角・錯角の決まりをことばの式でいうと？', o:['たがいに等しい','たがいに足して180°','たがいに足して90°','たがいに平行になる'], a:0, e:'平行線の同位角・錯角はたがいに等しい。'}
+      {q:'対頂角（向かい合う角）の関係は？', o:['いつも等しい','平行のときだけ等しい','足すと180°','足すと90°'], a:0, imp:true, e:'対頂角はいつも等しいよ。'},
+      {q:'【公式】「三角形の内角の和」の式から、∠Cを求める式は？', o:['∠C＝180°−∠A−∠B','∠C＝180°＋∠A＋∠B','∠C＝∠A＋∠B','∠C＝360°−∠A−∠B'], a:0, imp:true, e:'∠C＝180°−∠A−∠B で求められるよ。'},
+      {q:'【公式】平行線の同位角・錯角の決まりをことばの式でいうと？', o:['たがいに等しい','たがいに足して180°','たがいに足して90°','たがいに平行になる'], a:0, imp:true, e:'平行線の同位角・錯角はたがいに等しい。'}
     ],
     3: [
       {q:'四角形の内角の和は？', o:['180°','360°','540°','720°'], a:1, e:'(4−2)×180＝360°。'},
       {q:'五角形の内角の和は？', o:['360°','540°','720°','900°'], a:1, e:'(5−2)×180＝540°。'},
-      {q:'平行線の錯角の関係は？', o:['いつも等しい','足すと180°','足すと90°','等しくない'], a:0, e:'平行線の錯角は等しい。'},
-      {q:'【公式】n角形の内角の和の公式は？', o:['(n−2)×180°','(n−2)×360°','n×180°','(n+2)×180°'], a:0, e:'n角形の内角の和は(n−2)×180°。'},
-      {q:'【公式】n角形の外角の和の公式は？', o:['360°','(n−2)×180°','180°','n×180°'], a:0, e:'どの多角形でも外角の和は360°。'}
+      {q:'平行線の錯角の関係は？', o:['いつも等しい','足すと180°','足すと90°','等しくない'], a:0, imp:true, e:'平行線の錯角は等しい。'},
+      {q:'【公式】n角形の内角の和の公式は？', o:['(n−2)×180°','(n−2)×360°','n×180°','(n+2)×180°'], a:0, imp:true, e:'n角形の内角の和は(n−2)×180°。'},
+      {q:'【公式】n角形の外角の和の公式は？', o:['360°','(n−2)×180°','180°','n×180°'], a:0, imp:true, e:'どの多角形でも外角の和は360°。'}
     ],
     4: [
       {q:'正三角形の1つの内角は？', o:['30°','45°','60°','90°'], a:2, e:'180−360÷3＝60°。'},
       {q:'正六角形の1つの内角は？', o:['90°','108°','120°','135°'], a:2, e:'180−360÷6＝120°。'},
-      {q:'多角形の外角の和は？', o:['180°','360°','540°','(n−2)×180°'], a:1, e:'どの多角形でも外角の和は360°。'},
-      {q:'【公式】正n角形の1つの外角の公式は？', o:['360°÷n','180°÷n','360°×(n−2)','n×360°'], a:0, e:'正n角形の1つの外角は360°÷n。'},
-      {q:'【公式】正n角形の1つの内角の公式は？', o:['180°−(360°÷n)','360°÷n','(n−2)×180°','180°÷n'], a:0, e:'正n角形の1つの内角は180°−(360°÷n)。'}
+      {q:'多角形の外角の和は？', o:['180°','360°','540°','(n−2)×180°'], a:1, imp:true, e:'どの多角形でも外角の和は360°。'},
+      {q:'【公式】正n角形の1つの外角の公式は？', o:['360°÷n','180°÷n','360°×(n−2)','n×360°'], a:0, imp:true, e:'正n角形の1つの外角は360°÷n。'},
+      {q:'【公式】正n角形の1つの内角の公式は？', o:['180°−(360°÷n)','360°÷n','(n−2)×180°','180°÷n'], a:0, imp:true, e:'正n角形の1つの内角は180°−(360°÷n)。'}
     ],
     5: [
-      {q:'合同条件「2辺とその間の角」とは？', o:['2組の辺と、その間の1つの角が等しい','2組の辺と、1つの辺の角が等しい','2つの角と1組の辺が等しい','3組の辺が等しい'], a:0, e:'2辺とはさむ角が等しいと合同。'},
-      {q:'合同条件「1辺と両端の角」とは？', o:['1組の辺と、その両はしの2つの角が等しい','1組の辺と、となりあう角が等しい','1組の辺と、向かいの角が等しい','2組の辺とその間の角が等しい'], a:0, e:'1辺と両端の2角が等しいと合同。'},
-      {q:'直角三角形に特有の合同条件はどれ？', o:['斜辺と1つの鋭角が等しい','2辺とその間の角が等しい','3組の辺が等しい','1辺と両端の角が等しい'], a:0, e:'直角三角形なら「斜辺と1つの鋭角」などが使える。'}
+      {q:'合同条件「2辺とその間の角」とは？', o:['2組の辺と、その間の1つの角が等しい','2組の辺と、1つの辺の角が等しい','2つの角と1組の辺が等しい','3組の辺が等しい'], a:0, imp:true, e:'2辺とはさむ角が等しいと合同。'},
+      {q:'合同条件「1辺と両端の角」とは？', o:['1組の辺と、その両はしの2つの角が等しい','1組の辺と、となりあう角が等しい','1組の辺と、向かいの角が等しい','2組の辺とその間の角が等しい'], a:0, imp:true, e:'1辺と両端の2角が等しいと合同。'},
+      {q:'直角三角形に特有の合同条件はどれ？', o:['斜辺と1つの鋭角が等しい','2辺とその間の角が等しい','3組の辺が等しい','1辺と両端の角が等しい'], a:0, imp:true, e:'直角三角形なら「斜辺と1つの鋭角」などが使える。'}
     ]
   };
 
@@ -248,7 +251,8 @@ footer{padding:30px 0 10px;color:var(--muted);font-size:13px;text-align:center}
   var qEl = document.getElementById('qtext'), optsEl = document.getElementById('opts'),
       fbEl = document.getElementById('fb'), nextEl = document.getElementById('next'),
       lvEl = document.getElementById('lv'), qnoEl = document.getElementById('qno'),
-      statsEl = document.getElementById('stats'), revEl = document.getElementById('rev');
+      statsEl = document.getElementById('stats'), revEl = document.getElementById('rev'),
+      daiEl = document.getElementById('dai');
 
   function shuffle(a){ for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;} return a; }
 
@@ -256,7 +260,8 @@ footer{padding:30px 0 10px;color:var(--muted);font-size:13px;text-align:center}
      ・1 交互→ランダム
      ・2 同じ問題が続かない＋まちがえた問題は後で復習
      ・3 公式のパターンを追加
-     ・4 レベルがあがるほど公式（むずかしいパターン）が多め */
+     ・4 レベルがあがるほど公式（むずかしいパターン）が多め
+     さらに、ページに書いてある公式（imp）は「★だいじ」として多めに出す */
   function refill(){
     var base = LEVELS[lv];
     var list = [];
@@ -264,6 +269,7 @@ footer{padding:30px 0 10px;color:var(--muted);font-size:13px;text-align:center}
       var isFormula = q.q.indexOf('【公式】') === 0;
       var w = 3;
       if(isFormula) w = (lv >= 3) ? 5 : 1;
+      if(q.imp) w += 3;   // ページの公式は重要なので多め
       for(var k=0;k<w;k++) list.push(q);
     });
     shuffle(list);
@@ -299,6 +305,7 @@ footer{padding:30px 0 10px;color:var(--muted);font-size:13px;text-align:center}
     lvEl.textContent = 'レベル ' + lv;
     qnoEl.textContent = '問題 ' + (total + 1);
     revEl.className = isReview ? 'badge rev' : 'badge rev hidden';
+    daiEl.className = current.imp ? 'badge dai' : 'badge dai hidden';
     qEl.textContent = current.q;
     optsEl.innerHTML = '';
     // 選択肢をシャッフル（正解が一番上に固定されないように）
