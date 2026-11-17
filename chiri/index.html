@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>社会 地理れんしゅう帳 〜東日本編・西日本編〜</title>
+<style>
+:root{
+  --bg:#fff8f3; --card:#ffffff; --ink:#4a3b3b; --sub:#8a7676;
+  --east:#5b8def; --east-l:#e6eeff; --west:#ef7b5b; --west-l:#ffece6;
+  --ok:#3fae7a; --ok-l:#e3f6ec; --ng:#e0566b; --ng-l:#fde8ec;
+  --line:#f0e2da; --star:#f5b301;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:"Hiragino Maru Gothic ProN","Hiragino Sans","Yu Gothic","Meiryo","Noto Sans JP",sans-serif;}
+body{min-height:100vh}
+.wrap{max-width:560px;margin:0 auto;padding:16px 16px 48px}
+header.top{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+header.top h1{font-size:19px;margin:0;flex:1;line-height:1.3}
+.back{border:none;background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:8px 12px;font-size:14px;color:var(--ink)}
+.hero{text-align:center;padding:18px 8px 8px}
+.hero .ttl{font-size:24px;font-weight:800;letter-spacing:.02em}
+.hero .sub{color:var(--sub);font-size:14px;margin-top:6px}
+.ed-btn{display:block;width:100%;text-align:left;border:none;border-radius:20px;padding:18px;margin:14px 0;color:#fff;font-size:15px;box-shadow:0 4px 12px rgba(0,0,0,.08)}
+.ed-btn.east{background:linear-gradient(135deg,#5b8def,#7fb0ff)}
+.ed-btn.west{background:linear-gradient(135deg,#ef7b5b,#ffa889)}
+.ed-btn b{display:block;font-size:22px;margin-bottom:4px}
+.ed-btn .bar{height:8px;background:rgba(255,255,255,.35);border-radius:8px;margin-top:10px;overflow:hidden}
+.ed-btn .bar i{display:block;height:100%;background:#fff;border-radius:8px}
+.ed-btn small{opacity:.95}
+.panel{background:var(--card);border-radius:18px;padding:16px;margin:12px 0;border:1.5px solid var(--line)}
+.panel h3{margin:0 0 10px;font-size:15px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:8px 14px;font-size:14px;color:var(--ink)}
+.chip.on{color:#fff;border-color:transparent}
+.east .chip.on{background:var(--east)} .west .chip.on{background:var(--west)}
+.modes{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.mode{border:none;border-radius:16px;padding:16px 10px;font-size:15px;font-weight:700;background:#fff;border:1.5px solid var(--line);color:var(--ink)}
+.mode span{display:block;font-size:26px;margin-bottom:4px}
+.mode.wide{grid-column:1/3}
+.mode.weak{background:#fff5d9;border-color:#f3dc9a}
+.note{font-size:13px;color:var(--sub);line-height:1.6}
+.fc-meta{display:flex;justify-content:space-between;font-size:13px;color:var(--sub);margin:4px 2px 8px}
+.flip{perspective:1200px;height:300px;margin-bottom:12px}
+.flip-in{position:relative;width:100%;height:100%;transition:transform .45s;transform-style:preserve-3d}
+.flip.on .flip-in{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:22px;padding:22px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;box-shadow:0 6px 18px rgba(0,0,0,.07);background:#fff;border:2px solid var(--line);overflow:auto}
+.face.back{transform:rotateY(180deg)}
+.east .face.back{background:var(--east-l)} .west .face.back{background:var(--west-l)}
+.face .q{font-size:18px;line-height:1.6;font-weight:700}
+.face .a{font-size:26px;font-weight:800;margin-bottom:12px}
+.face .tip{font-size:14px;line-height:1.7;color:#5d4c4c;text-align:left}
+.face .hint{position:absolute;bottom:10px;font-size:12px;color:var(--sub)}
+.tag{display:inline-block;font-size:12px;padding:3px 10px;border-radius:999px;background:#f6ece6;color:#7a6262;margin-bottom:10px}
+.row{display:flex;gap:10px}
+.btn{flex:1;border:none;border-radius:14px;padding:14px 8px;font-size:15px;font-weight:700;background:#fff;border:1.5px solid var(--line);color:var(--ink)}
+.btn.pri{color:#fff;border-color:transparent}
+.east .btn.pri{background:var(--east)} .west .btn.pri{background:var(--west)}
+.btn.ok{background:var(--ok);color:#fff;border-color:transparent}
+.btn.later{background:#fff5d9;border-color:#f3dc9a}
+.btn:disabled{opacity:.4}
+.qhead{display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--sub);margin-bottom:8px}
+.stars{color:var(--star);letter-spacing:2px;font-size:15px}
+.prog{height:8px;background:#f1e5de;border-radius:8px;overflow:hidden;margin-bottom:14px}
+.prog i{display:block;height:100%;transition:width .3s}
+.east .prog i{background:var(--east)} .west .prog i{background:var(--west)}
+.qbox{background:#fff;border-radius:20px;border:2px solid var(--line);padding:18px;margin-bottom:12px}
+.qbox .q{font-size:18px;font-weight:700;line-height:1.6}
+.review-badge{display:inline-block;font-size:12px;background:#fff5d9;color:#9a7300;border-radius:999px;padding:3px 10px;margin-bottom:8px}
+.choices{display:flex;flex-direction:column;gap:10px}
+.choice{text-align:left;border:2px solid var(--line);background:#fff;border-radius:14px;padding:14px 14px;font-size:16px;color:var(--ink);line-height:1.5}
+.choice .no{display:inline-block;width:24px;height:24px;line-height:24px;text-align:center;border-radius:50%;background:#f6ece6;font-size:13px;margin-right:8px;font-weight:700}
+.choice.right{border-color:var(--ok);background:var(--ok-l)}
+.choice.wrong{border-color:var(--ng);background:var(--ng-l)}
+.feedback{border-radius:16px;padding:14px 16px;margin:12px 0;font-size:14px;line-height:1.7}
+.feedback.ok{background:var(--ok-l);border:1.5px solid #b9e6cf}
+.feedback.ng{background:var(--ng-l);border:1.5px solid #f6c3cc}
+.feedback b.big{font-size:17px;display:block;margin-bottom:4px}
+.lvmsg{text-align:center;font-size:13px;font-weight:700;color:#9a7300;background:#fff5d9;border-radius:12px;padding:6px;margin-bottom:10px}
+.result{text-align:center;padding:10px 0}
+.result .score{font-size:44px;font-weight:800}
+.result .msg{font-size:15px;margin:6px 0 14px}
+.misslist{text-align:left;font-size:14px;line-height:1.6}
+.misslist li{margin-bottom:8px}
+.lst{list-style:none;padding:0;margin:0}
+.lst li{background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:10px;font-size:14px;line-height:1.6}
+.lst li .ans{font-weight:800;font-size:15px}
+.east .lst li .ans{color:var(--east)} .west .lst li .ans{color:var(--west)}
+.lst li .t{color:#6d5a5a;font-size:13px;margin-top:4px}
+.lst h4{margin:18px 0 8px;font-size:15px}
+.mark{font-size:12px;margin-left:6px}
+.foot{text-align:center;color:var(--sub);font-size:12px;margin-top:24px}
+.reset{border:none;background:none;color:var(--sub);text-decoration:underline;font-size:12px}
+.hide{display:none!important}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+
+<script>
+/* ===== 問題データ（中2年・日本の諸地域） =====
+   [レベル(1基本/2標準/3発展), 問題, 正解, [まちがいの選択肢×3], 解説] */
+const REGIONS = {
+  hokkaido:{name:"北海道地方", ed:"east"},
+  tohoku:{name:"東北地方", ed:"east"},
+  kanto:{name:"関東地方", ed:"east"},
+  chubu:{name:"中部地方", ed:"east"},
+  kinki:{name:"近畿地方", ed:"west"},
+  chushikoku:{name:"中国・四国地方", ed:"west"},
+  kyushu:{name:"九州地方", ed:"west"}
+};
+const EDITIONS = {
+  east:{name:"東日本編", sub:"北海道・東北・関東・中部", regions:["hokkaido","tohoku","kanto","chubu"]},
+  west:{name:"西日本編", sub:"近畿・中国・四国・九州・沖縄", regions:["kinki","chushikoku","kyushu"]}
+};
+const RAW = {
+  hokkaido:[
+   [1,"北海道の道庁所在地は？","札幌市",["函館市","旭川市","釧路市"],"札幌は北海道の地方中枢都市。開拓のときに計画的につくられたので、道路が碁盤の目のようになっている。"],
+   [2,"北海道の気候区分は？","冷帯（亜寒帯）",["温帯","熱帯","乾燥帯"],"冬の寒さがとても厳しく、梅雨がほとんどないのが特色。"],
+   [2,"北海道に古くから住んでいる先住民族は？","アイヌの人々",["琉球の人々","屯田兵","渡来人"],"北海道の地名には、アイヌ語がもとになったものが多い（例：札幌、稚内など）。"],
+   [2,"明治時代、北海道の開拓を進めるために置かれた役所は？","開拓使",["屯田兵","太政官","守護"],"開拓使のもとで、道路や鉄道がつくられ、開拓が進められた。"],
+   [2,"明治時代、北海道の開拓と北方の守りのために送られた人々は？","屯田兵",["防人","御家人","足軽"],"ふだんは農業をしながら、いざというときは兵士として守りについた。"],
+   [2,"石狩平野で稲作ができるように、ほかの土地からよい土を運びこんで土地を改良したことを何という？","客土",["輪作","干拓","盛り土"],"もともと泥炭地で農業に向かなかった。客土と品種改良で、今では全国有数の米どころに。"],
+   [2,"十勝平野で行われている、同じ畑で年ごとにちがう作物を順番につくる農業は？","輪作",["二毛作","二期作","単作"],"じゃがいも・てんさい・小麦・豆類などを順番につくり、土地がやせるのを防ぐ。"],
+   [1,"北海道で栽培されている、砂糖の原料になる作物は？","てんさい",["さとうきび","さつまいも","じゃがいも"],"てんさい（ビート）は寒い北海道向き。さとうきびは暖かい沖縄などでつくられる。混同注意！"],
+   [2,"根釧台地でさかんな、乳牛を飼って牛乳や乳製品をつくる農業は？","酪農",["稲作","近郊農業","畑作"],"根釧台地は日本を代表する酪農地帯。バターやチーズなどの乳製品にも加工される。"],
+   [3,"根釧台地が稲作や畑作に向かないのは、夏に何が発生しやすく気温が上がりにくいから？","濃霧",["大雪","台風","火山灰"],"夏の南東季節風が、寒流（親潮）の上で冷やされて濃霧が発生する。"],
+   [2,"冬にオホーツク海沿岸に流れてくる氷を何という？","流氷",["氷河","永久凍土","雪渓"],"流氷は観光資源にもなっていて、流氷を見る観光船が人気。"],
+   [1,"北海道東部にある、世界自然遺産に登録されている半島は？","知床半島",["渡島半島","積丹半島","根室半島"],"ヒグマやオジロワシなど、豊かな自然と生き物が残っている。"],
+   [3,"200海里水域の設定で北洋漁業がおとろえたあと、北海道で力を入れている、稚魚や稚貝を放流して育てる漁業は？","栽培漁業",["遠洋漁業","沖合漁業","北洋漁業"],"さけの稚魚の放流などが有名。サロマ湖のほたての養殖など「育てる漁業」がさかん。"],
+   [2,"毎年2月に札幌市で行われ、多くの観光客が訪れるイベントは？","さっぽろ雪まつり",["青森ねぶた祭","秋田竿燈まつり","仙台七夕まつり"],"雪や寒さも観光資源。海外からの観光客も多い。"],
+   [3,"自然環境を守りながら、自然や文化を学んだり体験したりする観光を何という？","エコツーリズム",["グリーンツーリズム","インバウンド","マスツーリズム"],"知床などで取り組まれている。グリーンツーリズムは農山村に滞在して農業体験をする観光。"],
+   [3,"北海道の家で、寒さに備えて工夫されていることは？","二重の窓や厚い断熱材",["家のまわりを石垣で囲む","屋根がわらをしっくいで固める","風通しのよい大きな窓"],"玄関も二重にして、暖かい空気を逃がさないようにしている。石垣やしっくいは沖縄の台風対策。"]
+  ],
+  tohoku:[
+   [1,"東北地方の中央を南北に走る山脈は？","奥羽山脈",["飛騨山脈","日高山脈","中国山地"],"奥羽山脈の西が日本海側、東が太平洋側。冬は日本海側に雪が多い。"],
+   [2,"夏に東北地方の太平洋側に吹く、冷たく湿った北東の風は？","やませ",["からっ風","偏西風","台風"],"やませが吹くと、霧や雲が多くなり、日照時間が少なく気温が上がらない。"],
+   [3,"やませが長く吹くと、日照不足と低温で稲が十分に育たなくなる被害は？","冷害",["干害","水害","塩害"],"冷害に強い品種の開発が進められてきた。"],
+   [2,"三陸海岸の南部に見られる、山地が海にしずんでできた入り組んだ海岸は？","リアス海岸",["砂浜海岸","フィヨルド","さんご礁"],"湾が深く波がおだやかなので、かき・わかめ・ほたてなどの養殖がさかん。"],
+   [2,"三陸海岸の沖で、寒流（親潮）と暖流（黒潮）がぶつかるところを何という？","潮目（潮境）",["大陸棚","海溝","排他的経済水域"],"プランクトンが多く魚が集まるので、よい漁場になる。"],
+   [1,"青森県の津軽平野で、生産量日本一の果物は？","りんご",["さくらんぼ","もも","ぶどう"],"すずしい気候がりんごの栽培に向いている。"],
+   [1,"山形県（山形盆地）で、生産量日本一の果物は？","さくらんぼ（おうとう）",["りんご","みかん","梅"],"福島盆地ではももの栽培もさかん。"],
+   [2,"最上川の下流に広がる、山形県の米どころの平野は？","庄内平野",["越後平野","仙台平野","石狩平野"],"東北地方は日本の穀倉地帯。秋田平野・仙台平野なども米どころ。"],
+   [1,"東北三大祭りのうち、青森県で行われる祭りは？","青森ねぶた祭",["秋田竿燈まつり","仙台七夕まつり","祇園祭"],"東北三大祭り＝青森ねぶた祭・秋田竿燈まつり・仙台七夕まつり。祇園祭は京都。"],
+   [2,"東北地方の夏祭りは、もともと何を願う行事と結びついている？","米の豊作",["大漁","商売繁盛","大雪"],"農業とくに稲作とのつながりが深い。今は多くの観光客が訪れる観光資源にもなっている。"],
+   [2,"岩手県の伝統的工芸品で、鉄でつくられたなべや鉄びんなどは？","南部鉄器",["輪島塗","会津塗","天童将棋駒"],"冬の農作業ができない時期の副業から発達した伝統産業が東北には多い。"],
+   [2,"山形県天童市の伝統的工芸品は？","将棋の駒",["こけし","漆器","鉄器"],"会津塗（福島）、津軽塗（青森）、宮城伝統こけしなども東北の伝統的工芸品。"],
+   [2,"青森県と秋田県にまたがる、ぶなの原生林が広がる世界自然遺産は？","白神山地",["知床","屋久島","小笠原諸島"],"人の手がほとんど入っていない、ぶなの森が広がっている。"],
+   [1,"2011年3月11日に起きた大地震による災害は？","東日本大震災",["阪神・淡路大震災","関東大震災","新潟県中越地震"],"大きな津波で、三陸海岸などの沿岸部に大きな被害が出た。"],
+   [1,"東北地方の地方中枢都市はどこ？","仙台市",["盛岡市","青森市","福島市"],"国の出先機関や大企業の支店などが集まっている。"],
+   [3,"東北自動車道ぞいにIC（集積回路）工場などが集まったことから呼ばれた名前は？","シリコンロード",["シリコンアイランド","シルクロード","太平洋ベルト"],"高速道路が整備され、工業団地がつくられた。シリコンアイランドは九州の呼び名。"],
+   [1,"岩手県の県庁所在地は？","盛岡市",["花巻市","一関市","宮古市"],"ほかにも、宮城県→仙台市も覚えておこう。"],
+   [1,"宮城県の県庁所在地は？","仙台市",["石巻市","気仙沼市","盛岡市"],"仙台は東北地方でいちばん人口が多い都市。"]
+  ],
+  kanto:[
+   [1,"日本でいちばん面積の広い平野は？","関東平野",["石狩平野","濃尾平野","越後平野"],"関東地方の大部分をしめる。"],
+   [2,"関東平野の台地をおおっている、火山灰が積もってできた赤土の層は？","関東ローム",["シラス","客土","扇状地"],"富士山や浅間山などの火山灰が積もってできた。"],
+   [1,"流域面積が日本最大の川は？","利根川",["信濃川","荒川","多摩川"],"いちばん長い川は信濃川。 「長さ＝信濃川、流域面積＝利根川」と覚えよう！"],
+   [2,"冬に関東地方に吹く、乾いた冷たい北西の季節風を何という？","からっ風",["やませ","偏西風","台風"],"日本海側に雪を降らせたあと、山をこえて乾いた風になる。"],
+   [2,"都市の中心部の気温が、まわりの地域よりも高くなる現象は？","ヒートアイランド現象",["ドーナツ化現象","ストロー現象","エルニーニョ現象"],"建物や道路のアスファルト、エアコンの排熱などが原因。"],
+   [2,"東京の都心部で、通勤・通学する人が多いため夜間人口より多くなるのは？","昼間人口",["高齢者の人口","子どもの人口","外国人の人口"],"周りの県から多くの人が電車などで通ってくる。"],
+   [2,"新宿・渋谷・池袋のように、都心の機能の一部を分担している地区を何という？","副都心",["城下町","ニュータウン","工業団地"],"鉄道のターミナル駅があり、商業施設や会社が集まっている。"],
+   [3,"首都・東京に、人口や企業、政治の機能などが集中していることを何という？","一極集中",["過疎","ドーナツ化","二極化"],"国会・最高裁判所・中央省庁、大企業の本社などが東京に集まっている。"],
+   [2,"情報が集まる東京で、とくにさかんな工業は？","印刷業",["自動車工業","鉄鋼業","石油化学工業"],"新聞社や出版社が多いため。"],
+   [2,"千葉県の東京湾岸に広がる、石油化学や鉄鋼がさかんな工業地域は？","京葉工業地域",["京浜工業地帯","北関東工業地域","東海工業地域"],"東京・神奈川の京浜工業地帯とまちがえないように！"],
+   [3,"高速道路が整備され、インターチェンジ付近に工業団地がつくられて発展した工業地域は？","北関東工業地域",["京葉工業地域","瀬戸内工業地域","東海工業地域"],"群馬・栃木・茨城に広がり、自動車や電気機械の工場が多い。"],
+   [1,"大都市の近くで、新鮮な野だいなどを生産して出荷する農業は？","近郊農業",["促成栽培","抑制栽培","酪農"],"千葉県や茨城県でさかん。輸送時間が短く、新鮮なうちに届けられる。"],
+   [2,"群馬県嬬恋村で、夏のすずしい気候を生かしてさかんに栽培されている高原野だいは？","キャベツ",["さつまいも","ピーマン","なす"],"ほかの産地の出荷が少ない夏に出荷する（抑制栽培）。"],
+   [3,"日本で貿易額がいちばん多く、ICなどの軽くて高価なものを多くあつかう港（空港）は？","成田国際空港",["横浜港","東京港","名古屋港"],"飛行機は軽くて高価なもの、船は重くてかさばるものを運ぶのに向いている。"],
+   [1,"栃木県の県庁所在地は？","宇都宮市",["前橋市","水戸市","日光市"],"栃木県はいちごの生産もさかん。"],
+   [1,"群馬県の県庁所在地は？","前橋市",["高崎市","宇都宮市","水戸市"],"高崎市とまちがえやすいので注意！"],
+   [1,"茨城県の県庁所在地は？","水戸市",["つくば市","日立市","宇都宮市"],"つくば市は研究学園都市として有名。"],
+   [1,"神奈川県の県庁所在地は？","横浜市",["川崎市","横須賀市","相模原市"],"横浜には「みなとみらい21」などの再開発地区がある。"]
+  ],
+  chubu:[
+   [1,"中部地方を3つに分けたとき、日本海側の地域を何という？","北陸",["東海","中央高地","山陰"],"中部地方＝北陸・中央高地・東海の3つ。"],
+   [1,"飛騨山脈・木曽山脈・赤石山脈をまとめて何という？","日本アルプス",["奥羽山脈","中国山地","紀伊山地"],"3000m級の山々が連なり「日本の屋根」ともよばれる。"],
+   [1,"長野県・新潟県を流れる、日本でいちばん長い川は？","信濃川",["利根川","木曽川","最上川"],"流域面積がいちばん大きいのは利根川。混同注意！"],
+   [1,"愛知県を中心とした、製造品出荷額が日本一の工業地帯は？","中京工業地帯",["京浜工業地帯","阪神工業地帯","東海工業地域"],"豊田市を中心に自動車工業がとくにさかん。"],
+   [2,"静岡県浜松市でさかんな工業は？","オートバイ・楽器",["製紙・パルプ","鉄鋼","石油化学"],"東海工業地域の一部。製紙・パルプは富士市でさかん。"],
+   [2,"静岡県の牧ノ原などの台地で、さかんに栽培されている作物は？","茶",["さとうきび","ぶどう","レタス"],"水はけのよい台地は茶の栽培に向いている。静岡県は茶の生産が全国有数。"],
+   [2,"愛知県の渥美半島で、夜に電灯の光をあてて開花をおくらせて栽培している花は？","菊（電照菊）",["バラ","チューリップ","ひまわり"],"豊川用水ができて、温室などを使う施設園芸がさかんになった。"],
+   [2,"甲府盆地（山梨県）の扇状地で、さかんに栽培されている果物は？","ぶどう・もも",["りんご・さくらんぼ","みかん・梅","なし・らっきょう"],"扇状地は水はけがよく果樹栽培に向いている。観光農園も多い。"],
+   [3,"長野県の野辺山原などで、夏でもすずしい気候を生かし、レタスなどの出荷時期をおくらせて栽培する方法は？","抑制栽培",["促成栽培","二毛作","近郊農業"],"ほかの産地の出荷が少ない夏に出すので高く売れる。群馬県嬬恋村のキャベツも同じ。"],
+   [2,"北陸地方で、冬は雪で農業ができないため、米だけをつくる農業を何という？","水田単作",["二毛作","二期作","輪作"],"越後平野（新潟県）などは日本有数の米どころ。銘柄米（コシヒカリなど）も有名。"],
+   [2,"冬の農作業ができない時期の副業から発達した、石川県輪島市の伝統的工芸品は？","輪島塗",["西陣織","南部鉄器","会津塗"],"北陸には、雪の多い冬の副業から発達した伝統産業・地場産業が多い。"],
+   [3,"福井県鯖江市で、地場産業として国内生産の大部分をしめる製品は？","眼鏡のフレーム",["金属洋食器","和紙","包丁"],"金属洋食器は新潟県燕市が有名。"],
+   [2,"静岡県の焼津港でたくさん水あげされる、遠洋漁業でとれる魚は？","まぐろ・かつお",["さけ・ます","たら・にしん","いわし・あじ"],"焼津港は全国有数の水あげ量をほこる漁港。"],
+   [3,"長野県の諏訪湖周辺で、製糸業がおとろえたあとに発達した工業は？","精密機械工業",["鉄鋼業","石油化学工業","造船業"],"時計やカメラなど。今は電子部品などの工場も多い。きれいな空気と水が向いていた。"],
+   [3,"濃尾平野の西部で、洪水から集落や田畑を守るために周りを堤防で囲んだ地域を何という？","輪中",["ため池","扇状地","三角州"],"木曽川・長良川・揖斐川（木曽三川）が流れる低い土地に見られる。"],
+   [1,"石川県の県庁所在地は？","金沢市",["加賀市","輪島市","福井市"],"金沢は江戸時代に加賀藩の城下町として栄えた。"],
+   [1,"山梨県の県庁所在地は？","甲府市",["富士吉田市","長野市","松本市"],"甲府盆地の中心にある都市。"],
+   [1,"愛知県の県庁所在地は？","名古屋市",["豊田市","岡崎市","豊橋市"],"名古屋は中部地方の地方中枢都市。"]
+  ],
+  kinki:[
+   [1,"滋賀県にある、日本最大の湖は？","琵琶湖",["霞ヶ浦","浜名湖","諏訪湖"],"琵琶湖から流れ出る淀川の水は、京都・大阪の人々の生活を支えている（近畿の水がめ）。"],
+   [2,"琵琶湖で赤潮が発生したため、滋賀県が条例で使用を禁止したものは？","りんをふくむ合成洗剤",["農薬","プラスチック製品","石油"],"住民の運動から始まり、水質を守る取り組みが広がった。"],
+   [1,"大阪湾の沿岸に広がる、中小企業の工場が多い工業地帯は？","阪神工業地帯",["中京工業地帯","京浜工業地帯","北九州工業地帯"],"東大阪市などに、高い技術をもつ中小企業が多い。"],
+   [2,"江戸時代、全国から物資が集まり商業の中心地として栄えた大阪は何とよばれた？","天下の台所",["将軍のおひざもと","花の都","天下の副将軍"],"今も卸売業がさかんで、問屋街がある。"],
+   [2,"大阪の郊外に、人口集中を解消するためにつくられた大規模な住宅地を何という？","ニュータウン",["城下町","門前町","工業団地"],"千里ニュータウン・泉北ニュータウンなど。今は建物の老朽化や住民の高齢化が課題。"],
+   [2,"京都市が、歴史的な町なみを守るために条例で制限しているものは？","建物の高さや看板のデザイン",["観光客の数","自動車の台数","祭りの回数"],"景観を守るため、コンビニなどの看板の色も落ち着いた色にしている。"],
+   [1,"京都の伝統的工芸品で、高級な絹織物として知られるのは？","西陣織",["輪島塗","南部鉄器","有田焼"],"清水焼・京友禅なども京都の伝統的工芸品。"],
+   [3,"紀伊山地で育てられている、質の高い木材として有名なものは？","吉野すぎ・尾鷲ひのき",["秋田すぎ・木曽ひのき","屋久すぎ・青森ひば","北山すぎ・天竜すぎ"],"紀伊半島は降水量が多く、木がよく育つ。林業は高齢化と後継者不足が課題。"],
+   [2,"和歌山県で生産量が多い果物の組み合わせは？","みかん・梅・かき",["りんご・さくらんぼ","ぶどう・もも","パイナップル・マンゴー"],"日当たりのよい山の斜面を利用して栽培している。"],
+   [2,"三重県の志摩半島（英虞湾）でさかんな養殖は？","真珠",["かき","ほたて","わかめ"],"リアス海岸の入り組んだ、波のおだやかな湾を利用している。"],
+   [1,"1995年に兵庫県南部を中心に大きな被害を出した地震による災害は？","阪神・淡路大震災",["東日本大震災","関東大震災","熊本地震"],"この経験から、防災や建物の耐震化の取り組みが進んだ。"],
+   [3,"神戸市で、山をけずった土砂で海を埋め立ててつくった人工島は？","ポートアイランド",["出島","夢の島","淡路島"],"けずった山の跡地はニュータウン（住宅地）になった。"],
+   [2,"大阪湾の人工島につくられた、24時間利用できる国際空港は？","関西国際空港",["成田国際空港","大阪国際空港（伊丹）","東京国際空港（羽田）"],"海上にあるので騒音の心配が少なく、24時間発着できる。"],
+   [1,"三重県の県庁所在地は？","津市",["四日市市","伊勢市","松阪市"],"日本でいちばん短い名前の県庁所在地。"],
+   [1,"滋賀県の県庁所在地は？","大津市",["彦根市","草津市","長浜市"],"琵琶湖の南西のほとりにある都市。"],
+   [1,"兵庫県の県庁所在地は？","神戸市",["姫路市","尼崎市","西宮市"],"神戸港は古くから貿易港として栄えてきた。"]
+  ],
+  chushikoku:[
+   [1,"中国・四国地方を3つに分けたとき、中国山地より北の日本海側を何という？","山陰",["山陽","瀬戸内","南四国"],"山陰・瀬戸内・南四国の3つ。山陰は冬に雪や雨が多い。"],
+   [2,"瀬戸内の地域で、1年を通して雨が少ないのはなぜ？","季節風が中国山地と四国山地にさえぎられるから",["暖流が近くを流れているから","標高が高いから","台風が通らないから"],"夏の季節風は四国山地に、冬の季節風は中国山地にさえぎられる。"],
+   [2,"雨が少ない讃岐平野（香川県）で、昔から水不足に備えてつくられてきたものは？","ため池",["輪中","防風林","棚田"],"今は吉野川から香川用水で水を引いている。"],
+   [1,"瀬戸内海の沿岸に広がる工業地域の名前は？","瀬戸内工業地域",["北九州工業地帯","阪神工業地帯","東海工業地域"],"倉敷市水島地区などに石油化学コンビナートがある。塩田のあと地や埋め立て地を利用した。"],
+   [2,"本州と四国を結ぶ3つのルートのうち、瀬戸大橋があるのは？","児島－坂出ルート",["神戸－鳴門ルート","尾道－今治ルート","下関－北九州ルート"],"瀬戸大橋は1988年開通。神戸－鳴門は明石海峡大橋・大鳴門橋、尾道－今治は「瀬戸内しまなみ海道」。"],
+   [3,"橋や高速道路で大都市と結ばれた結果、人が大都市に吸い寄せられ、地方の町がおとろえることを何という？","ストロー現象",["ドーナツ化現象","ヒートアイランド現象","過密"],"本州四国連絡橋ができて、買い物客が神戸や大阪へ出かけるようになった例がある。"],
+   [2,"高知平野でさかんな、なす・ピーマンなどを早く出荷する農業は？","促成栽培",["抑制栽培","近郊農業","二毛作"],"冬でも暖かい気候を生かし、ビニールハウスで育てる。"],
+   [1,"愛媛県で、日当たりのよい山の斜面でさかんに栽培されている果物は？","みかん",["りんご","ぶどう","さくらんぼ"],"いよかんなど、かんきつ類の栽培がさかん。"],
+   [1,"鳥取県の日本海沿いに広がる、日本有数の大きな砂丘は？","鳥取砂丘",["中田島砂丘","九十九里浜","天橋立"],"砂丘の周辺では、らっきょうやメロンなどの栽培も行われている。"],
+   [2,"広島湾でさかんな養殖は？","かき",["ほたて","真珠","のり"],"広島県のかきの生産量は全国一。"],
+   [2,"中国・四国地方の地方中枢都市で、国の出先機関や大企業の支店が集まる都市は？","広島市",["岡山市","松山市","高松市"],"政令指定都市でもある。"],
+   [2,"広島市にある、原子爆弾の被害を今に伝える世界文化遺産は？","原爆ドーム",["厳島神社","石見銀山","姫路城"],"厳島神社（広島県）も世界文化遺産だが、原爆とは関係ない。"],
+   [2,"山間部や離島で人口が大きく減り、地域の生活を保つのが難しくなる状態を何という？","過疎",["過密","都市化","一極集中"],"高齢化も進んでいる。町おこし・村おこしの取り組みが行われている。"],
+   [3,"徳島県上勝町で行われている、料理にそえる葉や花を出荷する町おこしの取り組みは？","葉っぱビジネス（つまもの）",["栽培漁業","地産地消","グリーンツーリズム"],"高齢者でも活躍できる取り組みとして注目されている。"],
+   [1,"香川県の県庁所在地は？","高松市",["松山市","高知市","徳島市"],"「松」がつく県庁所在地は3つ。高松（香川）・松山（愛媛）・松江（島根）。"],
+   [1,"愛媛県の県庁所在地は？","松山市",["松江市","高松市","宇和島市"],"道後温泉が有名。"],
+   [1,"島根県の県庁所在地は？","松江市",["松山市","出雲市","鳥取市"],"宍道湖のほとりにある城下町。"]
+  ],
+  kyushu:[
+   [1,"熊本県にある、世界最大級のカルデラをもつ火山は？","阿蘇山",["桜島","雲仙岳","富士山"],"噴火で山頂部がおちこんでできた大きなくぼ地＝カルデラの中に、町や田畑がある。"],
+   [1,"鹿児島市のすぐ近くにあり、今もよく噴火している火山は？","桜島",["阿蘇山","浅間山","有珠山"],"火山灰が降るので、鹿児島市では灰を集める専用の袋が配られている。"],
+   [2,"九州南部に広がる、火山の噴出物が積もってできた台地は？","シラス台地",["関東ローム","根釧台地","牧ノ原"],"水はけがよすぎて稲作に向かない → さつまいも・茶などの畑作や畜産がさかん。"],
+   [2,"シラス台地が広がる鹿児島県・宮崎県でさかんな、豚・肉牛・にわとりを育てる農業は？","畜産",["稲作","近郊農業","漁業"],"「かごしま黒豚」「宮崎牛」などのブランド化も進んでいる。"],
+   [2,"宮崎平野でさかんな、ビニールハウスなどで野だいを早く育てて出荷する農業は？","促成栽培",["抑制栽培","近郊農業","二毛作"],"冬でも暖かい気候を生かし、ピーマンやきゅうりをほかの産地より早く出荷する。"],
+   [2,"筑紫平野で行われている、同じ耕地で1年に2種類の作物（米と小麦など）をつくる農業は？","二毛作",["二期作","輪作","促成栽培"],"筑紫平野は九州最大の稲作地帯。筑後川が流れている。二期作は同じ作物を年2回つくること。"],
+   [1,"1901年に操業を始め、北九州工業地帯（地域）のもとになった工場は？","八幡製鉄所",["富岡製糸場","水島コンビナート","釜石製鉄所"],"中国から鉄鉱石を輸入しやすく、近くの筑豊炭田から石炭がとれたため、ここにつくられた。"],
+   [2,"熊本県で、工場の排水にふくまれた有機水銀が原因で起きた公害病は？","水俣病",["イタイイタイ病","四日市ぜんそく","新潟水俣病"],"四大公害病のひとつ。今の水俣市は、環境モデル都市として環境にやさしいまちづくりを進めている。"],
+   [3,"九州にIC（集積回路）の工場が多く集まったことから呼ばれた別名は？","シリコンアイランド",["シリコンロード","シリコンバレー","テクノポリス"],"ICは小さく軽くて高価なので、空港や高速道路の近くに工場が建てられた。シリコンロードは東北。"],
+   [2,"大分県に多い、地下のマグマの熱を利用した発電方法は？","地熱発電",["水力発電","風力発電","潮力発電"],"八丁原地熱発電所は日本最大級。別府・湯布院など温泉も多い。"],
+   [1,"樹齢数千年の縄文杉があり、世界自然遺産に登録されている鹿児島県の島は？","屋久島",["種子島","対馬","五島列島"],"種子島はロケットの発射場がある島。"],
+   [1,"沖縄県の県庁所在地は？","那覇市",["沖縄市","名護市","石垣市"],"沖縄県はかって琉球王国として栄えた。首里城が有名。"],
+   [2,"沖縄県でさかんに栽培されている、砂糖の原料になる作物は？","さとうきび",["てんさい","さつまいも","パイナップル"],"てんさい（ビート）は北海道でつくられる砂糖の原料。混同注意！"],
+   [3,"沖縄の伝統的な家で、屋根がわらをしっくいで固めたり、家のまわりを石垣で囲んだりしているのは何に備えるため？","台風の強い風",["冬の大雪","夏の冷たい風（やませ）","地震のゆれ"],"沖縄は台風がよく通るため。水不足に備えて屋根に貯水タンクを置く家も多い。"],
+   [3,"日本にあるアメリカ軍専用施設の面積のうち、沖縄県に集まっているのはおよそ何％？","約70％",["約10％","約30％","約50％"],"基地をめぐっては、騒音や事故などの問題がある。"],
+   [2,"沖縄の海に広がる、美しい海の生き物がつくる地形は？","さんご礁",["リアス海岸","フィヨルド","砂丘"],"さんご礁や青い海は観光資源。観光業は沖縄の重要な産業。"]
+  ]};
+
+const ITEMS = [];
+for(const r in RAW){ RAW[r].forEach((d,i)=>ITEMS.push({id:r+"-"+i, r, lv:d[0], q:d[1], a:d[2], w:d[3], tip:d[4]})); }
+const byId = Object.fromEntries(ITEMS.map(x=>[x.id,x]));
+
+const KEY="chiri_renshucho_v1";
+let S = load();
+function load(){ try{ return Object.assign({weak:{},known:{},best:{}}, JSON.parse(localStorage.getItem(KEY)||"{}")); }catch(e){ return {weak:{},known:{},best:{}}; } }
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
+function addWeak(id){ S.weak[id]=Math.min((S.weak[id]||0)+2,4); delete S.known[id]; save(); }
+function hitWeak(id){ if(S.weak[id]){ S.weak[id]--; if(S.weak[id]<=0) delete S.weak[id]; } S.known[id]=true; save(); }
+
+const $ = s=>document.querySelector(s);
+const app = $("#app");
+const shuffle = a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
+const esc = s=>String(s).replace(/[&<>\"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const stars = n=>"★".repeat(n)+"☆".repeat(3-n);
+const lvName = ["","きほん","ひょうじゅん","はってん"];
+
+let cur = {ed:null, region:"all"};
+function itemsOf(ed, region){
+  return ITEMS.filter(x=> REGIONS[x.r].ed===ed && (region==="all"||x.r===region));
+}
+
+function home(){
+  cur={ed:null,region:"all"};
+  const card = ed=>{
+    const all=itemsOf(ed,"all"), k=all.filter(x=>S.known[x.id]).length, p=Math.round(k/all.length*100);
+    const wk=all.filter(x=>S.weak[x.id]).length;
+    return `<button class="ed-btn ${ed}" onclick="edition('${ed}')">
+      <b>${ed==="east"?"🗻":"🏯"} ${EDITIONS[ed].name}</b>
+      <small>${EDITIONS[ed].sub}　全${all.length}問</small>
+      <div class="bar"><i style="width:${p}%"></i></div>
+      <small>覚えた ${k} / ${all.length}${wk?`　｜　にがて ${wk}`:""}</small>
+    </button>`;
+  };
+  app.className="wrap";
+  app.innerHTML=`
+    <div class="hero"><div class="ttl">🍡 社会 地理れんしゅう帳</div>
+    <div class="sub">中2「日本の諸地域」　覚える → クイズでたしかめよう</div></div>
+    ${card("east")}${card("west")}
+    <div class="panel"><h3>🌸 つかいかた</h3>
+      <div class="note">① <b>覚えるカード</b>：タップでうらがえして答えと解説をチェック<br>
+      ② <b>クイズ</b>：4択で10問。出る順はランダム、正解が続くと<b>だんだん難しく</b>なるよ<br>
+      ③ まちがえた問題は<b>少しあとでもう一回</b>出るよ。<b>にがて</b>にも記録されて、次のクイズでも<b>たまに復習</b>で出てくるよ</div>
+    </div>
+    <div class="foot">記録はこの端末のブラウザに保存されます<br><button class="reset" onclick="resetAll()">記録をリセット</button></div>`;
+  scrollTo(0,0);
+}
+function resetAll(){ if(confirm("覚えた・にがての記録をぜんぶ消してもいい？")){ S={weak:{},known:{},best:{}}; save(); home(); } }
+
+function edition(ed, region){
+  cur.ed=ed; if(region!==undefined) cur.region=region;
+  const E=EDITIONS[ed];
+  const list=itemsOf(ed,cur.region);
+  const weakN=list.filter(x=>S.weak[x.id]).length;
+  const knownN=list.filter(x=>S.known[x.id]).length;
+  app.className="wrap "+ed;
+  app.innerHTML=`
+    <header class="top"><button class="back" onclick="home()">← もどる</button><h1>${ed==="east"?"🗻":"🏯"} ${E.name}</h1></header>
+    <div class="panel"><h3>どの地方をやる？</h3><div class="chips">
+      <button class="chip ${cur.region==="all"?"on":""}" onclick="edition('${ed}','all')">ぜんぶ</button>
+      ${E.regions.map(r=>`<button class="chip ${cur.region===r?"on":""}" onclick="edition('${ed}','${r}')">${REGIONS[r].name}</button>`).join("")}
+    </div>
+    <div class="note" style="margin-top:10px">${list.length}問　｜　覚えた ${knownN}　｜　にがて ${weakN}</div></div>
+    <div class="modes">
+      <button class="mode" onclick="cards()"><span>📖</span>覚えるカード</button>
+      <button class="mode" onclick="startQuiz(false)"><span>✏️</span>クイズ（10問）</button>
+      <button class="mode" onclick="summary()"><span>📋</span>まとめ一覧</button>
+      <button class="mode weak" onclick="startQuiz(true)" ${weakN?"":"disabled style='opacity:.45'"}><span>🔁</span>にがてだけ</button>
+    </div>
+    <p class="note" style="margin-top:14px">💡 さいしょは「覚えるカード」でひと通り見てから、クイズにチャレンジするのがおすすめ！</p>`;
+  scrollTo(0,0);
+}
+
+let fc={list:[],i:0};
+function cards(){
+  const list=itemsOf(cur.ed,cur.region);
+  fc.list=shuffle(list.filter(x=>!S.known[x.id])).concat(shuffle(list.filter(x=>S.known[x.id])));
+  fc.i=0; drawCard();
+}
+function drawCard(){
+  const x=fc.list[fc.i];
+  if(!x){ return edition(cur.ed); }
+  app.innerHTML=`
+    <header class="top"><button class="back" onclick="edition('${cur.ed}')">← もどる</button><h1>📖 覚えるカード</h1></header>
+    <div class="fc-meta"><span>${REGIONS[x.r].name}　${stars(x.lv)}</span><span>${fc.i+1} / ${fc.list.length}${S.known[x.id]?"　✅覚えた":""}${S.weak[x.id]?"　⚠️にがて":""}</span></div>
+    <div class="flip" id="flip" onclick="this.classList.toggle('on')"><div class="flip-in">
+      <div class="face front"><span class="tag">${REGIONS[x.r].name}</span><div class="q">${esc(x.q)}</div><div class="hint">タップでこたえ 👆</div></div>
+      <div class="face back"><div class="a">${esc(x.a)}</div><div class="tip">💡 ${esc(x.tip)}</div><div class="hint">タップでもどる</div></div>
+    </div></div>
+    <div class="row" style="margin-bottom:10px">
+      <button class="btn later" onclick="cardMark(false)">🤔 まだあやしい</button>
+      <button class="btn ok" onclick="cardMark(true)">😊 覚えた！</button>
+    </div>
+    <div class="row">
+      <button class="btn" onclick="cardMove(-1)" ${fc.i===0?"disabled":""}>◀ まえ</button>
+      <button class="btn" onclick="cardMove(1)">つぎ ▶</button>
+    </div>`;
+}
+function cardMark(ok){
+  const x=fc.list[fc.i];
+  if(ok){ S.known[x.id]=true; save(); }
+  else { delete S.known[x.id]; S.weak[x.id]=Math.max(S.weak[x.id]||0,1); save();
+         const pos=Math.min(fc.i+4, fc.list.length); fc.list.splice(pos,0,x); }
+  cardMove(1);
+}
+function cardMove(d){
+  fc.i+=d;
+  if(fc.i>=fc.list.length){
+    app.innerHTML=`<header class="top"><button class="back" onclick="edition('${cur.ed}')">← もどる</button><h1>📖 覚えるカード</h1></header>
+      <div class="panel result"><div class="score">🎉</div><div class="msg">ひと通り見おわったよ！<br>つぎはクイズでたしかめてみよう</div>
+      <div class="row"><button class="btn" onclick="cards()">もう一回</button><button class="btn pri" onclick="startQuiz(false)">クイズへ ✏️</button></div></div>`;
+    return;
+  }
+  if(fc.i<0) fc.i=0;
+  drawCard();
+}
+
+const ROUND=10;
+let Q=null;
+function startQuiz(weakOnly){
+  const pool=itemsOf(cur.ed,cur.region);
+  const usable = weakOnly ? pool.filter(x=>S.weak[x.id]) : pool;
+  if(!usable.length){ alert("にがての問題はないよ！すごい🎉"); return; }
+  Q={weakOnly, pool:usable, asked:new Set(), queue:[], n:0, total:Math.min(ROUND, usable.length),
+     lv: weakOnly?2:1, streak:0, miss:0, right:0, missed:[], lvmsg:"", current:null, answered:false};
+  nextQ();
+}
+function pickNext(){
+  const due=Q.queue.findIndex(e=>e.at<=Q.n);
+  if(due>=0){ const e=Q.queue.splice(due,1)[0]; return {item:e.item, review:"さっきまちがえた問題だよ"}; }
+  if(!Q.weakOnly && Math.random()<0.25){
+    const w=shuffle(Q.pool.filter(x=>S.weak[x.id] && !Q.asked.has(x.id)));
+    if(w.length) return {item:w[0], review:"にがて復習"};
+  }
+  const rest=Q.pool.filter(x=>!Q.asked.has(x.id));
+  const src = rest.length?rest:Q.pool;
+  for(const d of [0,-1,1,-2,2]){
+    const c=src.filter(x=>x.lv===Q.lv+d);
+    if(c.length) return {item:shuffle(c)[0], review:""};
+  }
+  return {item:shuffle(src)[0], review:""};
+}
+function nextQ(){
+  if(Q.n>=Q.total) return quizEnd();
+  const p=pickNext();
+  Q.current=p; Q.asked.add(p.item.id); Q.answered=false;
+  Q.choices=shuffle([p.item.a, ...p.item.w]);
+  drawQ();
+}
+function drawQ(){
+  const x=Q.current.item;
+  app.innerHTML=`
+    <header class="top"><button class="back" onclick="if(confirm('クイズをやめる？'))edition('${cur.ed}')">← やめる</button><h1>✏️ クイズ${Q.weakOnly?"（にがて）":""}</h1></header>
+    <div class="qhead"><span>${Q.n+1} / ${Q.total}問　｜　正解 ${Q.right}</span><span>レベル <span class="stars">${stars(Q.lv)}</span></span></div>
+    <div class="prog"><i style="width:${Q.n/Q.total*100}%"></i></div>
+    ${Q.lvmsg?`<div class="lvmsg">${Q.lvmsg}</div>`:""}
+    <div class="qbox">
+      ${Q.current.review?`<span class="review-badge">🔁 ${Q.current.review}</span><br>`:""}
+      <span class="tag">${REGIONS[x.r].name}・${lvName[x.lv]}</span>
+      <div class="q">${esc(x.q)}</div>
+    </div>
+    <div class="choices">${Q.choices.map((c,i)=>`<button class="choice" data-c="${esc(c)}" onclick="answer(${i})"><span class="no">${i+1}</span>${esc(c)}</button>`).join("")}</div>
+    <div id="fb"></div>`;
+  Q.lvmsg="";
+  scrollTo(0,0);
+}
+function answer(i){
+  if(Q.answered) return; Q.answered=true;
+  const x=Q.current.item, pick=Q.choices[i], ok=pick===x.a;
+  document.querySelectorAll(".choice").forEach((b,j)=>{
+    if(Q.choices[j]===x.a) b.classList.add("right");
+    else if(j===i) b.classList.add("wrong");
+  });
+  if(ok){
+    Q.right++; Q.streak = Q.streak>0?Q.streak+1:1; hitWeak(x.id);
+    if(Q.streak>=2 && Q.lv<3){ Q.lv++; Q.streak=0; Q.lvmsg="⬆️ レベルアップ！ちょっと難しくなるよ"; }
+  }else{
+    Q.miss++; Q.streak = Q.streak<0?Q.streak-1:-1; addWeak(x.id);
+    if(!Q.missed.includes(x)) Q.missed.push(x);
+    if(!Q.current.review.startsWith("さっき")) { Q.queue.push({item:x, at:Q.n+3}); if(Q.total<ROUND+3) Q.total++; }
+    if(Q.streak<=-1 && Q.lv>1){ Q.lv--; Q.streak=0; Q.lvmsg="⬇️ 少しやさしい問題で、もう一回かためよう"; }
+  }
+  const praise=["せいかい！🎉","すごい！🌟","ばっちり！🍡","さすが！✨"];
+  $("#fb").innerHTML=`
+    <div class="feedback ${ok?"ok":"ng"}">
+      <b class="big">${ok?praise[Math.floor(Math.random()*praise.length)]:"おしい！こたえは「"+esc(x.a)+"」"}</b>
+      💡 ${esc(x.tip)}
+      ${ok?"":`<div style="margin-top:6px;font-size:13px">→ 少しあとで、もう一回出すね</div>`}
+    </div>
+    <button class="btn pri" style="width:100%" onclick="Q.n++;nextQ()">${Q.n+1>=Q.total?"けっかを見る 🏁":"つぎの問題 ▶"}</button>`;
+  $("#fb").scrollIntoView({behavior:"smooth",block:"nearest"});
+}
+function quizEnd(){
+  const asked=Q.right+Q.miss, rate=asked?Math.round(Q.right/asked*100):0;
+  const msg = rate>=90?"すばらしい！ほぼかんぺき🌟":rate>=70?"よくできたね！あと少し🍡":rate>=50?"いい調子！にがてを復習しよう🌙":"だいじょうぶ、カードでもう一回見てみよう🍙";
+  const key=cur.ed+"-"+cur.region; if(!S.best[key]||rate>S.best[key]){ S.best[key]=rate; save(); }
+  app.innerHTML=`
+    <header class="top"><button class="back" onclick="edition('${cur.ed}')">← もどる</button><h1>🏁 けっか</h1></header>
+    <div class="panel result">
+      <div class="score">${Q.right} / ${asked}</div>
+      <div class="msg">正解率 ${rate}%　さいごのレベル ${stars(Q.lv)}<br>${msg}</div>
+      ${Q.missed.length?`<div class="misslist"><b>🔁 まちがえた問題（にがてに記録したよ）</b><ul>${Q.missed.map(x=>`<li>${esc(x.q)}<br>→ <b>${esc(x.a)}</b></li>`).join("")}</ul></div>`:"<div class='msg'>まちがいゼロ！🎉</div>"}
+      <div class="row" style="margin-top:10px">
+        <button class="btn" onclick="startQuiz(false)">もう一回</button>
+        ${Q.missed.length?`<button class="btn later" onclick="startQuiz(true)">にがてだけ 🔁</button>`:""}
+      </div>
+      <div class="row" style="margin-top:10px"><button class="btn pri" onclick="edition('${cur.ed}')">メニューへ</button></div>
+    </div>`;
+  scrollTo(0,0);
+}
+
+function summary(){
+  const E=EDITIONS[cur.ed];
+  const regs = cur.region==="all"?E.regions:[cur.region];
+  app.innerHTML=`
+    <header class="top"><button class="back" onclick="edition('${cur.ed}')">← もどる</button><h1>📋 まとめ一覧</h1></header>
+    <p class="note">テスト前の見直し用。✅覚えた　⚠️にがて</p>
+    ${regs.map(r=>`<h4 style="margin:18px 0 8px">📍 ${REGIONS[r].name}</h4><ul class="lst">${
+      ITEMS.filter(x=>x.r===r).sort((a,b)=>a.lv-b.lv).map(x=>`<li>${esc(x.q)}<span class="mark">${S.known[x.id]?"✅":""}${S.weak[x.id]?"⚠️":""}</span>
+        <div class="ans">→ ${esc(x.a)}</div><div class="t">${esc(x.tip)}</div></li>`).join("")}</ul>`).join("")}`;
+  scrollTo(0,0);
+}
+
+home();
+</script>
+</body>
+</html>
