@@ -122,7 +122,7 @@ const RAW = {
 kana:[
  [1,"「けふ」を現代仮名遣いにすると？","きょう",["けう","きゅう","けふ"],"「けふ」→ ふ→う で「けう（eu）」→ eu は「よう（yô）」になるので「きょう」。今日のこと。"],
  [1,"「あはれ」を現代仮名遣いにすると？","あわれ",["あはれ","あうれ","あばれ"],"語頭（ことばのはじめ）以外の「は・ひ・ふ・へ・ほ」→「わ・い・う・え・お」。"],
- [1,"「をかし」を現代仮名遣いにすると？","おかし",["をかし","うかし","わかし"],"「ゐ・ゑ・を」→「い・え・お」。※助詞の「を」はその皎「を」。"],
+ [1,"「をかし」を現代仮名遣いにすると？","おかし",["をかし","うかし","わかし"],"「ゐ・ゑ・を」→「い・え・お」。※助詞の「を」はそのまま「を」。"],
  [1,"「いふ」を現代仮名遣いにすると？","いう",["いふ","ゆう","いぶ"],"語頭以外の「ふ」→「う」。発音は「ゆう」に近いけど、書くときは「いう」。"],
  [1,"「こゑ」を現代仮名遣いにすると？","こえ",["こゑ","こう","こい"],"「ゑ」→「え」。平家物語の「鐘のこゑ（声）」で出てくるよ。"],
  [1,"「ゐなか」を現代仮名遣いにすると？","いなか",["うぃなか","えなか","ゐなか"],"「ゐ」→「い」。「ゐ」はワ行のイ。"],
@@ -139,7 +139,7 @@ kana:[
 sakuhin:[
  [1,"「春はあけぼの。」で始まる作品は？","枕草子",["徒然草","方丈記","竹取物語"],"清少納言が書いた随筆。「春は明け方がよい」という意味。"],
  [1,"「つれづれなるままに、日暮らし、硯にむかひて」で始まる作品は？","徒然草",["枕草子","方丈記","おくのほそ道"],"兼好法師が書いた随筆。作品名も書き出しの「つれづれ」から。"],
- [1,"「祇園精舎の鐘の声、諸行無常の響きあり。」で始まる作品は？","平家物語",["方丈記","徒然草","竹取物語"],"平家一族が栄えてほろびるまでをえくいた軍記物語。"],
+ [1,"「祇園精舎の鐘の声、諸行無常の響きあり。」で始まる作品は？","平家物語",["方丈記","徒然草","竹取物語"],"平家一族が栄えてほろびるまでをえがいた軍記物語。"],
  [1,"「ゆく河の流れは絶えずして、しかももとの水にあらず。」で始まる作品は？","方丈記",["徒然草","枕草子","平家物語"],"鴨長明が書いた随筆。世の中も人も移り変わる（無常）ことを川にたとえている。"],
  [1,"「月日は百代の過客にして、行きかふ年もまた旅人なり。」で始まる作品は？","おくのほそ道",["方丈記","平家物語","更級日記"],"松尾芭蕉の紀行文。月日を永遠の旅人にたとえている。"],
  [1,"「今は昔、竹取の翁といふ者ありけり。」で始まる作品は？","竹取物語",["平家物語","枕草子","伊勢物語"],"現存する日本最古の物語といわれる。かぐや姫のお話。"],
@@ -156,45 +156,326 @@ sakuhin:[
 ],
 heike:[
  [1,"平家物語のジャンルは？","軍記物語",["随筆","紀行文","説話"],"源氏と平家の戦いをえがいた物語。"],
- [1,"平家物語を、琵琶をひきながら語り伝えた人々は？","琵琶法師",["吟遊詩人","僧兵","白拍子"],"耳で聞いて楽しまわたので、リズムのよい七五調や対句が多い。"],
+ [1,"平家物語を、琵琶をひきながら語り伝えた人々は？","琵琶法師",["吟遊詩人","僧兵","白拍子"],"耳で聞いて楽しまれたので、リズムのよい七五調や対句が多い。"],
  [1,"「諸行無常」の意味は？","この世のすべてのものは移り変わる",["何ごともずっと変わらない","よい行いをすれば幸せになる","すべての行いはむだになる"],"仏教のことば。平家物語全体のテーマ。読みは「しょぎょうむじょう」。"],
- [1,"「盛者必衰」の読みは？","じょうしゃひっすい",["せいしゃひっすい","もりものひっすい","しょうじむひっすい"],"勢いのさかんな者も必ずおとろえる、という意味。"],
+ [1,"「盛者必衰」の読みは？","じょうしゃひっすい",["せいしゃひっすい","もりものひっすい","しょうじゃひっすい"],"勢いのさかんな者も必ずおとろえる、という意味。"],
  [2,"「祇園精舎」の読みは？","ぎおんしょうじゃ",["ぎおんせいしゃ","しおんしょうじゃ","ぎえんしょうじゃ"],"インドにあったお寺の名前。"],
  [2,"「ただ春の夜の夢のごとし」の「ごとし」の意味は？","〜のようだ",["〜ではない","〜したい","〜だろう"],"たとえの「ごとし」。おごり高ぶった人も、春の夜の夢のようにはかない。"],
- [2,"「ひとへに風の前の塵に同じ」の「ひとへに」の意味は？","まっく",["ひとりで","一度だけ","ときどき"],"読みは「ひとえに」。勇ましい者も、まったか風の前の塵と同じ（）。"],
- [2,"冒頭の「沙羅双樹の花の色」と「祇園精舎」の鐘の声」のように、形にた言葉を並べる表現は？","対句",["倒置","反復","体言止め"],"「おごれる人も久しからず」と「たけき者もつひには滅びぬ」も対句だよ。"],
- [2,"「扇の的」で、扇を弓で射たのはだわ㼟","那須与一",["熊谷次郎直実","源義経","平敦盛"],"源氏方の若い武士。見事に扇を射落とした。"],
- [2,"「扇の的」は、何の戦いの場面？","屋島の戦い",["一の谷の戦い","壇ノ浦の戦い","関マ原の戦い"],"今の香川県。平家は舟の上、源氏は陸から。"],
+ [2,"「ひとへに風の前の塵に同じ」の「ひとへに」の意味は？","まったく",["ひとりで","一度だけ","ときどき"],"読みは「ひとえに」。勇ましい者も、まったく風の前の塵と同じ（すぐ吹き飛ぶ）。"],
+ [2,"冒頭の「沙羅双樹の花の色」と「祇園精舎の鐘の声」のように、形のにた言葉を並べる表現は？","対句",["倒置","反復","体言止め"],"「おごれる人も久しからず」と「たけき者もつひには滅びぬ」も対句だよ。"],
+ [2,"「扇の的」で、扇を弓で射たのはだれ？","那須与一",["熊谷次郎直実","源義経","平敦盛"],"源氏方の若い武士。見事に扇を射落とした。"],
+ [2,"「扇の的」は、何の戦いの場面？","屋島の戦い",["一の谷の戦い","壇ノ浦の戦い","関ヶ原の戦い"],"今の香川県。平家は舟の上、源氏は陸から。"],
  [2,"那須与一は、源氏と平家のどちら方？","源氏",["平家","どちらでもない","朝廷"],"扇を立てた舟を出したのが平家、射たのが源氏の与一。"],
  [2,"「敦盛の最期」で、平敦盛を討った武士は？","熊谷次郎直実",["那須与一","源義経","平清盛"],"敦盛が自分の子と同じくらいの若者だったので、討つのをためらった。"],
  [3,"那須与一が目をとじて心の中で祈ったことばは？","南無八幡大菩薩",["南無阿弥陀仏","諸行無常","天上天下"],"弓矢の神・八幡大菩薩に「どうかあの扇の真ん中を射させてください」と祈った。"],
  [3,"平敦盛が腰にさしていて、熊谷直実の心を動かしたものは？","笛",["扇","刀の鞘","お守り"],"戦場にも笛を持ってくる、みやびな若者だった。直実はのちに出家する。"],
- [3,"平家物語のように、漢語と和語（やまとことば）がまじった文体を何という？","和漢混交文",["漢文","和文","候文"],"力強さとリゼムがある文体。"]
+ [3,"平家物語のように、漢語と和語（やまとことば）がまじった文体を何という？","和漢混交文",["漢文","和文","候文"],"力強さとリズムがある文体。"]
 ],
 zuihitsu:[
  [1,"枕草子で「夏は〜」何がよいといっている？","夜",["あけぼの","夕暮れ","つとめて"],"春はあけぼの、夏は夜、秋は夕暮れ、冬はつとめて。セットで覚えよう！"],
- [1,"枕草子で「秋は〜」何がよいといっている？","夕暮れ",["夜","あけぼの","つとめて"],"夕日が山に近づくころ、かり獁ざおゆころ、からすおゆころ、かり獁ざおゆころ。"],
+ [1,"枕草子で「秋は〜」何がよいといっている？","夕暮れ",["夜","あけぼの","つとめて"],"夕日が山に近づくころ、からすがねぐらへ急ぐ様子もしみじみとよい、と書いている。"],
  [1,"枕草子で「冬は〜」何がよいといっている？","つとめて",["夕暮れ","夜","昼"],"「つとめて」＝早朝。雪が降っている早朝はいうまでもない。"],
- [2,"「春はあけぼの」の「あけぼの」の意味は？","夜がほのぼのと明けはじめるころ",["日がしずむころ","真夜中","お昼どき"],"春は明けしうよい、という意味。"],
+ [2,"「春はあけぼの」の「あけぼの」の意味は？","夜がほのぼのと明けはじめるころ",["日がしずむころ","真夜中","お昼どき"],"春は明け方がよい、という意味。"],
  [2,"「紫だちたる雲の細くたなびきたる」の「紫だちたる」の意味は？","紫がかっている",["紫色に立っている","紫色の着物を着た","紫色がこい"],"「〜だつ」＝〜のようすをおびる。"],
  [2,"徒然草「つれづれなるままに」の「つれづれ」の意味は？","することがなく退屈なこと",["いつもいそがしいこと","つらいこと","友だちといっしょにいること"],"「日暮らし」＝一日中。退屈なのにまかせて一日中、という意味。"],
  [2,"徒然草「よしなしごと」の意味は？","とりとめもないこと",["よいこと","悪いこと","大切なこと"],"心に浮かんでは消えていく、とりとめもないこと。"],
  [2,"「仁和寺にある法師」が、本当は拝みたかったのに行きそびれたのは？","山の上の石清水八幡宮",["ふもとの極楽寺","仁和寺","高良"],"ふもとの極楽寺・高良だけを拝んで、それが石清水だと思いこんで帰ってしまった。"],
- [3,"「少しのことにも、先達はあらまほしきことなり」の意味は？","ちょっとしたことでも、案内してくれる人はあってほしいものだ",["少しことなら、ひとりでやるべきだ","先輩には逆らわないほうがよい","小さなことほど早く終わらせたい"],"「先達」＝予実者・指導者。「もあってみしが」＝仕和寺にある法師の教訓。"],
- [3,"徒然草の序段の最後「あゅうこそものこるほしけれ」の意味は？","妙に心がみちれり落ち着かない気持ちになる",["つてもうれしい気持ちにな끫","になかしめ","なんとかしいことがないか"],"「あやしう」＝妙に・不思議に。「こそボけれ」は係り結び（已然形）。"]
+ [3,"「少しのことにも、先達はあらまほしきことなり」の意味は？","ちょっとしたことでも、案内してくれる人はあってほしいものだ",["少しのことなら、ひとりでやるべきだ","先輩には逆らわないほうがよい","小さなことほど早く終わらせたい"],"「先達」＝案内者・指導者。「あらまほし」＝あってほしい。仁和寺にある法師の教訓。"],
+ [3,"徒然草の序段の最後「あやしうこそものぐるほしけれ」の意味は？","妙に心がみだれて落ち着かない気持ちになる",["とてもうれしい気持ちになる","まったく何も感じない","人にあやしまれてしまう"],"「あやしう」＝妙に・不思議に。「こそ〜けれ」は係り結び（已然形）。"]
 ],
 kogo:[
  [1,"係りの助詞「ぞ・なむ・や・か」がくると、文末（結び）は何形？","連体形",["已然形","終止形","命令形"],"「ぞ・なむ・や・か」→連体形、「こそ」→已然形。セットで覚えよう！"],
- [1,"係りの助詞「こそ」がくると、文末（結び）は何形？","已然形",["連体形","終止形","未然形"],"例：「あゅうこそものぐるほしけれ」。「けれ」が已然形。"],
+ [1,"係りの助詞「こそ」がくると、文末（結び）は何形？","已然形",["連体形","終止形","未然形"],"例：「あやしうこそものぐるほしけれ」。「けれ」が已然形。"],
  [2,"係り結びで、「ぞ・なむ・こそ」のはたらきは？","強調",["疑問・反語","命令","打ち消し"],"「や・か」は疑問・反語。"],
  [2,"係り結びで、「や・か」のはたらきは？","疑問・反語",["強調","願望","過去"],"疑問＝〜か？、反語＝〜だろうか、いや〜ない。"],
  [2,"「もと光る竹なむ一筋ありける」で、係りの助詞は？","なむ",["もと","ける","竹"],"竹取物語。「なむ」→結びは連体形の「ける」。"],
  [1,"古語「いと」の意味は？","とても",["糸","すこし","いつも"],"「いとをかし」＝とても趣がある。"],
- [1,"古語「をかし」の意味は？","趣がある",["おかしくて笑える","おそろしえ","かなしい"],"今の「おかしい（変だ）」とは意味がちちちう！"],
+ [1,"古語「をかし」の意味は？","趣がある",["おかしくて笑える","おそろしい","かなしい"],"今の「おかしい（変だ）」とは意味がちがう！"],
  [1,"古語「うつくし」の意味は？","かわいらしい",["きれいだ","りっぱだ","はずかしい"],"小さいものや幼いものをかわいいと思う気持ち。"],
  [2,"古語「つとめて」の意味は？","早朝",["がんばって","夜中","夕方"],"枕草子「冬はつとめて」。翌朝という意味もある。"],
- [2,"古語「ゆかし」の意味は？","見たい・聞きたい・知りたい",["なつかしい","ゆかいだ","ゆっくりだ"],"心がそちラに「行きたい」気持ちから。"],
+ [2,"古語「ゆかし」の意味は？","見たい・聞きたい・知りたい",["なつかしい","ゆかいだ","ゆっくりだ"],"心がそちらに「行きたい」気持ちから。"],
  [2,"古語「ありがたし」の意味は？","めったにない",["感謝したい","うれしい","あたりまえだ"],"「有り」＋「難し」＝あることが難しい→めったにない。"],
  [2,"古語「おどろく」の意味は？","目を覚ます・はっと気づく",["びっくりする","おどる","さわぐ"],"今の「驚く」とは少しちがう。"],
- [2,"古語「あやし」の意味は？","不思議だ・身分が低い",["あやまっている","やさしい","うたくわさい人"],"漢字にすると「怪し」「賤し」。"],
- [2,"「え〜ず」の意味は？","〜できない",["〜したい","〜しこちゃ","〜しこちゃ","〜しこちゃ","〜こちゃ","〜こちゃ","〜こちゃ","〜こちゃ","〜こちゃ","〜こちゃ","〜こちゃ","〜こちゃ","〜こちゃ","〜こちゃ","〜こちゃ","〜こちゃ","〜こちゃ","〜こちゃ","〜こちゃ","〜こちゃ","〜こちゃ","〜こちゃ","〜こちゃ","〜こちゃ","〜こちゃ","〜こちゃ","〜こちゃ","〜こちゃ"],
+ [2,"古語「あやし」の意味は？","不思議だ・身分が低い",["あやまっている","やさしい","うたがわしい人"],"漢字にすると「怪し」「賤し」。"],
+ [2,"「え〜ず」の意味は？","〜できない",["〜したい","〜しなさい","〜するな"],"例：「え言はず」＝言うことができない。"],
+ [3,"古語「いみじ」の意味は？","程度がはなはだしい（すばらしい・ひどい）",["意味がない","いやらしい","少しだけ"],"よいときも悪いときも使う。今の「すごい」に近い。"],
+ [3,"古語「あはれなり」の意味は？","しみじみとした趣がある",["かわいそうだ","明るくたのしい","めずらしい"],"心の奥からしみじみ感じる気持ち。"],
+ [3,"「な〜そ」の意味は？","〜するな",["〜できない","〜したい","〜だろう"],"例：「な言ひそ」＝言うな。"],
+ [3,"古語「年ごろ」の意味は？","長年",["年齢","ちょうどよい年","去年"],"今の「年ごろ（年頃）」とは意味がちがうよ。"]
+],
+waka:[
+ [1,"和歌（短歌）の音数は？","五・七・五・七・七",["五・七・五","七・五・七・五","五・五・七・七"],"全部で31音。「みそひともじ」ともいう。五・七・五は俳句。"],
+ [1,"現存する日本最古の和歌集は？","万葉集",["古今和歌集","新古今和歌集","百人一首"],"奈良時代。天皇から農民まで、いろいろな人の歌が入っている。"],
+ [2,"天皇の命令でつくられた最初の和歌集（勅撰和歌集）は？","古今和歌集",["万葉集","新古今和歌集","梁塵秘抄"],"平安時代。紀貫之らが編集した。"],
+ [2,"古今和歌集の中心となって編集し、「仮名序」を書いた人は？","紀貫之",["大伴家持","藤原定家","柿本人麻呂"],"土佐日記の作者でもある。"],
+ [2,"新古今和歌集が成立した時代は？","鎌倉時代",["奈良時代","平安時代","江戸時代"],"藤原定家らが編集。万葉集→古今和歌集→新古今和歌集の順。"],
+ [2,"「たらちねの」はどの言葉にかかる枕詞？","母",["山","光","神"],"枕詞＝決まった言葉の前におく五音の言葉。"],
+ [2,"「ひさかたの」はどの言葉にかかる枕詞？","光（天・空）",["母","山","奈良"],"「ひさかたの光のどけき春の日に…」（紀友則）。"],
+ [2,"「あしひきの」はどの言葉にかかる枕詞？","山",["母","神","衣"],"「あしひきの山鳥の尾の…」（柿本人麻呂）。"],
+ [2,"「ちはやぶる」はどの言葉にかかる枕詞？","神",["山","光","奈良"],"「ちはやぶる神代も聞かず…」（在原業平）。"],
+ [3,"「あをによし」はどの言葉にかかる枕詞？","奈良",["京","母","衣"],"「あをによし奈良の都は咲く花の…」。"],
+ [3,"「袖ひちて むすびし水の こほれるを 春立つけふの 風やとくらむ」の「こほれる」の読み方は？","こおれる",["こぼれる","こうれる","こわれる"],"語頭以外の「ほ」→「お」。こおっている水を、立春の今日の風がとかしているだろうか、という歌（紀貫之）。"],
+ [3,"和歌で、とちゅうで意味が切れるところを何という？","句切れ",["字余り","枕詞","掛詞"],"五・七・五・七・七の、どこで切れるかを「初句切れ」「二句切れ」などという。"]
+],
+kanbun:[
+ [1,"返り点の「レ点」はどう読む？","すぐ下の字から、一字上に返って読む",["上から順番に読む","二字以上はなれた上の字に返る","読まずにとばす"],"例：「不レ知」→「知らず」。下の「知」を先に読んでから「不」に返る。"],
+ [2,"返り点の「一・二点」はどう読む？","二字以上はなれた上の字に返って読む",["すぐ上の一字に返る","下から順に全部読む","二回くり返して読む"],"「一」のついた字まで読んだら、「二」のついた字に返る。"],
+ [1,"漢文を、日本語の語順に直して漢字かなまじりで書いたものを何という？","書き下し文",["白文","訓読文","現代語訳"],"例：「春眠不覚暁」→「春眠暁を覚えず」。"],
+ [2,"返り点や送り仮名がついていない、漢字だけの文を何という？","白文",["書き下し文","訓読文","漢詩"],"白文に返り点・送り仮名をつけたものが訓読文。"],
+ [2,"書き下し文にするとき、送り仮名や助詞・助動詞は何で書く？","ひらがな",["カタカナ","漢字","ローマ字"],"訓読文の送り仮名はカタカナ。書き下し文ではひらがなに直す。"],
+ [3,"「不レ知」の書き下し文は？","知らず",["不知","知る不","不ず知る"],"「不」は打ち消しの助動詞「ず」なので、書き下し文ではひらがなで書く。"]
+],
+kanshi:[
+ [1,"1句が5字で、4句からなる漢詩の形は？","五言絶句",["七言絶句","五言律詩","七言律詩"],"絶句＝4句、律詩＝8句。五言＝1句5字、七言＝1句7字。"],
+ [1,"1句が7字で、4句からなる漢詩の形は？","七言絶句",["五言絶句","七言律詩","五言律詩"],"李白「黄鶴楼にて孟浩然の広陵に之くを送る」は七言絶句。"],
+ [2,"1句が5字で、8句からなる漢詩の形は？","五言律詩",["五言絶句","七言律詩","七言絶句"],"杜甫「春望」は五言律詩。"],
+ [1,"絶句の4つの句の組み立て（構成）は？","起承転結",["序破急","起承転合","首頷頸尾"],"起＝歌い起こす、承＝受けつぐ、転＝場面を変える、結＝まとめる。"],
+ [2,"孟浩然「春暁」の第1句「春眠不覚暁」の書き下し文は？","春眠暁を覚えず",["春眠覚えず暁","暁を春眠覚えず","春眠暁覚えず"],"春の眠りは心地よく、夜が明けたのにも気づかない。"],
+ [2,"「春暁」の形式は？","五言絶句",["七言絶句","五言律詩","七言律詩"],"春眠不覚暁／処処聞啼鳥／夜来風雨声／花落知多少　5字×4句。"],
+ [2,"「処処聞啼鳥」の書き下し文は？","処処啼鳥を聞く",["処処聞く啼鳥","啼鳥処処を聞く","聞く処処啼鳥"],"あちこちで鳥が鳴くのが聞こえる。"],
+ [3,"漢詩で、決まった句の終わりに同じひびきの音をそろえることを何という？","押韻",["対句","倒置","反復"],"五言詩は偶数句の終わり、七言詩は第1句と偶数句の終わりが基本。"],
+ [3,"杜甫「春望」の「国破れて山河在り」の意味は？","国はほろびても、山や川は昔のまま残っている",["国がやぶれて山や川もなくなった","国が勝って山や川が手に入った","国は平和で山や川が美しい"],"戦乱の悲しみと、変わらない自然をくらべている。"]
+]};
+
+// データ整形
+const ITEMS = [];
+for(const r in RAW){ RAW[r].forEach((d,i)=>ITEMS.push({id:r+"-"+i, r, lv:d[0], q:d[1], a:d[2], w:d[3], tip:d[4]})); }
+const byId = Object.fromEntries(ITEMS.map(x=>[x.id,x]));
+
+// ===== 保存（にがて・覚えた） =====
+const KEY="kokugo_koten_renshucho_v1";
+let S = load();
+function load(){ try{ return Object.assign({weak:{},known:{},best:{}}, JSON.parse(localStorage.getItem(KEY)||"{}")); }catch(e){ return {weak:{},known:{},best:{}}; } }
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
+function addWeak(id){ S.weak[id]=Math.min((S.weak[id]||0)+2,4); delete S.known[id]; save(); }
+function hitWeak(id){ if(S.weak[id]){ S.weak[id]--; if(S.weak[id]<=0) delete S.weak[id]; } S.known[id]=true; save(); }
+
+// ===== 便利関数 =====
+const $ = s=>document.querySelector(s);
+const app = $("#app");
+const shuffle = a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
+const esc = s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const stars = n=>"★".repeat(n)+"☆".repeat(3-n);
+const lvName = ["","きほん","ひょうじゅん","はってん"];
+
+let cur = {ed:null, region:"all"};
+function itemsOf(ed, region){
+  return ITEMS.filter(x=> REGIONS[x.r].ed===ed && (region==="all"||x.r===region));
+}
+
+// ===== ホーム =====
+function home(){
+  cur={ed:null,region:"all"};
+  const card = ed=>{
+    const all=itemsOf(ed,"all"), k=all.filter(x=>S.known[x.id]).length, p=Math.round(k/all.length*100);
+    const wk=all.filter(x=>S.weak[x.id]).length;
+    return `<button class="ed-btn ${ed}" onclick="edition('${ed}')">
+      <b>${ed==="east"?"📜":"🌸"} ${EDITIONS[ed].name}</b>
+      <small>${EDITIONS[ed].sub}　全${all.length}問</small>
+      <div class="bar"><i style="width:${p}%"></i></div>
+      <small>覚えた ${k} / ${all.length}${wk?`　｜　にがて ${wk}`:""}</small>
+    </button>`;
+  };
+  app.className="wrap";
+  app.innerHTML=`
+    <div class="hero"><div class="ttl">🍡 国語 古典れんしゅう帳</div>
+    <div class="sub">中2 古文・和歌・漢文　覚える → クイズでたしかめよう</div></div>
+    ${card("east")}${card("west")}
+    <div class="panel"><h3>🌸 つかいかた</h3>
+      <div class="note">① <b>覚えるカード</b>：タップでうらがえして答えと解説をチェック<br>
+      ② <b>クイズ</b>：4択で10問。出る順はランダム、正解が続くと<b>だんだん難しく</b>なるよ<br>
+      ③ まちがえた問題は<b>少しあとでもう一回</b>出るよ。<b>にがて</b>にも記録されて、次のクイズでも<b>たまに復習</b>で出てくるよ</div>
+    </div>
+    <div class="foot">記録はこの端末のブラウザに保存されます<br><button class="reset" onclick="resetAll()">記録をリセット</button></div>`;
+  scrollTo(0,0);
+}
+function resetAll(){ if(confirm("覚えた・にがての記録をぜんぶ消してもいい？")){ S={weak:{},known:{},best:{}}; save(); home(); } }
+
+// ===== 編のメニュー =====
+function edition(ed, region){
+  cur.ed=ed; if(region!==undefined) cur.region=region;
+  const E=EDITIONS[ed];
+  const list=itemsOf(ed,cur.region);
+  const weakN=list.filter(x=>S.weak[x.id]).length;
+  const knownN=list.filter(x=>S.known[x.id]).length;
+  app.className="wrap "+ed;
+  app.innerHTML=`
+    <header class="top"><button class="back" onclick="home()">← もどる</button><h1>${ed==="east"?"📜":"🌸"} ${E.name}</h1></header>
+    <div class="panel"><h3>どこをやる？</h3><div class="chips">
+      <button class="chip ${cur.region==="all"?"on":""}" onclick="edition('${ed}','all')">ぜんぶ</button>
+      ${E.regions.map(r=>`<button class="chip ${cur.region===r?"on":""}" onclick="edition('${ed}','${r}')">${REGIONS[r].name}</button>`).join("")}
+    </div>
+    <div class="note" style="margin-top:10px">${list.length}問　｜　覚えた ${knownN}　｜　にがて ${weakN}</div></div>
+    <div class="modes">
+      <button class="mode" onclick="cards()"><span>📖</span>覚えるカード</button>
+      <button class="mode" onclick="startQuiz(false)"><span>✏️</span>クイズ（10問）</button>
+      <button class="mode" onclick="summary()"><span>📋</span>まとめ一覧</button>
+      <button class="mode weak" onclick="startQuiz(true)" ${weakN?"":"disabled style='opacity:.45'"}><span>🔁</span>にがてだけ</button>
+    </div>
+    <p class="note" style="margin-top:14px">💡 さいしょは「覚えるカード」でひと通り見てから、クイズにチャレンジするのがおすすめ！</p>`;
+  scrollTo(0,0);
+}
+
+// ===== 覚えるカード =====
+let fc={list:[],i:0};
+function cards(){
+  const list=itemsOf(cur.ed,cur.region);
+  // まだ覚えていないもの → 覚えたもの の順（それぞれシャッフル）
+  fc.list=shuffle(list.filter(x=>!S.known[x.id])).concat(shuffle(list.filter(x=>S.known[x.id])));
+  fc.i=0; drawCard();
+}
+function drawCard(){
+  const x=fc.list[fc.i];
+  if(!x){ return edition(cur.ed); }
+  app.innerHTML=`
+    <header class="top"><button class="back" onclick="edition('${cur.ed}')">← もどる</button><h1>📖 覚えるカード</h1></header>
+    <div class="fc-meta"><span>${REGIONS[x.r].name}　${stars(x.lv)}</span><span>${fc.i+1} / ${fc.list.length}${S.known[x.id]?"　✅覚えた":""}${S.weak[x.id]?"　⚠️にがて":""}</span></div>
+    <div class="flip" id="flip" onclick="this.classList.toggle('on')"><div class="flip-in">
+      <div class="face front"><span class="tag">${REGIONS[x.r].name}</span><div class="q">${esc(x.q)}</div><div class="hint">タップでこたえ 👆</div></div>
+      <div class="face back"><div class="a">${esc(x.a)}</div><div class="tip">💡 ${esc(x.tip)}</div><div class="hint">タップでもどる</div></div>
+    </div></div>
+    <div class="row" style="margin-bottom:10px">
+      <button class="btn later" onclick="cardMark(false)">🤔 まだあやしい</button>
+      <button class="btn ok" onclick="cardMark(true)">😊 覚えた！</button>
+    </div>
+    <div class="row">
+      <button class="btn" onclick="cardMove(-1)" ${fc.i===0?"disabled":""}>◀ まえ</button>
+      <button class="btn" onclick="cardMove(1)">つぎ ▶</button>
+    </div>`;
+}
+function cardMark(ok){
+  const x=fc.list[fc.i];
+  if(ok){ S.known[x.id]=true; save(); }
+  else { delete S.known[x.id]; S.weak[x.id]=Math.max(S.weak[x.id]||0,1); save();
+         // あやしいカードは少しあとにもう一度
+         const pos=Math.min(fc.i+4, fc.list.length); fc.list.splice(pos,0,x); }
+  cardMove(1);
+}
+function cardMove(d){
+  fc.i+=d;
+  if(fc.i>=fc.list.length){
+    app.innerHTML=`<header class="top"><button class="back" onclick="edition('${cur.ed}')">← もどる</button><h1>📖 覚えるカード</h1></header>
+      <div class="panel result"><div class="score">🎉</div><div class="msg">ひと通り見おわったよ！<br>つぎはクイズでたしかめてみよう</div>
+      <div class="row"><button class="btn" onclick="cards()">もう一回</button><button class="btn pri" onclick="startQuiz(false)">クイズへ ✏️</button></div></div>`;
+    return;
+  }
+  if(fc.i<0) fc.i=0;
+  drawCard();
+}
+
+// ===== クイズ（ランダム・だんだん難しく・たまに復習） =====
+const ROUND=10;
+let Q=null;
+function startQuiz(weakOnly){
+  const pool=itemsOf(cur.ed,cur.region);
+  const usable = weakOnly ? pool.filter(x=>S.weak[x.id]) : pool;
+  if(!usable.length){ alert("にがての問題はないよ！すごい🎉"); return; }
+  Q={weakOnly, pool:usable, asked:new Set(), queue:[], n:0, total:Math.min(ROUND, usable.length),
+     lv: weakOnly?2:1, streak:0, miss:0, right:0, missed:[], lvmsg:"", current:null, answered:false};
+  nextQ();
+}
+function pickNext(){
+  // ① 同じクイズ内でまちがえた問題（3問後に再出題）
+  const due=Q.queue.findIndex(e=>e.at<=Q.n);
+  if(due>=0){ const e=Q.queue.splice(due,1)[0]; return {item:e.item, review:"さっきまちがえた問題だよ"}; }
+  // ② たまに「にがて」から復習（約25%）
+  if(!Q.weakOnly && Math.random()<0.25){
+    const w=shuffle(Q.pool.filter(x=>S.weak[x.id] && !Q.asked.has(x.id)));
+    if(w.length) return {item:w[0], review:"にがて復習"};
+  }
+  // ③ いまのレベルに近い問題をランダムに
+  const rest=Q.pool.filter(x=>!Q.asked.has(x.id));
+  const src = rest.length?rest:Q.pool;
+  for(const d of [0,-1,1,-2,2]){
+    const c=src.filter(x=>x.lv===Q.lv+d);
+    if(c.length) return {item:shuffle(c)[0], review:""};
+  }
+  return {item:shuffle(src)[0], review:""};
+}
+function nextQ(){
+  if(Q.n>=Q.total) return quizEnd();
+  const p=pickNext();
+  Q.current=p; Q.asked.add(p.item.id); Q.answered=false;
+  Q.choices=shuffle([p.item.a, ...p.item.w]);
+  drawQ();
+}
+function drawQ(){
+  const x=Q.current.item;
+  app.innerHTML=`
+    <header class="top"><button class="back" onclick="if(confirm('クイズをやめる？'))edition('${cur.ed}')">← やめる</button><h1>✏️ クイズ${Q.weakOnly?"（にがて）":""}</h1></header>
+    <div class="qhead"><span>${Q.n+1} / ${Q.total}問　｜　正解 ${Q.right}</span><span>レベル <span class="stars">${stars(Q.lv)}</span></span></div>
+    <div class="prog"><i style="width:${Q.n/Q.total*100}%"></i></div>
+    ${Q.lvmsg?`<div class="lvmsg">${Q.lvmsg}</div>`:""}
+    <div class="qbox">
+      ${Q.current.review?`<span class="review-badge">🔁 ${Q.current.review}</span><br>`:""}
+      <span class="tag">${REGIONS[x.r].name}・${lvName[x.lv]}</span>
+      <div class="q">${esc(x.q)}</div>
+    </div>
+    <div class="choices">${Q.choices.map((c,i)=>`<button class="choice" data-c="${esc(c)}" onclick="answer(${i})"><span class="no">${i+1}</span>${esc(c)}</button>`).join("")}</div>
+    <div id="fb"></div>`;
+  Q.lvmsg="";
+  scrollTo(0,0);
+}
+function answer(i){
+  if(Q.answered) return; Q.answered=true;
+  const x=Q.current.item, pick=Q.choices[i], ok=pick===x.a;
+  document.querySelectorAll(".choice").forEach((b,j)=>{
+    if(Q.choices[j]===x.a) b.classList.add("right");
+    else if(j===i) b.classList.add("wrong");
+  });
+  if(ok){
+    Q.right++; Q.streak = Q.streak>0?Q.streak+1:1; hitWeak(x.id);
+    if(Q.streak>=2 && Q.lv<3){ Q.lv++; Q.streak=0; Q.lvmsg="⬆️ レベルアップ！ちょっと難しくなるよ"; }
+  }else{
+    Q.miss++; Q.streak = Q.streak<0?Q.streak-1:-1; addWeak(x.id);
+    if(!Q.missed.includes(x)) Q.missed.push(x);
+    // 同じクイズの中で、3問あとにもう一回（1回まで）
+    if(!Q.current.review.startsWith("さっき")) { Q.queue.push({item:x, at:Q.n+3}); if(Q.total<ROUND+3) Q.total++; }
+    if(Q.streak<=-1 && Q.lv>1){ Q.lv--; Q.streak=0; Q.lvmsg="⬇️ 少しやさしい問題で、もう一回かためよう"; }
+  }
+  const praise=["せいかい！🎉","すごい！🌟","ばっちり！🍡","さすが！✨"];
+  $("#fb").innerHTML=`
+    <div class="feedback ${ok?"ok":"ng"}">
+      <b class="big">${ok?praise[Math.floor(Math.random()*praise.length)]:"おしい！こたえは「"+esc(x.a)+"」"}</b>
+      💡 ${esc(x.tip)}
+      ${ok?"":`<div style="margin-top:6px;font-size:13px">→ 少しあとで、もう一回出すね</div>`}
+    </div>
+    <button class="btn pri" style="width:100%" onclick="Q.n++;nextQ()">${Q.n+1>=Q.total?"けっかを見る 🏁":"つぎの問題 ▶"}</button>`;
+  $("#fb").scrollIntoView({behavior:"smooth",block:"nearest"});
+}
+function quizEnd(){
+  const asked=Q.right+Q.miss, rate=asked?Math.round(Q.right/asked*100):0;
+  const msg = rate>=90?"すばらしい！ほぼかんぺき🌟":rate>=70?"よくできたね！あと少し🍡":rate>=50?"いい調子！にがてを復習しよう🌙":"だいじょうぶ、カードでもう一回見てみよう🍙";
+  const key=cur.ed+"-"+cur.region; if(!S.best[key]||rate>S.best[key]){ S.best[key]=rate; save(); }
+  app.innerHTML=`
+    <header class="top"><button class="back" onclick="edition('${cur.ed}')">← もどる</button><h1>🏁 けっか</h1></header>
+    <div class="panel result">
+      <div class="score">${Q.right} / ${asked}</div>
+      <div class="msg">正答率 ${rate}%　さいごのレベル ${stars(Q.lv)}<br>${msg}</div>
+      ${Q.missed.length?`<div class="misslist"><b>🔁 まちがえた問題（にがてに記録したよ）</b><ul>${Q.missed.map(x=>`<li>${esc(x.q)}<br>→ <b>${esc(x.a)}</b></li>`).join("")}</ul></div>`:"<div class='msg'>まちがいゼロ！🎉</div>"}
+      <div class="row" style="margin-top:10px">
+        <button class="btn" onclick="startQuiz(false)">もう一回</button>
+        ${Q.missed.length?`<button class="btn later" onclick="startQuiz(true)">にがてだけ 🔁</button>`:""}
+      </div>
+      <div class="row" style="margin-top:10px"><button class="btn pri" onclick="edition('${cur.ed}')">メニューへ</button></div>
+    </div>`;
+  scrollTo(0,0);
+}
+
+// ===== まとめ一覧 =====
+function summary(){
+  const E=EDITIONS[cur.ed];
+  const regs = cur.region==="all"?E.regions:[cur.region];
+  app.innerHTML=`
+    <header class="top"><button class="back" onclick="edition('${cur.ed}')">← もどる</button><h1>📋 まとめ一覧</h1></header>
+    <p class="note">テスト前の見直し用。✅覚えた　⚠️にがて</p>
+    ${regs.map(r=>`<h4 style="margin:18px 0 8px">📌 ${REGIONS[r].name}</h4><ul class="lst">${
+      ITEMS.filter(x=>x.r===r).sort((a,b)=>a.lv-b.lv).map(x=>`<li>${esc(x.q)}<span class="mark">${S.known[x.id]?"✅":""}${S.weak[x.id]?"⚠️":""}</span>
+        <div class="ans">→ ${esc(x.a)}</div><div class="t">${esc(x.tip)}</div></li>`).join("")}</ul>`).join("")}`;
+  scrollTo(0,0);
+}
+
+home();
+</script>
+</body>
+</html>
