@@ -10,7 +10,8 @@
 | rekishi（社会歴史） | 歴史れんしゅう帳（古代から近代まで）：古代文明・縄文・弥生・古墳・飛鳥・奈良・平安・鎌倉・室町・戦国・安土桃山・江戸・明治・大正・二つの世界大戦の「おぼえる」/「レベル別クイズ」（ひらがな機能つき） | [rekishi/index.html](rekishi/index.html) |
 | eigo（英語） | 英語れんしゅう帳（中2 単語・文法・熟語）：動詞・名詞・形容詞・不規則動詞・過去進行形・未来・助動詞・接続詞・不定詞・動名詞・There is・比較・受け身・文の形・熟語・会話の「おぼえる」/「レベル別クイズ」（ひらがな機能つき・🔊発音の読み上げ対応） | [eigo/index.html](eigo/index.html) |
 | kokugo（国語） | 国語 古典れんしゅう帳（中2 古文・和歌・漢文）：歴史的仮名遣い・作品と作者・平家物語・徒然草・枕草子・係り結び・古語・和歌・漢文・漢詩の「おぼえる」/「レベル別クイズ」 | [kokugo/index.html](kokugo/index.html) |
+| boss（5教科） | ボス戦モード：国語・数学・理科・社会・英語のれんしゅう帳から各教科2問ずつ、ランダムで10問。1問でもまちがえると、べらんめえ口調で強制終了。全問正解でボス撃破（同じフォルダの各ページから問題を読みこむので、サーバーから開いてね） | [boss/index.html](boss/index.html) |
 
 ## 使い方
-- `rika/index.html`、`sugaku/index.html`、`chiri/index.html`、`rekishi/index.html`、`eigo/index.html`、`kokugo/index.html` をブラウザで開くだけで使えます（インターネット接続があればフォントがきれいに表示されます）。
+- `rika/index.html`、`sugaku/index.html`、`chiri/index.html`、`rekishi/index.html`、`eigo/index.html`、`kokugo/index.html`、`boss/index.html` をブラウザで開くだけで使えます（インターネット接続があればフォントがきれいに表示されます）。
 - クイズの記録は、開いた端末のブラウザに保存されます。

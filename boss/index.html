@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ボス戦モード ｜ kagayaki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --night:#1D1A2B; --night-2:#2A2540; --paper:#FAF6EE; --ink:#26252B; --muted:#6B6870; --line:#E4DCCD;
+  --gold:#F6C744; --red:#D9433A; --red-soft:#FBE3DF; --green:#0F7B6C; --green-soft:#DCEFE9;
+  --kokugo:#B4436C; --sugaku:#2F6FB0; --rika:#0F7B6C; --shakai:#B7791F; --eigo:#6B4FBB;
+  --jp:"Zen Maru Gothic","Hiragino Maru Gothic ProN","Hiragino Sans","Yu Gothic","Meiryo",sans-serif;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0}
+body{min-height:100vh;background:var(--night);color:#fff;font-family:var(--jp);line-height:1.7;
+  background-image:radial-gradient(circle at 20% 0%,#3B2F5E 0,transparent 55%),radial-gradient(circle at 100% 100%,#40222E 0,transparent 50%);
+  background-attachment:fixed;padding-bottom:calc(30px + env(safe-area-inset-bottom))}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--gold);outline-offset:3px;border-radius:10px}
+.wrap{max-width:620px;margin:0 auto;padding:16px 16px 0}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.topbar a{color:#CFC8E6;text-decoration:none;font-size:14px;border:1.5px solid #4A4366;border-radius:99px;padding:5px 14px}
+.topbar a:hover{border-color:var(--gold);color:var(--gold)}
+.eyebrow{font-size:12px;letter-spacing:.2em;color:var(--gold);font-weight:700}
+.view{display:none}.view.on{display:block;animation:fade .35s ease}
+
+/* boss */
+.boss{text-align:center;padding:18px 0 6px}
+.boss .face{font-size:84px;line-height:1;display:inline-block;filter:drop-shadow(0 6px 14px rgba(0,0,0,.45))}
+.boss .face.hit{animation:hit .45s ease}
+.boss .face.angry{animation:angry .5s ease 2}
+.boss .name{font-weight:900;font-size:20px;margin-top:14px;letter-spacing:.04em}
+.boss .name small{display:block;font-size:12px;color:#BDB5D6;font-weight:500;letter-spacing:.1em}
+.hp{margin:10px auto 0;max-width:420px}
+.hp .lbl{display:flex;justify-content:space-between;font-size:12px;color:#BDB5D6}
+.hp .bar{display:grid;grid-template-columns:repeat(10,1fr);gap:4px;margin-top:4px}
+.hp .bar i{height:12px;border-radius:4px;background:linear-gradient(#FF6B5E,#C9362D);transition:background .3s,opacity .3s}
+.hp .bar i.gone{background:#3A3452;opacity:.6}
+
+.speech{position:relative;background:#fff;color:var(--ink);border-radius:18px;padding:14px 16px;margin:16px 0 0;font-weight:700;font-size:16px;border:2px solid var(--ink);box-shadow:5px 5px 0 #000}
+.speech::before{content:"";position:absolute;top:-12px;left:50%;margin-left:-10px;border:10px solid transparent;border-top:0;border-bottom:12px solid var(--ink)}
+.speech::after{content:"";position:absolute;top:-8px;left:50%;margin-left:-8px;border:8px solid transparent;border-top:0;border-bottom:10px solid #fff}
+
+/* start */
+.rules{background:var(--night-2);border:1.5px solid #4A4366;border-radius:18px;padding:16px 18px;margin:18px 0 0}
+.rules h2{font-size:16px;margin:0 0 6px;color:var(--gold)}
+.rules ol{margin:0;padding-left:1.3em;font-size:15px}
+.rules li{margin:3px 0}
+.subjects{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.chip{font-size:12px;font-weight:700;border-radius:99px;padding:2px 10px;color:#fff}
+.c-国語{background:var(--kokugo)}.c-数学{background:var(--sugaku)}.c-理科{background:var(--rika)}.c-社会{background:var(--shakai)}.c-英語{background:var(--eigo)}
+.records{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}
+.records div{background:var(--night-2);border:1.5px solid #4A4366;border-radius:14px;padding:10px 6px;text-align:center;font-size:12px;color:#BDB5D6}
+.records b{display:block;font-size:24px;color:#fff;line-height:1.3}
+.big-btn{display:block;width:100%;margin:18px 0 0;border:2px solid var(--ink);background:var(--gold);color:var(--ink);border-radius:16px;padding:16px;font-size:20px;font-weight:900;box-shadow:5px 5px 0 #000;transition:transform .12s}
+.big-btn:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 #000}
+.big-btn:disabled{opacity:.6;cursor:wait;transform:none}
+.big-btn:active{transform:translate(2px,2px);box-shadow:2px 2px 0 #000}
+.sub-btn{display:block;width:100%;margin:10px 0 0;border:1.5px solid #4A4366;background:transparent;border-radius:16px;padding:12px;font-size:15px;color:#CFC8E6;text-align:center;text-decoration:none}
+.sub-btn:hover{border-color:var(--gold);color:var(--gold)}
+
+/* battle */
+.qmeta{display:flex;justify-content:space-between;align-items:center;margin:16px 0 8px;font-size:14px;color:#CFC8E6}
+.qmeta b{color:#fff;font-size:18px}
+.dots{display:flex;gap:5px}
+.dots i{width:10px;height:10px;border-radius:50%;background:#3A3452}
+.dots i.ok{background:var(--gold)}
+.dots i.now{background:#fff;box-shadow:0 0 0 3px rgba(255,255,255,.25)}
+.card{background:var(--paper);color:var(--ink);border:2px solid var(--ink);border-radius:20px;padding:18px 16px 16px;box-shadow:6px 6px 0 #000;animation:rise .35s cubic-bezier(.2,.8,.2,1) both}
+.card .unit{font-size:12px;color:var(--muted);margin-left:6px}
+.qtext{font-size:19px;font-weight:700;margin:10px 0 0;line-height:1.6;word-break:break-word}
+.last{display:inline-block;margin-left:6px;font-size:12px;font-weight:900;color:var(--red);letter-spacing:.06em}
+.opts{display:grid;gap:9px;margin-top:16px}
+.opt{position:relative;text-align:left;background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:13px 14px 13px 42px;font-size:16px;font-weight:700;line-height:1.45;transition:transform .1s,border-color .15s,background .15s}
+.opt .k{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:22px;height:22px;border-radius:50%;background:var(--paper);border:1.5px solid var(--line);font-size:12px;display:grid;place-items:center;color:var(--muted)}
+.opt:hover:not(:disabled){border-color:var(--ink);transform:translateY(-1px)}
+.opt:disabled{cursor:default}
+.opt.ok{background:var(--green-soft);border-color:var(--green);color:#0A5A4F}
+.opt.ng{background:var(--red-soft);border-color:var(--red);color:var(--red)}
+.opt.dim{opacity:.4}
+.fb{margin-top:14px;border-radius:14px;padding:12px 14px;background:var(--green-soft);animation:rise .3s ease both}
+.fb .say{font-weight:900;font-size:17px}
+.fb p{margin:4px 0 0;font-size:14px;color:#3E3C44}
+.next{margin-top:12px;width:100%;border:0;border-radius:14px;padding:14px;background:var(--ink);color:#fff;font-size:17px;font-weight:700}
+.next:hover{background:#000}
+
+/* game over */
+.over{text-align:center}
+.over .stamp{display:inline-block;margin-top:14px;font-size:clamp(38px,12vw,58px);font-weight:900;color:var(--red);border:5px solid var(--red);border-radius:12px;padding:0 18px;transform:rotate(-6deg);letter-spacing:.08em;background:rgba(217,67,58,.08);animation:stamp .45s cubic-bezier(.2,1.4,.4,1) both}
+.over .reach{margin-top:10px;color:#CFC8E6;font-size:15px}
+.over .reach b{color:#fff;font-size:22px}
+.review{background:var(--paper);color:var(--ink);text-align:left;border:2px solid var(--ink);border-radius:18px;padding:14px 16px;margin-top:16px;box-shadow:5px 5px 0 #000}
+.review .h{font-weight:900;font-size:14px;color:var(--red)}
+.review .q{font-weight:700;margin:4px 0 8px}
+.review .row{display:flex;gap:8px;font-size:15px;margin:3px 0}
+.review .row span{flex:none;font-size:12px;font-weight:700;border-radius:6px;padding:1px 8px;height:fit-content;margin-top:2px}
+.review .you span{background:var(--red-soft);color:var(--red)}
+.review .ans span{background:var(--green-soft);color:var(--green)}
+.review .tip{font-size:14px;color:var(--muted);margin-top:8px;border-top:1px dashed var(--line);padding-top:8px}
+.lock{margin-top:14px;color:#BDB5D6;font-size:14px}
+body.shake .wrap{animation:shake .5s ease}
+.flash{position:fixed;inset:0;background:var(--red);opacity:0;pointer-events:none;z-index:50}
+.flash.go{animation:flash .6s ease}
+
+/* clear */
+.clear .stamp{color:var(--gold);border-color:var(--gold);background:rgba(246,199,68,.1)}
+.confetti{font-size:30px;letter-spacing:6px;margin-top:6px}
+
+footer{text-align:center;color:#8A82A8;font-size:12px;padding:30px 0 0}
+
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@keyframes hit{0%{transform:none}25%{transform:translateX(-10px) rotate(-8deg)}50%{transform:translateX(8px) rotate(6deg);filter:brightness(2)}100%{transform:none}}
+@keyframes angry{0%,100%{transform:scale(1)}50%{transform:scale(1.18)}}
+@keyframes shake{0%,100%{transform:none}20%{transform:translateX(-12px)}40%{transform:translateX(10px)}60%{transform:translateX(-7px)}80%{transform:translateX(5px)}}
+@keyframes flash{0%{opacity:.55}100%{opacity:0}}
+@keyframes stamp{from{opacity:0;transform:rotate(-6deg) scale(2.2)}to{opacity:1;transform:rotate(-6deg) scale(1)}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="flash" id="flash"></div>
+<main class="wrap">
+  <div class="topbar">
+    <span class="eyebrow">KAGAYAKI ・ BOSS BATTLE</span>
+    <a href="../index.html">← トップへ</a>
+  </div>
+
+  <div class="boss" aria-live="polite">
+    <div class="face" id="face" aria-hidden="true">👺</div>
+    <div class="name"><small>5教科の門番</small>べらんめえ大将</div>
+    <div class="hp" id="hp" hidden>
+      <div class="lbl"><span>ボスのHP</span><span id="hp-num">10 / 10</span></div>
+      <div class="bar" id="hp-bar"></div>
+    </div>
+  </div>
+
+  <!-- ===== スタート ===== -->
+  <section class="view on" id="v-start">
+    <div class="speech">おうおう、よく来やがったな！ 5教科から10問だ。<br>1問でもしくじったら、その場でたたき出してやるから覚悟しな！</div>
+    <div class="rules">
+      <h2>⚔️ ルール</h2>
+      <ol>
+        <li>国語・数学・理科・社会・英語から<b>ランダムで10問</b>（各教科2問ずつ）</li>
+        <li>4択。正解するとボスに1ダメージ</li>
+        <li><b>1問でもまちがえたら、その場で強制終了</b></li>
+        <li>10問ぜんぶ正解でボス撃破！</li>
+      </ol>
+      <div class="subjects"><span class="chip c-国語">国語</span><span class="chip c-数学">数学</span><span class="chip c-理科">理科</span><span class="chip c-社会">社会</span><span class="chip c-英語">英語</span></div>
+    </div>
+    <div class="records">
+      <div><b id="r-tries">0</b>挑戦</div>
+      <div><b id="r-wins">0</b>撃破</div>
+      <div><b id="r-best">0</b>最高（問）</div>
+    </div>
+    <button class="big-btn" id="btn-start">いざ勝負！</button>
+    <p class="lock" id="load-err" hidden>このページは、ほかの5教科のページと同じ場所（kagayaki フォルダ）に置いて、サーバー（GitHub Pages など）から開いてね。</p>
+  </section>
+
+  <!-- ===== バトル ===== -->
+  <section class="view" id="v-battle">
+    <div class="qmeta">
+      <div>第 <b id="q-no">1</b> 問 / 10</div>
+      <div class="dots" id="dots" aria-hidden="true"></div>
+    </div>
+    <div id="q-area" aria-live="polite"></div>
+  </section>
+
+  <!-- ===== 強制終了 ===== -->
+  <section class="view over" id="v-over">
+    <div class="stamp">強制終了</div>
+    <div class="speech" id="over-say"></div>
+    <div class="reach">到達：<b id="over-reach">0</b> 問目でやられた</div>
+    <div class="review" id="over-review"></div>
+    <div class="lock" id="over-lock">…大将がにらんでる。少し待ちな…</div>
+    <div id="over-btns" hidden>
+      <button class="big-btn" id="btn-retry">もう一回いどむ</button>
+      <a class="sub-btn" href="../index.html">トップにもどって修行する</a>
+    </div>
+  </section>
+
+  <!-- ===== 撃破 ===== -->
+  <section class="view over clear" id="v-clear">
+    <div class="stamp">ボス撃破</div>
+    <div class="confetti" aria-hidden="true">🎉✨🏆✨🎉</div>
+    <div class="speech" id="clear-say"></div>
+    <div class="reach">10問 全問正解！ 撃破 <b id="clear-wins">1</b> 回目</div>
+    <button class="big-btn" id="btn-again">もう一回たたかう</button>
+    <a class="sub-btn" href="../index.html">トップへもどる</a>
+  </section>
+
+  <footer>kagayaki ・ ボス戦モード</footer>
+</main>
+
+<script>
+/* ===== 問題データ [教科, 単元, 問題, 正解, ×1, ×2, ×3, 解説]
+   EMBED があればそれを使う（デスクトップ版）。なければ同じフォルダの各れんしゅう帳から読みこむ（サーバー版）。 ===== */
+const EMBED = null;
+let BANK = [];
+
+async function loadBank(){
+  if(EMBED) return EMBED;
+  const get = async p => { const r = await fetch(p, {cache:"no-cache"}); if(!r.ok) throw new Error(p); const h = await r.text(); return h.slice(h.lastIndexOf("<scr"+"ipt>")+8, h.lastIndexOf("<\/script>")); };
+  const cut = (s,a,b) => { const i = s.indexOf(a); return s.slice(i, s.indexOf(b, i)); };
+  const [kokugo, sugaku, rika, chiri, rekishi, eigo] = await Promise.all(["kokugo","sugaku","rika","chiri","rekishi","eigo"].map(n => get("../"+n+"/index.html")));
+  const out = [];
+  [[kokugo,"国語","古典"],[chiri,"社会","地理"],[rekishi,"社会","歴史"],[eigo,"英語","英語"]].forEach(([s,subj,tag]) => {
+    const o = new Function(cut(s,"const REGIONS","const ITEMS") + ';return {REGIONS,RAW,RAW2:typeof RAW2!=="undefined"?RAW2:{}};')();
+    const all = Object.assign({}, o.RAW, o.RAW2);
+    for(const r in all){ if(!o.REGIONS[r]) continue;
+      all[r].forEach(d => { if(Array.isArray(d[3]) && d[3].length >= 3) out.push([subj, tag+"・"+o.REGIONS[r].name, d[1], d[2], d[3][0], d[3][1], d[3][2], d[4]||""]); }); }
+  });
+  const L = new Function(cut(sugaku,"var LEVELS","var lv =") + ";return LEVELS;")();
+  for(const lv in L) L[lv].forEach(q => { const w = q.o.filter((_,i) => i !== q.a); out.push(["数学","数学・図形",q.q,q.o[q.a],w[0],w[1],w[2],q.e]); });
+  const R0 = new Function(rika.slice(rika.indexOf("const ELEMENTS"), rika.indexOf("/* ================= 共通")) + ";return {ELEMENTS,COMPOUNDS,REACTIONS,parseEq,balanced};")();
+  const sub = x => x.replace(/([A-Za-z\)])(\d+)/g, (m,a,d) => a + d.split("").map(c => "₀₁₂₃₄₅₆₇₈₉"[c]).join(""));
+  const E = R0.ELEMENTS, C = R0.COMPOUNDS;
+  const conf = s0 => { const same = E.filter(e => e.s!==s0 && e.s[0]===s0[0]).map(e => e.s); const rest = shuffle(E.filter(e => e.s!==s0 && !same.includes(e.s)).map(e => e.s)); return shuffle(same).concat(rest).slice(0,3); };
+  E.forEach(e => {
+    const c3 = conf(e.s);
+    out.push(["理科","理科・元素記号",`元素記号「${e.s}」の元素名は？`,e.n,...c3.map(x => E.find(y => y.s===x).n),`${e.s}＝${e.n}。${e.use}`]);
+    out.push(["理科","理科・元素記号",`「${e.n}」の元素記号は？`,e.s,...conf(e.s),`${e.n}＝${e.s}。1文字目は大文字、2文字目は小文字。`]);
+  });
+  C.forEach(c => {
+    const o3 = shuffle(C.filter(x => x.f!==c.f)).slice(0,3);
+    out.push(["理科","理科・化学式",`化学式「${sub(c.f)}」の物質名は？`,c.n,...o3.map(x => x.n),`${sub(c.f)}＝${c.n}（${c.use}）`]);
+    out.push(["理科","理科・化学式",`「${c.n}」の化学式は？`,sub(c.f),...o3.map(x => sub(x.f)),`${c.n}＝${sub(c.f)}（${c.use}）`]);
+  });
+  const txt = (l,r) => { const t = x => (x.c>1?x.c:"")+sub(x.f); return l.map(t).join(" ＋ ")+" → "+r.map(t).join(" ＋ "); };
+  R0.REACTIONS.forEach(rx => { const {l,r} = R0.parseEq(rx.eq); const all = [...l,...r]; const wrong = new Set(); let g = 0;
+    while(wrong.size < 3 && g++ < 500){ const c = all.map(t => ({...t})); const i = Math.floor(Math.random()*c.length); const v = [1,2,3,4].filter(x => x!==c[i].c); c[i].c = v[Math.floor(Math.random()*v.length)];
+      const Lf = c.slice(0,l.length), Rf = c.slice(l.length); if(!R0.balanced(Lf,Rf)) wrong.add(txt(Lf,Rf)); }
+    if(wrong.size === 3) out.push(["理科","理科・化学反応式",`「${rx.n}」の正しい化学反応式は？`,txt(l,r),...wrong,"左右で原子の数がそろうのが正しい式。"]); });
+  return out;
+}
+
+const SUBJECTS = ["国語","数学","理科","社会","英語"];
+const KEY = "kagayaki_boss_v1";
+const LINES = {
+  start: [
+    "さあ来やがれ！ まずは1問目だ！",
+    "へっ、どこまでもつか見ものだな！",
+    "こちとら江戸っ子でぃ、手加減はしねぇぜ！"
+  ],
+  hit: [
+    "ちっ、やるじゃねぇか…！",
+    "ぐぬぬ…まぐれでぃ、まぐれ！",
+    "へっ、そいつぁ正解だ。次いくぜ！",
+    "こんちくしょう、効いたぜ…！",
+    "まだまだぁ！ 調子に乗るんじゃねぇ！",
+    "おっと、なかなか骨があるじゃねぇか。"
+  ],
+  nine: "う、うそだろ…あと1問で、おいらが負けるってのかい…！",
+  over: [
+    "てやんでぇ！ べらぼうめ！ そんなこともわからねぇで、おいらに挑もうってのかい！ とっとと帰ぇんな！",
+    "おきやがれ、このすっとこどっこい！ 顔洗って出直してきやがれってんだ！",
+    "なに寝ぼけたこと言ってやがんでぃ！ こちとら江戸っ子でぃ、まちがいはひとっつも許さねぇ！",
+    "あたぼうよ、勝負はここまでだ！ おととい来やがれ！",
+    "べらんめぇ！ そいつぁ大ハズレだ！ 修行が足りねぇんだよ、修行が！",
+    "しゃらくせぇ！ そんなあやふやな知識で、おいらの門は通さねぇぜ！"
+  ],
+  clear: [
+    "ま、まいった…！ てぇしたもんだ、あっぱれでぃ！ 5教科の門、通ってよし！",
+    "くぅ〜っ、負けた負けた！ おめぇさん、江戸いちばんの物知りでぃ！",
+    "こいつぁおそれいった！ 10問ぜんぶとは、てぇしたもんだぜ！"
+  ]
+};
+
+const $ = id => document.getElementById(id);
+const rnd = a => a[Math.floor(Math.random()*a.length)];
+const shuffle = a => { a=a.slice(); for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; };
+const esc = s => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+function load(){ try{ return Object.assign({tries:0,wins:0,best:0,recent:[]}, JSON.parse(localStorage.getItem(KEY))||{}); }catch(e){ return {tries:0,wins:0,best:0,recent:[]}; } }
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(R)); }catch(e){} }
+let R = load();
+
+function renderRecords(){ $("r-tries").textContent=R.tries; $("r-wins").textContent=R.wins; $("r-best").textContent=R.best; }
+
+/* 10問をえらぶ：各教科2問（社会は地理1・歴史1）。最近出た問題はなるべく避ける */
+function pickFrom(list, n, used){
+  const fresh = list.filter(i => !R.recent.includes(i) && !used.has(i));
+  const pool = fresh.length >= n ? fresh : list.filter(i => !used.has(i));
+  return shuffle(pool).slice(0, n);
+}
+function buildSet(){
+  const idx = {};
+  BANK.forEach((b,i) => { const k = b[0]==="社会" ? (b[1].startsWith("歴史")?"歴史":"地理") : b[0]; (idx[k]=idx[k]||[]).push(i); });
+  const used = new Set(), out = [];
+  [["国語",2],["数学",2],["理科",2],["地理",1],["歴史",1],["英語",2]].forEach(([k,n]) => pickFrom(idx[k], n, used).forEach(i => { used.add(i); out.push(i); }));
+  R.recent = R.recent.concat(out).slice(-60);
+  return shuffle(out);
+}
+
+let set = [], pos = 0, answered = false, cur = null, order = [];
+
+function show(view){ document.querySelectorAll(".view").forEach(v => v.classList.toggle("on", v.id === view)); window.scrollTo({top:0}); }
+function face(cls, emoji){ const f=$("face"); if(emoji) f.textContent=emoji; f.classList.remove("hit","angry"); void f.offsetWidth; if(cls) f.classList.add(cls); }
+function renderHP(){
+  const left = 10 - pos;
+  $("hp-num").textContent = left + " / 10";
+  $("hp-bar").innerHTML = Array.from({length:10}, (_,i) => `<i class="${i >= left ? "gone" : ""}"></i>`).join("");
+  $("dots").innerHTML = Array.from({length:10}, (_,i) => `<i class="${i < pos ? "ok" : (i===pos ? "now" : "")}"></i>`).join("");
+}
+
+function start(){
+  set = buildSet(); pos = 0;
+  R.tries++; save();
+  $("hp").hidden = false; face(null, "👺");
+  show("v-battle");
+  ask(rnd(LINES.start));
+}
+
+function ask(say){
+  answered = false;
+  const b = BANK[set[pos]];
+  cur = b;
+  order = shuffle([b[3], b[4], b[5], b[6]]);
+  $("q-no").textContent = pos + 1;
+  renderHP();
+  $("q-area").innerHTML = `<article class="card">
+    <div><span class="chip c-${esc(b[0])}">${esc(b[0])}</span><span class="unit">${esc(b[1])}</span>${pos===9?'<span class="last">ラストアタック！</span>':''}</div>
+    ${say ? `<p class="qtext" style="font-size:14px;color:#6B6870;margin-top:8px">👺「${esc(say)}」</p>` : ""}
+    <p class="qtext">${esc(b[2])}</p>
+    <div class="opts">${order.map((o,i) => `<button class="opt" data-i="${i}"><span class="k">${i+1}</span>${esc(o)}</button>`).join("")}</div>
+    <div id="fb-slot"></div>
+  </article>`;
+  $("q-area").querySelectorAll(".opt").forEach(btn => btn.onclick = () => answer(+btn.dataset.i));
+}
+
+function answer(i){
+  if(answered) return; answered = true;
+  const pickedText = order[i], ok = pickedText === cur[3];
+  $("q-area").querySelectorAll(".opt").forEach((btn, j) => {
+    btn.disabled = true;
+    if(order[j] === cur[3]) btn.classList.add("ok");
+    else if(j === i) btn.classList.add("ng");
+    else btn.classList.add("dim");
+  });
+  if(!ok){ setTimeout(() => gameOver(pickedText), 650); return; }
+
+  pos++;
+  face("hit");
+  renderHP();
+  if(pos > R.best){ R.best = pos; save(); }
+  if(pos === 10){ setTimeout(clear, 700); return; }
+  const say = pos === 9 ? LINES.nine : rnd(LINES.hit);
+  $("fb-slot").innerHTML = `<div class="fb"><div class="say">○ 正解！ 👺「${esc(say)}」</div><p>${esc(cur[7])}</p></div>
+    <button class="next" id="btn-next">つぎの問題へ（${pos+1}/10）</button>`;
+  $("btn-next").onclick = () => ask();
+  $("btn-next").focus({preventScroll:true});
+}
+
+function gameOver(picked){
+  document.body.classList.remove("shake"); void document.body.offsetWidth; document.body.classList.add("shake");
+  const fl = $("flash"); fl.classList.remove("go"); void fl.offsetWidth; fl.classList.add("go");
+  face("angry", "👹");
+  $("over-say").textContent = "👹「" + rnd(LINES.over) + "」";
+  $("over-reach").textContent = pos + 1;
+  $("over-review").innerHTML = `<div class="h">第${pos+1}問（${esc(cur[0])}・${esc(cur[1])}）</div>
+    <div class="q">${esc(cur[2])}</div>
+    <div class="row you"><span>あんた</span><div>${esc(picked)}</div></div>
+    <div class="row ans"><span>正解</span><div>${esc(cur[3])}</div></div>
+    <div class="tip">👺「正解はこいつだ、耳かっぽじってよーく覚えときな！」<br>${esc(cur[7])}</div>`;
+  $("over-btns").hidden = true; $("over-lock").hidden = false;
+  show("v-over");
+  setTimeout(() => { $("over-lock").hidden = true; $("over-btns").hidden = false; $("btn-retry").focus({preventScroll:true}); }, 2500);
+}
+
+function clear(){
+  R.wins++; save();
+  face("hit", "😵");
+  $("clear-say").textContent = "😵「" + rnd(LINES.clear) + "」";
+  $("clear-wins").textContent = R.wins;
+  show("v-clear");
+}
+
+
+$("btn-start").onclick = start;
+$("btn-start").disabled = true; $("btn-start").textContent = "じゅんび中…";
+loadBank().then(b => { BANK = b; $("btn-start").disabled = false; $("btn-start").textContent = "いざ勝負！"; })
+  .catch(() => { $("btn-start").textContent = "問題を読みこめなかったよ"; $("load-err").hidden = false; });
+$("btn-retry").onclick = start;
+$("btn-again").onclick = start;
+document.addEventListener("keydown", e => {
+  if(!$("v-battle").classList.contains("on")) return;
+  if(!answered && /^[1-4]$/.test(e.key)){ const b = $("q-area").querySelectorAll(".opt")[+e.key-1]; if(b) b.click(); }
+  else if(answered && e.key === "Enter" && $("btn-next") && document.activeElement !== $("btn-next")) $("btn-next").click();
+});
+renderRecords();
+</script>
+</body>
+</html>
